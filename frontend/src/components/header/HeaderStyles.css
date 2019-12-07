@@ -1,0 +1,48 @@
+@import url('https://fonts.googleapis.com/css?family=Abril+Fatface|Amatic+SC|Anton|Bebas+Neue|Dancing+Script|Indie+Flower|Permanent+Marker|Righteous&display=swap');
+.main-header-block {
+  width: 100%;
+  height: 40px;
+  background-color: #D4DADA;
+  box-shadow: 0px 0px 7px rgb(105, 105, 105);
+  margin-bottom: 7px;
+  font-size: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'Montserrat';
+}
+.ChatME-block {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #4D4E48;
+  /* font-family: 'Indie Flower', cursive; ++ */
+  /* font-family: 'Amatic SC', cursive;  ++ */
+  font-family: 'Permanent Marker', cursive;
+}
+.profile-button-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  color: black;
+  font-size: 20px;
+  margin-right: 20px;
+  cursor: pointer;
+}
+.profile-button-header a {
+  text-decoration: none;
+  color:  #4D4E48;
+}
+.profile-button-header img {
+  width: 30px;
+}
+.addMenuHeader {
+  transition: all 0.2s ease-in-out;
+  position: absolute;
+  font-size: 20px;
+  height: 100px;
+  top: 40px;
+  box-shadow: 0px 0px 7px rgb(105, 105, 105);
+  background: #e0d8d0;
+}
