@@ -2,8 +2,7 @@ import React, {Component} from 'react';
 import axios from 'axios';
 import './RegistrationPage.css';
 import Header from '../header/Header'
-import Redux from 'redux'
-import React_redux from 'react-redux';
+
 class RegistrationPage extends React.Component {
   constructor(props) {
     super(props);
