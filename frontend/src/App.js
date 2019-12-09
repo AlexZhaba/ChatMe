@@ -7,7 +7,6 @@ import RegistrationPage from './components/registration/RegistrationPage';
 import AccountPage from './components/account/AccountPage';
 import SignUpPage from './components/signup/SignUpPage';
 import { withRouter } from "react-router";
-
 class App extends Component {
   render() {
     return (

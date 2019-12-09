@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import {NavLink, Redirect} from 'react-router-dom'
 import Header from '../header/Header'
+
 //import './signUpPage.css'
 class SignUpPage extends React.Component {
   constructor(props) {
