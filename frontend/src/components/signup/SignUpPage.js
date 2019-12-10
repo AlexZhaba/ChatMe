@@ -11,7 +11,8 @@ class SignUpPage extends React.Component {
       email: '',
       password: '',
       actionNews: '',
-      show: true
+      show: true,
+      username: ''
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -48,7 +49,8 @@ class SignUpPage extends React.Component {
     }).then((answer) => {
       console.log(answer.data);
       if (answer.data.errorCode == 1) {
-        this.setState({show: false});
+        console.log('data = ', answer.data);
+        this.setState({show: false, username: answer.data.username});
       } else this.setState({show : true})
     });
   }
@@ -66,7 +68,7 @@ class SignUpPage extends React.Component {
     }).then(function (newValue) {
       console.log('newValue = ',newValue);
       if (newValue.data.errorCode == 0) {
-        this2.setState({show: false});
+        this2.setState({show: false, username: newValue.data.username});
       }
       this2.setState({actionNews: newValue.data.data});
     });
@@ -102,10 +104,10 @@ class SignUpPage extends React.Component {
       </div>
         );
     } else {
+      debugger;
+      let accountURL = `/account/${this.state.username}`;
       return (
-        <div>
-            Ты уже зарегистрирован!
-        </div>
+        <Redirect to={accountURL}/>
       )
     }
   }

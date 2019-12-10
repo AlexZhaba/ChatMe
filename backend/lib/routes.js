@@ -35,7 +35,7 @@ module.exports = function (app) {
 	app.get('/api/isAuthenticated', (req, res) => {
 		console.log('user = ', req.user);
 		if (req.isAuthenticated()) {
-			res.json({errorCode:'1', data:'Ты и так зарегистрирован!'})
+			res.json({errorCode:'1', data:'Ты и так зарегистрирован!', username: req.user.email})
 			console.log('Пользователь зарегистрирован');
 		} else {
 			res.json({errorCode:'0', data:'Пользователь не зарегистрирован'});
@@ -77,7 +77,7 @@ module.exports = function (app) {
 
 							client.query('COMMIT')
 					    console.log('Пользователь создан');
-							res.json({errorCode: 0, data: 'User was created'});
+							res.json({errorCode: 0, data: 'User was created', username: req.body.username});
 						}
 					});
 
@@ -201,7 +201,8 @@ module.exports = function (app) {
 			req.session.cookie.maxAge = 30 * 24 * 60 * 60 * 1000;
 			res.json({
 				errorCode: 0,
-				data: 'User is authenticated'
+				data: 'User is authenticated',
+				username: req.user.email
 				});
 	});
 	app.get('/failureLogin', (req, res)=> {

@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import axios from 'axios';
 import './RegistrationPage.css';
 import Header from '../header/Header'
-
+import {Redirect} from 'react-router-dom'
 class RegistrationPage extends React.Component {
   constructor(props) {
     super(props);
@@ -12,11 +12,13 @@ class RegistrationPage extends React.Component {
       email: '',
       password: '',
       actionNews: '',
-      show: true
+      show: true,
+      redirectURL: ''
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.addForm = this.addForm.bind(this);
+
   }
 
   handleChange(type, event) {
@@ -52,7 +54,7 @@ class RegistrationPage extends React.Component {
     }).then((answer) => {
       console.log(answer.data);
       if (answer.data.errorCode == 1) {
-        this.setState({show: false});
+        this.setState({show: false, redirectURL: '/account/' + answer.data.username});
       } else this.setState({show : true})
     });
   }
@@ -66,7 +68,7 @@ class RegistrationPage extends React.Component {
       password: this2.state.password
     }).then(function (newValue) {
       console.log('newValue = ',newValue);
-      this2.setState({actionNews: newValue.data.data});
+      this2.setState({actionNews: newValue.data.data, show: false, redirectURL: '/signup'});
     })
   }
   render() {
@@ -107,8 +109,10 @@ class RegistrationPage extends React.Component {
       </div>
       );
     } else {
+      let accountURL = `/signup`;
+      console.log('props = ', this.props);
       return (
-        <div>Пользователь уже зарегистрирован!</div>
+        <Redirect to={this.state.redirectURL}/>
       )
     }
   }
