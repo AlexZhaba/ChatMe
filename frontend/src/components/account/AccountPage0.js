@@ -23,6 +23,7 @@ let AccountPage = (props) => {
                 {props.user.first_name} {props.user.last_name}
                 {(props.myAccount) ?
                   <div>Это мой аккаунт!</div> : <div>Это не мой аккаунт!</div>}
+                {(props.isAuthenticated ? <div>Я авторизован</div> : <div>Я не авторизован</div>)}
               </div>
             <Footer/>
           </div>

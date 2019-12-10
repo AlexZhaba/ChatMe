@@ -47,7 +47,7 @@ export default accountReducer;
 const setUserAC = (user) => ({type: SET_USER, user});
 const setURLAdressAC = (URLAdress) => ({type: SET_URL_ADRESS, URLAdress});
 const myAccountAC = (myAccount) => ({type: MY_ACCOUNT, myAccount});
-const setUserAuthenticatedIdAC = (UserAuthenticatedId) => ({type: SET_USER_AUTHENTICATED_ID, UserAuthenticatedId});
+const setUserAuthenticatedIdAC = (userAuthenticatedId) => ({type: SET_USER_AUTHENTICATED_ID, userAuthenticatedId});
 const isAuthenticatedAC = (isAuthenticated) => ({type: IS_AUTHENTICATED, isAuthenticated});
 const notFoundAC = (notFound) => ({type: NOT_FOUND, notFound});
 
@@ -78,5 +78,18 @@ export const thunk_GetAccountInfo = (id) => {
         dispatch(notFoundAC(false));
        }
     });
+  }
+};
+
+export const thunk_logout = () => {
+  return (dispatch) => {
+    axios.get('http://localhost:5003/api/logout',{
+      withCredentials: true
+    }).then((answer) => {
+        console.log('answer = ',answer.data);
+        dispatch(isAuthenticatedAC(false));
+        dispatch(myAccountAC(false));
+      }
+    )
   }
 }

@@ -1,5 +1,5 @@
 import {connect} from 'react-redux';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios'
 import {
    //IT'S ACTION CREATORS;
@@ -12,33 +12,35 @@ import {
 
   //IT'S THUNKS
   thunk_GetAccountInfo,
+  thunk_logout
 
 } from '../../redux/reducers/accountReducer';
 import AccountPage0 from './AccountPage0'
-class AccountContainer extends React.Component {
-  componentDidMount() {
-    console.log('props = ' + this.props);
-    this.props.thunk_GetAccountInfo(this.props.match.params.id);
+let AccountContainer = (props) => {
+  // componentDidMount() {
+  //   console.log('props = ' + this.props);
+  //   this.props.thunk_GetAccountInfo(this.props.match.params.id);
+  // }
+   useEffect( () => {
+     props.thunk_GetAccountInfo(props.match.params.id);
+   }, [props.match.params.id]);
+  let logout = () => {
+    props.thunk_logout();
   }
-  logout() {
-
-  }
-  render() {
-    console.log('really_props = ', this.props);
+    console.log('really_props = ', props);
     return (
       <div>
         <AccountPage0
-          user = {this.props.user}
-          isAuthenticated = {this.props.isAuthenticated}
-          myAccount = {this.props.myAccount}
-          URLAdress = {this.props.URLAdress}
-          userAuthenticatedId = {this.props.userAuthenticatedId}
-          logout = {this.logout}
-          notFound = {this.props.notFound}
+          user = {props.user}
+          isAuthenticated = {props.isAuthenticated}
+          myAccount = {props.myAccount}
+          URLAdress = {props.URLAdress}
+          userAuthenticatedId = {props.userAuthenticatedId}
+          logout = {logout}
+          notFound = {props.notFound}
         />
       </div>
     )
-  }
 }
 const mapStateToProps = (state) => {
   console.log('state = ',state);
@@ -52,4 +54,5 @@ const mapStateToProps = (state) => {
   }
 }
 export default connect(mapStateToProps, {isAuthenticatedAC, myAccountAC, notFoundAC, setUserAC,
-                                         setURLAdressAC, setUserAuthenticatedIdAC, thunk_GetAccountInfo})(AccountContainer);
+                                         setURLAdressAC, setUserAuthenticatedIdAC, thunk_GetAccountInfo,
+                                       thunk_logout})(AccountContainer);
