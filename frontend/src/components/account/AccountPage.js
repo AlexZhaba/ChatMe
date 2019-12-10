@@ -3,7 +3,7 @@ import axios from 'axios';
 import Header from '../header/Header'
 import './AccountPage.css'
 import Footer from '../footer/Footer'
-import { withRouter } from "react-router";
+//import { withRouter } from "react-router";
 
 class AccountPage extends React.Component {
   constructor(props) {

@@ -122,6 +122,12 @@ module.exports = function (app) {
 		res.header('Access-Control-Allow-Credentials', true);
 		res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
 		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+		// console.log(req.user);
+		// req.logout();
+		// console.log(req.user);
+		// res.json({errorCode :2})
+		// return 0;
+		// console.log('ДЕЛАЮ ЛОГАУТ ',req.user);
 		const client = await pool.connect();
 		console.log('Я вошёл в обработчик get запроса на end point /ACCOUNT/:', req.params.id);
 		await client.query('BEGIN');
@@ -129,12 +135,10 @@ module.exports = function (app) {
 			ans.isAuthenticated = true;
 			ans.userAuthenticatedId = req.user.email;
 			if (req.user.email.replace(/\s+/g,'') == req.params.id) {
+				console.log('req.user = ', req.user);
 				ans.myAccount = true;
 				ans.isAuthenticated = true;
-				ans.user = req.user;
 				ans.errorCode = 0;
-				res.json(ans);
-				return 0;
 			}
 		}
 		console.log('Пользователь, который авторизован = ', req.user);
@@ -218,7 +222,7 @@ passport.use('local', new  LocalStrategy({passReqToCallback : true}, (req, usern
 			await client.query('BEGIN')
 			console.log('username = |', username);
 			username = username.replace(/\s+/g,'');
-			var currentAccountsData = await JSON.stringify(client.query('SELECT id, first_name, email, password FROM users WHERE email=$1', [username], function(err, result) {
+			var currentAccountsData = await JSON.stringify(client.query('SELECT id, first_name, last_name,  email, password FROM users WHERE email=$1', [username], function(err, result) {
 				console.log('ТО Я КАРОЧЕ В ПАСПОРТЕ ДАТУ ПОЛУЧИЛ ', result.rows[0]);
 				if(err) {
 					return done(err)
