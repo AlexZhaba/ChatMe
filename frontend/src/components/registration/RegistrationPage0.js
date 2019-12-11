@@ -40,9 +40,10 @@ let RegistrationPage0 = (props) => {
     </div>
     );
   } else {
-    let accountURL = `/signup`;
+    let signUpURL = `/signup`;
+    props.dischargeAccountPage();
     return (
-      <Redirect to={props.redirectURL}/>
+      <Redirect to={signUpURL}/>
     )
   }
 }

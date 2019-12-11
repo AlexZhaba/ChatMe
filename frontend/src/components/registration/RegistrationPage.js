@@ -110,6 +110,7 @@ class RegistrationPage extends React.Component {
       );
     } else {
       let accountURL = `/signup`;
+      
       console.log('props = ', this.props);
       return (
         <Redirect to={this.state.redirectURL}/>

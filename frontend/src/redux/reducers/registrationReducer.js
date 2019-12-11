@@ -7,7 +7,7 @@ const UPDATE_INPUT_PASSWORD = 'UPDATE_INPUT_PASSWORD';
 const UPDATE_ACTION_NEWS = 'UPDATE_ACTION_NEWS';
 const UPDATE_SHOW = 'UPDATE_SHOW';
 const UPDATE_REDIRECT_URL = 'UPDATE_REDIRECT_URL';
-
+const DISCHARGE_ACCOUNT_PAGE = 'DISCHARGE_ACCOUNT_PAGE';
 let initialState = {
   name: '',
   surname: '',
@@ -15,7 +15,7 @@ let initialState = {
   password: '',
   actionNews: '',
   show: true,
-  redirectURL: '/registration'
+  redirectURL: ''
 };
 
 let registrationReducer = (state = initialState, action) => {
@@ -63,6 +63,9 @@ let registrationReducer = (state = initialState, action) => {
         redirectURL: action.redirectURL
       }
     }
+    case DISCHARGE_ACCOUNT_PAGE: {
+      return initialState;
+    }
     default:
       return state;
   }
@@ -78,10 +81,11 @@ export const updateInputPasswordAC = (password) => ({type: UPDATE_INPUT_PASSWORD
 export const updateActionNewsAC = (actionNews) => ({type: UPDATE_ACTION_NEWS, actionNews});
 export const updateShowAC = (show) => ({type: UPDATE_SHOW, show});
 export const updateRedirectURLAC = (redirectURL ) => ({type: UPDATE_REDIRECT_URL, redirectURL});
-
+export const dischargeAccountPageAC = () => ({type: DISCHARGE_ACCOUNT_PAGE});
 
 export const thunk_addForm = () => {
   return (dispatch, getState) => {
+    console.log('ЩАС БУДЕТ ДЖЕЛАТЬСЯ ЗАПРОС!');
     axios.post('http://localhost:5003/api/registration', {
       firstName: getState().registrationReducer.name,
       lastName: getState().registrationReducer.surname,
@@ -89,9 +93,9 @@ export const thunk_addForm = () => {
       password: getState().registrationReducer.password
     }).then(function (newValue) {
       console.log('newValue = ',newValue);
-      dispatch(updateActionNewsAC(newValue.data.data));
-      dispatch(updateShowAC(false));
       dispatch(updateRedirectURLAC('/signup'));
+      dispatch(updateActionNewsAC(newValue.data.data));
+      if (newValue.data.data == 'User was created') dispatch(updateShowAC(false));
       console.log('newState = ', getState());
       //this2.setState({actionNews: newValue.data.data, show: false, redirectURL: '/signup'});
     })

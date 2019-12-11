@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {connect} from 'react-redux';
 import axios from 'axios';
 import {
@@ -9,12 +9,26 @@ import {
   updateActionNewsAC,
   updateShowAC,
   updateRedirectURLAC,
+  dischargeAccountPageAC,
   thunk_addForm
 } from './../../redux/reducers/registrationReducer'
 import RegistrationPage0 from './RegistrationPage0'
 import Header from '../header/Header'
 const RegistrationContainer = (props) => {
   console.log('Container Props = ', props);
+  useEffect(() => {
+    console.log('Я ДЕЛАЮ ЗАПРОС!');
+    axios.get('http://localhost:5003/api/isAuthenticated', {
+      withCredentials: true
+    }).then((answer) => {
+      console.log(answer.data);
+      if (answer.data.errorCode == 1) {
+        //this.setState({show: false, redirectURL: '/account/' + answer.data.username});
+        props.updateShowAC(false);
+        props.updateRedirectURLAC('/account/' + answer.data.username);
+      } else props.updateShowAC(true);
+    });
+  }, [])
   return (
     <RegistrationPage0
         //variables
@@ -34,6 +48,7 @@ const RegistrationContainer = (props) => {
         updateActionNews = {props.updateInputActionNewsAC}
         updateShow = {props.updateShowAC}
         updateRedirectURL = {props.updateRedirectURLAC}
+        dischargeAccountPage = {props.dischargeAccountPageAC}
         //callbacks (thunk)
         addForm = {props.thunk_addForm}
     />
@@ -56,4 +71,4 @@ let mapStateToProps = (state) => {
 export default connect(mapStateToProps, {updateInputNameAC, updateInputSurnameAC,
                                        updateInputEmailAC, updateInputPasswordAC,
                                        updateActionNewsAC, updateShowAC,
-                                      updateRedirectURLAC, thunk_addForm})(RegistrationContainer);
+                                      updateRedirectURLAC, dischargeAccountPageAC, thunk_addForm})(RegistrationContainer);
