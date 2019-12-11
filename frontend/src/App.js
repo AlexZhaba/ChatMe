@@ -5,6 +5,7 @@ import {Route} from 'react-router-dom';
 
 import RegistrationPage from './components/registration/RegistrationPage';
 import AccountPageContainer from './components/account/AccountPageContainer';
+import RegistrationContainer from './components/registration/RegistrationContainer'
 import SignUpPage from './components/signup/SignUpPage';
 import { withRouter } from "react-router";
 class App extends Component {
@@ -13,7 +14,7 @@ class App extends Component {
       <div>
         <Route
           path = '/registration'
-          render = { (props) => <RegistrationPage {...props}/> }
+          render = { (props) => <RegistrationContainer {...props}/> }
         />
         <Route
           path = '/account/:id'

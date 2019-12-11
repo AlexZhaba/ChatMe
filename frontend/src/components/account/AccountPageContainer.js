@@ -53,6 +53,5 @@ const mapStateToProps = (state) => {
     notFound : state.accountReducer.notFound
   }
 }
-export default connect(mapStateToProps, {isAuthenticatedAC, myAccountAC, notFoundAC, setUserAC,
-                                         setURLAdressAC, setUserAuthenticatedIdAC, thunk_GetAccountInfo,
+export default connect(mapStateToProps, {thunk_GetAccountInfo,
                                        thunk_logout})(AccountContainer);
