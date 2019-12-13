@@ -1,6 +1,75 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat|Raleway&display=swap');
+
 html, body {
-  background: #E2E2E2;
+  background: #E5E5E5;
 }
 .account-wrapper {
+  margin-top: 50px;
+  width: 100%;
   min-height: 500px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  font-family: 'Montserrat';
+
+}
+.top-content {
+  width: 100%;
+  /* border: 1px solid red; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.main-profile-block {
+  /* border: 2px solid black; */
+  /* border: 1px solid red; */
+  display: flex;
+  /* background: white; */
+}
+.left-profile-block {
+  flex: 3;
+  padding: 15px;
+}
+.right-profile-block {
+  flex: 5;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: 15px;
+}
+.sidebar-menu-block {
+  /* background: white; */
+}
+.profile-image-block {
+  background: white;
+  border: 1px solid #DADADA;
+  border-radius: 4px;
+
+}
+.profile-image-block img {
+  width: 200px;
+  padding: 10px;
+}
+.profile-info-block {
+  display: flex;
+  flex-direction: column;
+
+  width: 600px;
+  height: 250px;
+  background: white;
+  border: 1px solid #DADADA;
+  border-radius: 4px;
+  padding: 10px;
+}
+.profile-name-and-surname {
+  font-size: 25px;
+  font-weight: bold;
+}
+.top-info {
+  height: 200px;
+  flex: 6;
+}
+.bottom-info {
+  border-top: 1px solid black;
+  flex: 2;
 }

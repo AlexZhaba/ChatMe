@@ -20,12 +20,38 @@ let AccountPage = (props) => {
                 logout={props.logout}
               />
               <div className='account-wrapper'>
-                {props.user.first_name} {props.user.last_name}
-                {(props.myAccount) ?
-                  <div>Это мой аккаунт!</div> : <div>Это не мой аккаунт!</div>}
-                {(props.isAuthenticated ? <div>Я авторизован</div> : <div>Я не авторизован</div>)}
-              </div>
-            <Footer/>
+                <div className='top-content'>
+                <div className='sidebar-menu-block'>
+                  My profile
+                  settings
+                </div>
+                <div className='main-profile-block'>
+                  <div className='left-profile-block'>
+                    <div className='profile-image-block'>
+                    <img src='https://st.kp.yandex.net/im/kadr/2/5/7/kinopoisk.ru-Dmitriy-Nagiev-2574443.jpg'/>
+                    </div>
+                  </div>
+                  <div className='right-profile-block'>
+                    <div className='profile-info-block'>
+                      <div className='top-info'>
+                        <div className='profile-name-and-surname'>
+                          {props.user.first_name} {props.user.last_name}
+                          </div>
+                          {(props.myAccount) ?
+                            <div>Это мой аккаунт!</div> : <div>Это не мой аккаунт!</div>}
+                          {(props.isAuthenticated ? <div>Я авторизован</div> : <div>Я не авторизован</div>)}
+                        </div>
+                    <div className='bottom-info'>
+                      LIKE POST
+                    </div>
+                    </div>
+                    <div className='extra-content'>
+                    </div>
+                  </div>
+                </div>
+                </div>
+            </div>
+            {/* <Footer/> */}
           </div>
           }
         </div>
