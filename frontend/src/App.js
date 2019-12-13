@@ -6,7 +6,7 @@ import {Route} from 'react-router-dom';
 import RegistrationPage from './components/registration/RegistrationPage';
 import AccountPageContainer from './components/account/AccountPageContainer';
 import RegistrationContainer from './components/registration/RegistrationContainer'
-import SignUpPage from './components/signup/SignUpPage';
+import SignUpContainer from './components/signup/SignUpContainer';
 import { withRouter } from "react-router";
 class App extends Component {
   render() {
@@ -22,7 +22,7 @@ class App extends Component {
         />
         <Route
           path = '/signup'
-          render = { (props) => <SignUpPage {...props}/>}
+          render = { (props) => <SignUpContainer {...props}/>}
         />
       </div>
     );

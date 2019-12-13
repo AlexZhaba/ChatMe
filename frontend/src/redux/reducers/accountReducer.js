@@ -16,6 +16,7 @@ let initialState = {
   URLAdress: '/account'
 };
 //          REDUCER
+
 const accountReducer = (state = initialState, action) => {
   console.log('type = ' + action.type);
   switch(action.type) {

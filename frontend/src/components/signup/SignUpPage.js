@@ -88,7 +88,7 @@ class SignUpPage extends React.Component {
                {this.state.actionNews}
               </div>
               <div className = 'block-form'>
-                 <input type='text' placeholder ='email' className='pole' value={this.state.surname} onChange={(event) => this.handleChange(1, event)} />
+                 <input type='text' placeholder ='email' className='pole' value={this.state.email} onChange={(event) => this.handleChange(1, event)} />
               </div>
 
               <div className = 'block-form'>
@@ -104,8 +104,7 @@ class SignUpPage extends React.Component {
       </div>
         );
     } else {
-      debugger;
-      let accountURL = `/account/${this.state.username}`;
+      let accountURL = `/account/${this.state.email}`;
       return (
         <Redirect to={accountURL}/>
       )
