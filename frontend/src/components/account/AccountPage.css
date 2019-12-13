@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Montserrat|Raleway&display=swap');
+@import url('https://fonts.googleapis.com/css?family=EB+Garamond|IBM+Plex+Sans|Montserrat|Open+Sans+Condensed:300|Raleway&display=swap');
 
 html, body {
   background: #E5E5E5;
@@ -68,8 +68,44 @@ html, body {
 .top-info {
   height: 200px;
   flex: 6;
+  display: flex;
+  flex-direction: column;
 }
 .bottom-info {
-  border-top: 1px solid black;
+  border-top: 1px solid #A09E9E;
   flex: 2;
+}
+.profile-about-block {
+  display: flex;
+
+}
+.profile-status {
+  font-family: 'IBM Plex Sans', sans-serif;
+  margin-top: 3px;
+  margin-left: 10px;
+  font-size: 20px;
+  padding-left: 4px;
+  border-left: 3px solid #369FFF;
+}
+
+.name-about-block {
+  flex: 3;
+  margin-top: 20px;
+}
+.child-name-about {
+  padding: 5px;
+  margin-left: 10px;
+  color: #777777;
+}
+.child-value-block {
+  padding: 5px;
+
+}
+.bold_username {
+  font-weight: bold;
+}
+.value-about-block {
+  color: #2F6CA5;
+  flex: 5;
+  margin-top: 20px;
 }

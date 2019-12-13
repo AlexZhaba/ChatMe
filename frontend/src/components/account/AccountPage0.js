@@ -24,6 +24,9 @@ let AccountPage = (props) => {
                 <div className='sidebar-menu-block'>
                   My profile
                   settings
+                  {(props.myAccount) ?
+                    <div>Это мой аккаунт!</div> : <div>Это не мой аккаунт!</div>}
+                  {(props.isAuthenticated ? <div>Я авторизован</div> : <div>Я не авторизован</div>)}
                 </div>
                 <div className='main-profile-block'>
                   <div className='left-profile-block'>
@@ -37,12 +40,44 @@ let AccountPage = (props) => {
                         <div className='profile-name-and-surname'>
                           {props.user.first_name} {props.user.last_name}
                           </div>
-                          {(props.myAccount) ?
-                            <div>Это мой аккаунт!</div> : <div>Это не мой аккаунт!</div>}
-                          {(props.isAuthenticated ? <div>Я авторизован</div> : <div>Я не авторизован</div>)}
+                        <div className='profile-status'>
+                          Ало, это Владимир Путин?
+                        </div>
+                          <div className='profile-about-block'>
+                            <div className='name-about-block'>
+                              <div className='child-name-about'>
+                                Username:
+                              </div>
+                              <div className='child-name-about'>
+                                Country:
+                              </div>
+                              <div className='child-name-about'>
+                                Birthday:
+                              </div>
+                            </div>
+                            <div className='value-about-block'>
+                              <div className='child-value-block bold_username'>
+                                {props.user.email}
+                              </div>
+                              <div className='child-value-block'>
+                                Russia
+                              </div>
+                              <div className='child-value-block'>
+                                27.05.2003
+                              </div>
+                            </div>
+                          </div>
                         </div>
                     <div className='bottom-info'>
-                      LIKE POST
+                      <div className='bottom-block'>
+                        <div className='value-bottom'>
+                          100
+                        </div>
+                        <div className='name-bottom'>
+                          subscriber
+                        </div>
+
+                      </div>
                     </div>
                     </div>
                     <div className='extra-content'>
