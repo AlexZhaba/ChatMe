@@ -6,14 +6,15 @@ const MY_ACCOUNT = 'MY_ACCOUNT';
 const SET_USER_AUTHENTICATED_ID = 'SET_USER_AUTHENTICATED_ID';
 const IS_AUTHENTICATED = 'IS_AUTHENTICATED';
 const NOT_FOUND = 'NOT_FOUND';
-
+const UPDATE_NEW_POST_VALUE = 'UPDATE_NEW_POST_VALUE';
 let initialState = {
   isAuthenticated: false,
   myAccount: false,
   notFound: false,
   user: {},
   userAuthenticatedId: 0,
-  URLAdress: '/account'
+  URLAdress: '/account',
+  newPostValue: ''
 };
 //          REDUCER
 
@@ -38,6 +39,9 @@ const accountReducer = (state = initialState, action) => {
     case IS_AUTHENTICATED: {
       return {...state, isAuthenticated: action.isAuthenticated}
     }
+    case UPDATE_NEW_POST_VALUE: {
+      return {...state, newPostValue: action.newPostValue}
+    }
     default:
       return state;
   }
@@ -51,6 +55,8 @@ const myAccountAC = (myAccount) => ({type: MY_ACCOUNT, myAccount});
 const setUserAuthenticatedIdAC = (userAuthenticatedId) => ({type: SET_USER_AUTHENTICATED_ID, userAuthenticatedId});
 const isAuthenticatedAC = (isAuthenticated) => ({type: IS_AUTHENTICATED, isAuthenticated});
 const notFoundAC = (notFound) => ({type: NOT_FOUND, notFound});
+const updateNewPostValueAC = (value) => ({type: UPDATE_NEW_POST_VALUE, value});
+
 
 export {setUserAC};
 export {setURLAdressAC};
@@ -58,7 +64,7 @@ export {myAccountAC};
 export {setUserAuthenticatedIdAC};
 export {isAuthenticatedAC};
 export {notFoundAC};
-
+export {updateNewPostValueAC};
 
 // THUNKS
 export const thunk_GetAccountInfo = (id) => {

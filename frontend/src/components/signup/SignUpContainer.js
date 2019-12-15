@@ -58,3 +58,4 @@ let mapStateToProps = (state) => {
 // second arguments will become to (value) => dispatch(NAME_OF_ACTION_CREATOR(value))
 export default connect(mapStateToProps, {updateSignUpEmailAC, dischargeSignUpPage,
             updateSignUpPasswordAC, thunk_addForm, updateSignUpShowAC})(SignUpContainer);
+  

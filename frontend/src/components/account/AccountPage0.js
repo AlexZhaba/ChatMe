@@ -4,6 +4,8 @@ import Header from '../header/Header'
 import './AccountPage.css'
 import Footer from '../footer/Footer'
 //import { withRouter } from "react-router";
+import MyPosts from './MyPosts';
+import NewPost from './NewPost';
 
 let AccountPage = (props) => {
       console.log('AccountPageProps = ', props);
@@ -78,12 +80,47 @@ let AccountPage = (props) => {
                         </div>
 
                       </div>
+                      <div className='bottom-block'>
+                        <div className='value-bottom'>
+                          100
+                        </div>
+                        <div className='name-bottom'>
+                          subscribtion
+                        </div>
+
+                      </div>
+                      <div className='bottom-block'>
+                        <div className='value-bottom'>
+                          100
+                        </div>
+                        <div className='name-bottom'>
+                          likes
+                        </div>
+
+                      </div>
+                      <div className='bottom-block'>
+                        <div className='value-bottom'>
+                          100
+                        </div>
+                        <div className='name-bottom'>
+                          posts
+                        </div>
+
+                      </div>
                     </div>
                     </div>
                     <div className='extra-content'>
                     </div>
                   </div>
                 </div>
+                </div>
+                <div className='bottom-content'>
+                  <NewPost 
+                    value={props.newPostValue}
+                    updateNewPostValue = {props.updateNewPostValue}
+                    />
+                  <MyPosts
+                  />
                 </div>
             </div>
             {/* <Footer/> */}

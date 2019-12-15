@@ -9,7 +9,7 @@ import {
   setUserAC,
   setURLAdressAC,
   setUserAuthenticatedIdAC,
-
+  updateNewPostValueAC, 
   //IT'S THUNKS
   thunk_GetAccountInfo,
   thunk_logout
@@ -38,6 +38,8 @@ let AccountContainer = (props) => {
           userAuthenticatedId = {props.userAuthenticatedId}
           logout = {logout}
           notFound = {props.notFound}
+          updateNewPostValue = {props.updateNewPostValueAC}
+          newPostValue = {props.newPostValue}
         />
       </div>
     )
@@ -50,8 +52,9 @@ const mapStateToProps = (state) => {
     user : state.accountReducer.user,
     userAuthenticatedId : state.accountReducer.userAuthenticatedId,
     URLAdress : state.accountReducer.URLAdress,
-    notFound : state.accountReducer.notFound
+    notFound : state.accountReducer.notFound,
+    newPostValue : state.accountReducer.newPostValue
   }
 }
 export default connect(mapStateToProps, {thunk_GetAccountInfo,
-                                       thunk_logout})(AccountContainer);
+                                       thunk_logout, updateNewPostValueAC})(AccountContainer);
