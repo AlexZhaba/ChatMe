@@ -118,8 +118,10 @@ let AccountPage = (props) => {
                   <NewPost 
                     value={props.newPostValue}
                     updateNewPostValue = {props.updateNewPostValue}
+                    thunk_addNewPost = {props.thunk_addNewPost}
                     />
                   <MyPosts
+                    posts = {props.posts}
                   />
                 </div>
             </div>

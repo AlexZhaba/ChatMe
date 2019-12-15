@@ -70,7 +70,7 @@ module.exports = function (app) {
 					console.log('str = ',str);
 					console.log('Создаю пользователя...');
 					console.log('pwd = ', pwd);
-          client.query(str, function(err, result) {
+          			client.query(str, function(err, result) {
 						//console.log('str = ', str);
 						if(err){console.log(err);}
 						else {
@@ -157,9 +157,61 @@ module.exports = function (app) {
 		client.release();
 
 	});
-
-	app.get('/api/logout', function(req, res){
+	app.post('/api/getAllPost', async function (req, res) {
 		res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+		res.header('Access-Control-Allow-Credentials', true);
+		res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+		client = await pool.connect();
+		await client.query('BEGIN');
+		let str = `SELECT * FROM USER_POSTS WHERE REPLACE(username, ' ','')='${req.body.username}'`;
+		console.log(str);
+		client.query(str, (err, result) => {
+			console.log(err)
+			if (err) {
+				res.json(err);
+			} else {
+				res.json({posts: result.rows});
+			}
+		});
+
+
+		client.release();
+	});
+	app.post('/api/newPostValue', async function (req, res)  {
+		res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+		res.header('Access-Control-Allow-Credentials', true);
+		res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+		let data = new Date;
+		let year = data.getFullYear();
+		let month = data.getMonth();
+		let day = data.getDate();
+		const client = await pool.connect();
+
+		console.log('req = ', req.user);
+		let str = `INSERT INTO user_posts VALUES ('${req.user.email}', '3', '${req.body.newPostValue}', '0', '${year + '.' + month + '.' + day}')`;
+		console.log('str = ' + str)
+		await client.query('BEGIN');
+		client.query(str, (err, result) => {
+			console.log('YA V QUERY');
+			console.log(err);
+			if (err) {
+				res.json(err)
+			} else {
+				client.query('COMMIT')
+				console.log(result)
+				let newPost = [{
+					newPostValue: req.body.newPostValue,
+					datePublic : year + '.' + month + '.' + day
+				}];
+				res.json({data: 'Posts was created', posts : newPost});
+			}
+		});
+		client.release();	
+	})
+	app.get('/api/logout', function(req, res){
+	res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
     res.header('Access-Control-Allow-Credentials', true);
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");

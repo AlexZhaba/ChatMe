@@ -7,6 +7,8 @@ const SET_USER_AUTHENTICATED_ID = 'SET_USER_AUTHENTICATED_ID';
 const IS_AUTHENTICATED = 'IS_AUTHENTICATED';
 const NOT_FOUND = 'NOT_FOUND';
 const UPDATE_NEW_POST_VALUE = 'UPDATE_NEW_POST_VALUE';
+const ADD_USER_POSTS = 'ADD_USER_POSTS';
+
 let initialState = {
   isAuthenticated: false,
   myAccount: false,
@@ -14,12 +16,13 @@ let initialState = {
   user: {},
   userAuthenticatedId: 0,
   URLAdress: '/account',
-  newPostValue: ''
+  newPostValue: '',
+  posts : []
 };
 //          REDUCER
 
 const accountReducer = (state = initialState, action) => {
-  console.log('type = ' + action.type);
+  console.log('type = ',  action);
   switch(action.type) {
     case SET_USER: {
       return {...state, user: action.user};
@@ -42,6 +45,9 @@ const accountReducer = (state = initialState, action) => {
     case UPDATE_NEW_POST_VALUE: {
       return {...state, newPostValue: action.newPostValue}
     }
+    case ADD_USER_POSTS: {
+      return {...state, posts: action.posts}
+    }
     default:
       return state;
   }
@@ -56,7 +62,7 @@ const setUserAuthenticatedIdAC = (userAuthenticatedId) => ({type: SET_USER_AUTHE
 const isAuthenticatedAC = (isAuthenticated) => ({type: IS_AUTHENTICATED, isAuthenticated});
 const notFoundAC = (notFound) => ({type: NOT_FOUND, notFound});
 const updateNewPostValueAC = (value) => ({type: UPDATE_NEW_POST_VALUE, value});
-
+const addUserPostsAC = (posts) => ({type: ADD_USER_POSTS, posts});
 
 export {setUserAC};
 export {setURLAdressAC};
@@ -65,6 +71,8 @@ export {setUserAuthenticatedIdAC};
 export {isAuthenticatedAC};
 export {notFoundAC};
 export {updateNewPostValueAC};
+export {addUserPostsAC};
+
 
 // THUNKS
 export const thunk_GetAccountInfo = (id) => {
@@ -88,6 +96,22 @@ export const thunk_GetAccountInfo = (id) => {
   }
 };
 
+export const thunk_addNewPost = (newPostValue) => {
+  debugger;
+  let dataInJSON = {
+    newPostValue
+  }
+  return (dispatch) => {
+    axios('http://localhost:5003/api/newPostValue', {
+      method: "post",
+      data: dataInJSON,
+      withCredentials: true
+    }).then((data) => {
+      debugger;
+      dispatch(addUserPostsAC(data.data.posts));
+    })
+  }
+}
 export const thunk_logout = () => {
   return (dispatch) => {
     axios.get('http://localhost:5003/api/logout',{

@@ -1,10 +1,12 @@
 import React from 'react';
 
 const Post = (props) => {
+    console.log('POST = ', props)
     return (
         <div className='post-block'>
             <div className='post-text'>
-            Hello everybody! Today i want to speak about Javascript. It’s really good language, but in future we can use TypeScript for production
+            {props.newPostValue}
+            {/* Hello everybody! Today i want to speak about Javascript. It’s really good language, but in future we can use TypeScript for production */}
             {/* Hello everybody! Today i want to speak about Javascript. It’s really good language, but in future we can use TypeScript for production
             Hello everybody! Today i want to speak about Javascript. It’s really good language, but in future we can use TypeScript for production
             Hello everybody! Today i want to speak about Javascript. It’s really good language, but in future we can use TypeScript for production
