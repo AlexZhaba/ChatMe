@@ -157,20 +157,22 @@ module.exports = function (app) {
 		client.release();
 
 	});
-	app.post('/api/getAllPost', async function (req, res) {
+	app.post('/api/getAllPosts', async function (req, res) {
 		res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
 		res.header('Access-Control-Allow-Credentials', true);
 		res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
 		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-		client = await pool.connect();
+		client = await pool.connect()
+		let username = req.body.username.replace(/\s+/g,'');
 		await client.query('BEGIN');
-		let str = `SELECT * FROM USER_POSTS WHERE REPLACE(username, ' ','')='${req.body.username}'`;
+		let str = `SELECT * FROM USER_POSTS WHERE REPLACE(username, ' ','')='${username}'`;
 		console.log(str);
 		client.query(str, (err, result) => {
 			console.log(err)
 			if (err) {
 				res.json(err);
 			} else {
+				console.log('Везвращаю посты пользователя ',username,' ',result.rows);
 				res.json({posts: result.rows});
 			}
 		});
@@ -183,14 +185,12 @@ module.exports = function (app) {
 		res.header('Access-Control-Allow-Credentials', true);
 		res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
 		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-		let data = new Date;
-		let year = data.getFullYear();
-		let month = data.getMonth();
-		let day = data.getDate();
+		let data = new Date();
+		let DATA_POST = data.getMinutes() + '.' + data.getHours() + '.' + data.getDay() + '.' + data.getMonth() + '.' + data.getFullYear();
 		const client = await pool.connect();
 
 		console.log('req = ', req.user);
-		let str = `INSERT INTO user_posts VALUES ('${req.user.email}', '3', '${req.body.newPostValue}', '0', '${year + '.' + month + '.' + day}')`;
+		let str = `INSERT INTO user_posts VALUES ('${req.user.email}', '3', '${req.body.newPostValue}', '0', '${DATA_POST}')`;
 		console.log('str = ' + str)
 		await client.query('BEGIN');
 		client.query(str, (err, result) => {
@@ -202,8 +202,8 @@ module.exports = function (app) {
 				client.query('COMMIT')
 				console.log(result)
 				let newPost = [{
-					newPostValue: req.body.newPostValue,
-					datePublic : year + '.' + month + '.' + day
+					text: req.body.newPostValue,
+					publicdata : DATA_POST
 				}];
 				res.json({data: 'Posts was created', posts : newPost});
 			}

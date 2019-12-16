@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import {Route} from 'react-router-dom';
-
+import {Redirect} from 'react-router-dom';
 import RegistrationPage from './components/registration/RegistrationPage';
 import AccountPageContainer from './components/account/AccountPageContainer';
 import RegistrationContainer from './components/registration/RegistrationContainer'
@@ -24,6 +24,11 @@ class App extends Component {
           path = '/signup'
           render = { (props) => <SignUpContainer {...props}/>}
         />
+        {/* <Route 
+          path='/'
+          render = {() => <Redirect to='/registration'></Redirect>}
+        /> */}
+        
       </div>
     );
   }

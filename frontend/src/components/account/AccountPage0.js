@@ -115,14 +115,20 @@ let AccountPage = (props) => {
                 </div>
                 </div>
                 <div className='bottom-content'>
+                  { props.user.email == props.userAuthenticatedId ? 
                   <NewPost 
-                    value={props.newPostValue}
+                    newPostValue={props.newPostValue}
                     updateNewPostValue = {props.updateNewPostValue}
+                  
                     thunk_addNewPost = {props.thunk_addNewPost}
                     />
+                  :
+                  <div></div>
+                  }
                   <MyPosts
                     posts = {props.posts}
                   />
+                  
                 </div>
             </div>
             {/* <Footer/> */}

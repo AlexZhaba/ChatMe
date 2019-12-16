@@ -5,7 +5,7 @@ const Post = (props) => {
     return (
         <div className='post-block'>
             <div className='post-text'>
-            {props.newPostValue}
+            {props.text}
             {/* Hello everybody! Today i want to speak about Javascript. It’s really good language, but in future we can use TypeScript for production */}
             {/* Hello everybody! Today i want to speak about Javascript. It’s really good language, but in future we can use TypeScript for production
             Hello everybody! Today i want to speak about Javascript. It’s really good language, but in future we can use TypeScript for production
@@ -38,7 +38,7 @@ const Post = (props) => {
                         Date of public:
                     </div>
                     <div className='value-date'>
-                        27.05.2003
+                        {props.datePublic}
                     </div>
                 </div>
             </div>

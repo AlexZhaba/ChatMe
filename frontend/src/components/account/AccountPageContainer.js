@@ -10,6 +10,7 @@ import {
   setURLAdressAC,
   setUserAuthenticatedIdAC,
   updateNewPostValueAC, 
+  thunk_getUserPosts,
   //IT'S THUNKS
   thunk_GetAccountInfo,
   thunk_logout,
@@ -22,7 +23,11 @@ let AccountContainer = (props) => {
   //   console.log('props = ' + this.props);
   //   this.props.thunk_GetAccountInfo(this.props.match.params.id);
   // }
-   useEffect( () => {
+  useEffect(() => {
+    debugger;
+    props.thunk_getUserPosts(props.user.email);
+  }, [props.user]);
+  useEffect( () => {
      props.thunk_GetAccountInfo(props.match.params.id);
    }, [props.match.params.id]);
   let logout = () => {
@@ -63,4 +68,4 @@ const mapStateToProps = (state) => {
   }
 }
 export default connect(mapStateToProps, {thunk_GetAccountInfo, thunk_addNewPost,
-                                       thunk_logout, updateNewPostValueAC})(AccountContainer);
+                                       thunk_logout, updateNewPostValueAC, thunk_getUserPosts})(AccountContainer);

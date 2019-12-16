@@ -8,7 +8,7 @@ const IS_AUTHENTICATED = 'IS_AUTHENTICATED';
 const NOT_FOUND = 'NOT_FOUND';
 const UPDATE_NEW_POST_VALUE = 'UPDATE_NEW_POST_VALUE';
 const ADD_USER_POSTS = 'ADD_USER_POSTS';
-
+const SET_USER_POSTS = 'SET_USER_POSTS';
 let initialState = {
   isAuthenticated: false,
   myAccount: false,
@@ -16,7 +16,7 @@ let initialState = {
   user: {},
   userAuthenticatedId: 0,
   URLAdress: '/account',
-  newPostValue: '',
+  newPostValue: 'Hello',
   posts : []
 };
 //          REDUCER
@@ -46,6 +46,16 @@ const accountReducer = (state = initialState, action) => {
       return {...state, newPostValue: action.newPostValue}
     }
     case ADD_USER_POSTS: {
+      debugger;
+      let newPosts = JSON.parse(JSON.stringify(state.posts));
+      // newPosts.unshift(state.posts);
+      console.log('dispatchPosts = ',newPosts)
+
+      newPosts.push(action.posts);
+      console.log('dispatchPosts = ',newPosts);
+      return {...state, posts: newPosts}
+    }
+    case SET_USER_POSTS: {
       return {...state, posts: action.posts}
     }
     default:
@@ -61,9 +71,9 @@ const myAccountAC = (myAccount) => ({type: MY_ACCOUNT, myAccount});
 const setUserAuthenticatedIdAC = (userAuthenticatedId) => ({type: SET_USER_AUTHENTICATED_ID, userAuthenticatedId});
 const isAuthenticatedAC = (isAuthenticated) => ({type: IS_AUTHENTICATED, isAuthenticated});
 const notFoundAC = (notFound) => ({type: NOT_FOUND, notFound});
-const updateNewPostValueAC = (value) => ({type: UPDATE_NEW_POST_VALUE, value});
-const addUserPostsAC = (posts) => ({type: ADD_USER_POSTS, posts});
-
+const updateNewPostValueAC = (newPostValue) => ({type: UPDATE_NEW_POST_VALUE, newPostValue});
+const addUserPostsAC = (posts) => ({type: ADD_USER_POSTS, posts : posts[0]});
+const setUserPostsAC = (posts) => ({type: SET_USER_POSTS, posts});
 export {setUserAC};
 export {setURLAdressAC};
 export {myAccountAC};
@@ -72,6 +82,7 @@ export {isAuthenticatedAC};
 export {notFoundAC};
 export {updateNewPostValueAC};
 export {addUserPostsAC};
+export {setUserPostsAC};
 
 
 // THUNKS
@@ -85,6 +96,7 @@ export const thunk_GetAccountInfo = (id) => {
         dispatch(notFoundAC(true));
       } else {
         console.log('ДАТА ПРИШЛА! ', response.data);
+        
         console.log('----- ', isAuthenticatedAC(response.data.isAuthenticated));
         dispatch(isAuthenticatedAC(response.data.isAuthenticated));
         dispatch(myAccountAC(response.data.myAccount));
@@ -96,12 +108,33 @@ export const thunk_GetAccountInfo = (id) => {
   }
 };
 
-export const thunk_addNewPost = (newPostValue) => {
-  debugger;
-  let dataInJSON = {
-    newPostValue
-  }
+export const thunk_getUserPosts = (username) => {
   return (dispatch) => {
+    
+    let dataInJSON = {
+      "username" : username
+    }
+    axios('http://localhost:5003/api/getAllPosts', {
+      method: "post",
+      data: dataInJSON,
+      withCredentials: true
+    }).then(data => {
+      // console.log('++DATA + ++ ', data.data);
+      dispatch(setUserPostsAC(data.data.posts));
+    });
+  }
+}
+
+
+export const thunk_addNewPost = () => {
+  // debugger;
+  
+  return (dispatch, getState) => {
+    debugger;
+    console.log('NEWPOSTVALUEIFADDNEWPOST = ', getState() );
+    let dataInJSON = {
+      "newPostValue": getState().accountReducer.newPostValue 
+    }
     axios('http://localhost:5003/api/newPostValue', {
       method: "post",
       data: dataInJSON,
