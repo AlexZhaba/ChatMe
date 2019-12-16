@@ -41,6 +41,7 @@ const Post = (props) => {
                         {props.datePublic}
                     </div>
                 </div>
+            
             </div>
         </div>
     )

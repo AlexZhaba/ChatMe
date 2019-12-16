@@ -7,7 +7,7 @@ let MyPosts = (props) => {
         props.posts.map( p => <Post 
                                 text={p.text} 
                                 datePublic = {p.publicdata} 
-
+                                
                                />  )
     return(
         <div className='MyPosts-block'>

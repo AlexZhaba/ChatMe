@@ -51,7 +51,7 @@ const accountReducer = (state = initialState, action) => {
       // newPosts.unshift(state.posts);
       console.log('dispatchPosts = ',newPosts)
 
-      newPosts.push(action.posts);
+      newPosts.unshift(action.posts);
       console.log('dispatchPosts = ',newPosts);
       return {...state, posts: newPosts}
     }

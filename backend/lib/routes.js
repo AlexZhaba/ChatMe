@@ -173,7 +173,7 @@ module.exports = function (app) {
 				res.json(err);
 			} else {
 				console.log('Везвращаю посты пользователя ',username,' ',result.rows);
-				res.json({posts: result.rows});
+				res.json({posts: result.rows.reverse()});
 			}
 		});
 
@@ -186,7 +186,7 @@ module.exports = function (app) {
 		res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
 		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 		let data = new Date();
-		let DATA_POST = data.getMinutes() + '.' + data.getHours() + '.' + data.getDay() + '.' + data.getMonth() + '.' + data.getFullYear();
+		let DATA_POST = data.getHours()+ ':' + data.getMinutes()  + ', '  + data.getUTCDate() + '.' + parseInt(data.getUTCMonth() + 1).toString() + '.' + data.getFullYear();
 		const client = await pool.connect();
 
 		console.log('req = ', req.user);
@@ -235,7 +235,7 @@ module.exports = function (app) {
 	});
 
 	app.post('/api/signup',	passport.authenticate('local', {failureRedirect: '/failureLogin'}), function (req, res) {
-		res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+	res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
     res.header('Access-Control-Allow-Credentials', true);
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
