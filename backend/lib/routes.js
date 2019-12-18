@@ -182,6 +182,33 @@ module.exports = function (app) {
 
 		client.release();
 	});
+	app.post('/api/following', async function (req, res) {
+		res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+		res.header('Access-Control-Allow-Credentials', true);
+		res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+
+		client = await pool.connect();
+		await client.query('BEGIN');
+		let username = req.user.email.replace(/\s+/g,'');
+		let subsciber = req.body.username.replace(/\s+/g,'');
+		let str = `SELECT * FROM USERS_SUBSCRIBERS WHERE REPLACE(username, ' ','')='${username}' AND REPLACE(subscriber, ' ','')='${subsciber}'`;
+		await client.query(str, (err, result) => {
+			if (err) {
+				console.log(err);
+				res.json(err);
+			} else {
+				client.query('COMMIT');
+				let following = false;
+				if (result.rows[0] != null) {
+					following = true;
+				};
+				res.json({data: following });
+			}
+		});
+		client.release();
+
+	});
 	app.post('/api/newPostValue', async function (req, res)  {
 		res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
 		res.header('Access-Control-Allow-Credentials', true);

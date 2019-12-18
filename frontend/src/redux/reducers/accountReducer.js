@@ -9,6 +9,7 @@ const NOT_FOUND = 'NOT_FOUND';
 const UPDATE_NEW_POST_VALUE = 'UPDATE_NEW_POST_VALUE';
 const ADD_USER_POSTS = 'ADD_USER_POSTS';
 const SET_USER_POSTS = 'SET_USER_POSTS';
+const SET_FOLLOWING = 'SET_FOLLOWING';
 let initialState = {
   isAuthenticated: false,
   myAccount: false,
@@ -17,7 +18,8 @@ let initialState = {
   userAuthenticatedId: 0,
   URLAdress: '/account',
   newPostValue: 'Hello',
-  posts : []
+  posts : [],
+  following: false
 };
 //          REDUCER
 
@@ -58,6 +60,9 @@ const accountReducer = (state = initialState, action) => {
     case SET_USER_POSTS: {
       return {...state, posts: action.posts}
     }
+    case SET_FOLLOWING: {
+      return {...state, following: action.following}
+    }
     default:
       return state;
   }
@@ -74,6 +79,7 @@ const notFoundAC = (notFound) => ({type: NOT_FOUND, notFound});
 const updateNewPostValueAC = (newPostValue) => ({type: UPDATE_NEW_POST_VALUE, newPostValue});
 const addUserPostsAC = (posts) => ({type: ADD_USER_POSTS, posts : posts[0]});
 const setUserPostsAC = (posts) => ({type: SET_USER_POSTS, posts});
+const setFollowingAC = (following) => ({type: SET_FOLLOWING, following})
 export {setUserAC};
 export {setURLAdressAC};
 export {myAccountAC};
@@ -125,7 +131,20 @@ export const thunk_getUserPosts = (username) => {
   }
 }
 
-
+export const thunk_getFollowUnfollow = (username) => {
+  return (dispatch, getState) => {
+    let dataInJSON = {
+      "username" : username
+    };
+    axios('http://localhost:5003/api/following', {
+      method: "post",
+      data: dataInJSON,
+      withCredentials: true
+    }).then((data) => {
+      dispatch(setFollowingAC(data.data.following));
+    });
+  }
+}
 export const thunk_addNewPost = () => {
   // debugger;
   
