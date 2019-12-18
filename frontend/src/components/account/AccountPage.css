@@ -72,6 +72,7 @@ html, body {
   height: 200px;
   flex: 6;
   display: flex;
+  position: relative;
   flex-direction: column;
 }
 .bottom-info {
@@ -276,4 +277,20 @@ html, body {
   background-color: #2F6CA5;
   color: #fff;
   font-size: 13px;
+}
+.button-subscribe {
+  background-color: #2F6CA5;
+  border-radius: 4px;
+  font-size: 17px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  width: 150px;
+  right: 20px;
+  top: 20px;
+  font-family: 'Montserrat';
+
+  height: 35px;
+  position: absolute;
 }

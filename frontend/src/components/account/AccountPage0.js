@@ -69,6 +69,9 @@ let AccountPage = (props) => {
                               </div>
                             </div>
                           </div>
+                          <div className='button-subscribe'>
+                            SUBSCRIBE
+                          </div>
                         </div>
                     <div className='bottom-info'>
                       <div className='bottom-block'>

@@ -9,7 +9,7 @@ import {
   setUserAC,
   setURLAdressAC,
   setUserAuthenticatedIdAC,
-  updateNewPostValueAC, 
+  updateNewPostValueAC,
   thunk_getUserPosts,
   //IT'S THUNKS
   thunk_GetAccountInfo,
@@ -23,9 +23,13 @@ let AccountContainer = (props) => {
   //   console.log('props = ' + this.props);
   //   this.props.thunk_GetAccountInfo(this.props.match.params.id);
   // }
-  useEffect(() => {
-    debugger;
-    props.thunk_getUserPosts(props.user.email);
+  useEffect( () => {
+  
+  });
+  useEffect( () => {
+    if (props.user.email) {
+      props.thunk_getUserPosts(props.user.email);
+    }
   }, [props.user]);
   useEffect( () => {
      props.thunk_GetAccountInfo(props.match.params.id);
@@ -47,7 +51,7 @@ let AccountContainer = (props) => {
           notFound = {props.notFound}
           updateNewPostValue = {props.updateNewPostValueAC}
           newPostValue = {props.newPostValue}
-          
+
           //thunk
           thunk_addNewPost = {props.thunk_addNewPost}
         />

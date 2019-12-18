@@ -95,7 +95,7 @@ export const thunk_GetAccountInfo = (id) => {
         console.log('НАДА NOT FOUND! ',);
         dispatch(notFoundAC(true));
       } else {
-        console.log('ДАТА ПРИШЛА! ', response.data);
+        console.log('ДАТА ПРИШЛА  ! ', response.data);
         
         console.log('----- ', isAuthenticatedAC(response.data.isAuthenticated));
         dispatch(isAuthenticatedAC(response.data.isAuthenticated));

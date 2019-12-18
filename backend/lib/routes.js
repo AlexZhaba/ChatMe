@@ -163,6 +163,8 @@ module.exports = function (app) {
 		res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
 		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 		client = await pool.connect()
+		console.log('req.body = ', req.body);
+		console.log('req.user = ', req.user);
 		let username = req.body.username.replace(/\s+/g,'');
 		await client.query('BEGIN');
 		let str = `SELECT * FROM USER_POSTS WHERE REPLACE(username, ' ','')='${username}'`;
@@ -172,7 +174,7 @@ module.exports = function (app) {
 			if (err) {
 				res.json(err);
 			} else {
-				console.log('Везвращаю посты пользователя ',username,' ',result.rows);
+				// console.log('Везвращаю посты пользователя ',username,' ',result.rows);
 				res.json({posts: result.rows.reverse()});
 			}
 		});
