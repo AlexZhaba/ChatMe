@@ -193,6 +193,7 @@ module.exports = function (app) {
 		let username = req.user.email.replace(/\s+/g,'');
 		let subsciber = req.body.username.replace(/\s+/g,'');
 		let str = `SELECT * FROM USERS_SUBSCRIBERS WHERE REPLACE(username, ' ','')='${username}' AND REPLACE(subscriber, ' ','')='${subsciber}'`;
+		console.log(str);
 		await client.query(str, (err, result) => {
 			if (err) {
 				console.log(err);
@@ -203,7 +204,8 @@ module.exports = function (app) {
 				if (result.rows[0] != null) {
 					following = true;
 				};
-				res.json({data: following });
+				console.log(following);
+				res.json({following: following });
 			}
 		});
 		client.release();

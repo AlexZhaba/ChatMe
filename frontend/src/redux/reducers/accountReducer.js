@@ -131,7 +131,7 @@ export const thunk_getUserPosts = (username) => {
   }
 }
 
-export const thunk_getFollowUnfollow = (username) => {
+export const thunk_getFollowing = (username) => {
   return (dispatch, getState) => {
     let dataInJSON = {
       "username" : username
@@ -141,6 +141,7 @@ export const thunk_getFollowUnfollow = (username) => {
       data: dataInJSON,
       withCredentials: true
     }).then((data) => {
+      debugger;
       dispatch(setFollowingAC(data.data.following));
     });
   }

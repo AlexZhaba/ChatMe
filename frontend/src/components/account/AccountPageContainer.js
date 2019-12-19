@@ -25,10 +25,13 @@ let AccountContainer = (props) => {
   //   this.props.thunk_GetAccountInfo(this.props.match.params.id);
   // }
   useEffect( () => {
-    props.thunk_getFollowing(props.user.email);
-  });
+    if ((props.user.email) && (props.posts.length != 0)) {
+      debugger;
+      props.thunk_getFollowing(props.user.email);
+    }
+  },[props.posts.length]);
   useEffect( () => {
-    if (props.user.email) {
+    if ((props.user.email)) {
       props.thunk_getUserPosts(props.user.email);
     }
   }, [props.user]);
@@ -73,5 +76,5 @@ const mapStateToProps = (state) => {
     following: state.accountReducer.following
   }
 }
-export default connect(mapStateToProps, {thunk_GetAccountInfo, thunk_addNewPost,
+export default connect(mapStateToProps, {thunk_GetAccountInfo, thunk_addNewPost, thunk_getFollowing,
                                        thunk_logout, updateNewPostValueAC, thunk_getUserPosts})(AccountContainer);
