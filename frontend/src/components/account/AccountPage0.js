@@ -70,11 +70,11 @@ let AccountPage = (props) => {
                             </div>
                           </div>
                           {props.following ? 
-                          <div  className='button-subscribe'>
+                          <div onClick={() => props.thunk_setFollowing(!props.following)}className='button-subscribe'>
                             UNSUBSCRIBE
                           </div>
                           :
-                          <div  className='button-subscribe'>
+                          <div onClick={() => props.thunk_setFollowing(!props.following)} className='button-subscribe'>
                             SUBSCRIBE
                           </div>
                           }

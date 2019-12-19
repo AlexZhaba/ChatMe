@@ -190,8 +190,8 @@ module.exports = function (app) {
 
 		client = await pool.connect();
 		await client.query('BEGIN');
-		let username = req.user.email.replace(/\s+/g,'');
-		let subsciber = req.body.username.replace(/\s+/g,'');
+		let subsciber = req.user.email.replace(/\s+/g,'');
+		let username = req.body.username.replace(/\s+/g,'');
 		let str = `SELECT * FROM USERS_SUBSCRIBERS WHERE REPLACE(username, ' ','')='${username}' AND REPLACE(subscriber, ' ','')='${subsciber}'`;
 		console.log(str);
 		await client.query(str, (err, result) => {
@@ -211,6 +211,46 @@ module.exports = function (app) {
 		client.release();
 
 	});
+	app.post('/api/setFollowing', async function (req, res) {
+		res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+		res.header('Access-Control-Allow-Credentials', true);
+		res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+
+		client = await pool.connect();
+		await client.query('BEGIN');
+		let newFollowing = req.body.newFollowing;
+		let subscriber = req.user.email.replace(/\s+/g,'');
+		let username = req.body.username.replace(/\s+/g,'');
+		if (newFollowing) {
+			// if we need to add 
+			let str = `INSERT INTO USERS_SUBSCRIBERS VALUES('${username}','${subscriber}');`;
+			client.query(str, (err, result) => {
+				if (err) {
+					throw err;
+				} else {
+					client.query('COMMIT');
+					console.log('ДОБАВЛЕН ПОДПИСЧИК');
+					res.json({errorCode: 0});
+				}
+			});
+		} else {
+			// if we need to delete column
+			let str = `DELETE FROM USERS_SUBSCRIBERS WHERE username = '${username}' AND subscriber='${subscriber}'`;
+			client.query(str, (err, result) => {
+				if (err) {
+					throw err;
+				} else {
+					client.query('COMMIT');
+					console.log('УДАЛЕН ПОДПИСЧИК');
+					res.json({errorCode: 0});
+				}
+			});
+		}
+		client.release();
+	
+
+	})
 	app.post('/api/newPostValue', async function (req, res)  {
 		res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
 		res.header('Access-Control-Allow-Credentials', true);

@@ -165,6 +165,24 @@ export const thunk_addNewPost = () => {
     })
   }
 }
+
+export const thunk_setFollowing = (newFollowing) => {
+  return (dispatch, getState) => {
+    let dataInJSON = {
+      "username": getState().accountReducer.user.email,
+      "newFollowing": newFollowing
+    }
+    console.log(getState().accountReducer);
+    debugger;
+    axios('http://localhost:5003/api/setFollowing', {
+      method: "post",
+      data: dataInJSON,
+      withCredentials: true
+    }).then(data => {
+      dispatch(setFollowingAC(newFollowing));
+    });
+  }
+}
 export const thunk_logout = () => {
   return (dispatch) => {
     axios.get('http://localhost:5003/api/logout',{
