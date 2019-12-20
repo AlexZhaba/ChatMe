@@ -66,11 +66,18 @@ class Header extends React.Component {
                <img src={logo}/>
                {/* <NavLink to='/signup'>{props.user.first_name}</NavLink> */}
                <div onClick={clickToHeaderProfile}>
-                 Мой профиль
+                  Profile
                </div>
-               {this.state.show ? <div className='addMenuHeader'>
-                 <button onClick={this.props.logout}>Выйти</button>
-                 <NavLink to={AuthenticatedUserURL}>Мой профиль</NavLink>
+               {this.state.show ? 
+               <div className='addMenuHeader'>
+                 <div>
+                   <NavLink to={AuthenticatedUserURL}>My profile</NavLink>
+                 </div>
+                 <div>
+                   settings
+                 </div>
+                 <div onClick={this.props.logout}>logout</div>
+                 
                 </div> : <div> </div> }
              </div>
          </div>

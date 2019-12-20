@@ -7,6 +7,7 @@ import Footer from '../footer/Footer'
 import MyPosts from './MyPosts';
 import NewPost from './NewPost';
 import {NavLink} from 'react-router-dom';
+import Sidebar from '../sidebar/sidebar';
 
 let AccountPage = (props) => {
       console.log('AccountPageProps = ', props);
@@ -16,6 +17,7 @@ let AccountPage = (props) => {
           <div> NOT FOUND </div>
             :
           <div>
+            <Sidebar/>
             <Header
                 userAuthenticatedId = {props.userAuthenticatedId}
                 isAuthenticated = {props.isAuthenticated}
@@ -24,15 +26,6 @@ let AccountPage = (props) => {
               />
               <div className='account-wrapper'>
                 <div className='top-content'>
-                <div className='sidebar-menu-block'>
-                  My profile
-                  settings
-                  <div><NavLink to='/subscribers'>SUBSCRIBERS</NavLink></div>
-                  <div><NavLink to='/subscribtions'>SUBSCRIBTION</NavLink></div>
-                  {(props.myAccount) ?
-                    <div>Это мой аккаунт!</div> : <div>Это не мой аккаунт!</div>}
-                  {(props.isAuthenticated ? <div>Я авторизован</div> : <div>Я не авторизован</div>)}
-                </div>
                 <div className='main-profile-block'>
                   <div className='left-profile-block'>
                     <div className='profile-image-block'>
@@ -72,9 +65,9 @@ let AccountPage = (props) => {
                               </div>
                             </div>
                           </div>
-                          {((props.userAuthenticatedId) && (props.userAuthenticatedId != props.user.email)) ? 
+                          {((props.userAuthenticatedId) && (props.userAuthenticatedId != props.user.email)) ?
                                 <div>
-                                {props.following ? 
+                                {props.following ?
                                 <div onClick={() => props.thunk_setFollowing(!props.following)}className='button-subscribe'>
                                   UNSUBSCRIBE
                                 </div>
@@ -133,11 +126,11 @@ let AccountPage = (props) => {
                 </div>
                 </div>
                 <div className='bottom-content'>
-                  { props.user.email == props.userAuthenticatedId ? 
-                  <NewPost 
+                  { props.user.email == props.userAuthenticatedId ?
+                  <NewPost
                     newPostValue={props.newPostValue}
                     updateNewPostValue = {props.updateNewPostValue}
-                  
+
                     thunk_addNewPost = {props.thunk_addNewPost}
                     />
                   :
@@ -146,7 +139,7 @@ let AccountPage = (props) => {
                   <MyPosts
                     posts = {props.posts}
                   />
-                  
+
                 </div>
             </div>
             {/* <Footer/> */}

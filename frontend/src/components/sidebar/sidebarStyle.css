@@ -1,0 +1,37 @@
+@import url('https://fonts.googleapis.com/css?family=EB+Garamond|IBM+Plex+Sans|Montserrat|Open+Sans+Condensed:300|Raleway&display=swap');
+
+.sidebar-menu-block {
+    background: #fff;
+    border: 1px solid #DADADA;
+    border-radius: 4px;
+    padding: 20px;
+    position: absolute;
+    top: 110px;
+    left: 200px;
+    display: flex;
+    font-size: 15px;
+    width: 170px;
+    height: 300px;
+    justify-content: space-evenly;
+    flex-direction: column;
+    /* align-items: center; */
+    font-family: 'Montserrat';
+
+
+}
+.sidebar-menu-block div {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.sidebar-menu-block a {
+  text-decoration: none;
+  color: black;
+  cursor: pointer;
+}
+.sidebar-my-profile {
+  font-size: 17px;
+  font-weight: bold;
+  border-bottom: 1px solid black;
+  margin-bottom: 10px;
+}

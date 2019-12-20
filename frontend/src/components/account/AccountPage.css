@@ -144,16 +144,16 @@ html, body {
 
 .bottom-content {
   width: 100%;
-  min-height: 300px;  
+  min-height: 300px;
   display: flex;
   justify-content: center;
-  flex-direction: column;  
+  flex-direction: column;
   /* margin-top: 15px; */
 }
 
 
 .MyPosts-block {
-  margin-left: 150px;
+  /* margin-left: 150px; */
   display: flex;
   /* justify-content: center; */
   align-items: center;
@@ -244,7 +244,7 @@ html, body {
   width: 850px;
   padding: 10px;
   /* margin: 20px; */
-  margin-left: 150px;
+  /* margin-left: 150px; */
   min-height: 50px;
   background-color: white;
   border: 1px solid #DADADA;
