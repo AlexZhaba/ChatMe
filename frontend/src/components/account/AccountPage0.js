@@ -6,6 +6,7 @@ import Footer from '../footer/Footer'
 //import { withRouter } from "react-router";
 import MyPosts from './MyPosts';
 import NewPost from './NewPost';
+import {NavLink} from 'react-router-dom';
 
 let AccountPage = (props) => {
       console.log('AccountPageProps = ', props);
@@ -26,6 +27,8 @@ let AccountPage = (props) => {
                 <div className='sidebar-menu-block'>
                   My profile
                   settings
+                  <div><NavLink to='/subscribers'>SUBSCRIBERS</NavLink></div>
+                  <div><NavLink to='/subscribtions'>SUBSCRIBTION</NavLink></div>
                   {(props.myAccount) ?
                     <div>Это мой аккаунт!</div> : <div>Это не мой аккаунт!</div>}
                   {(props.isAuthenticated ? <div>Я авторизован</div> : <div>Я не авторизован</div>)}
@@ -69,15 +72,21 @@ let AccountPage = (props) => {
                               </div>
                             </div>
                           </div>
-                          {props.following ? 
-                          <div onClick={() => props.thunk_setFollowing(!props.following)}className='button-subscribe'>
-                            UNSUBSCRIBE
-                          </div>
-                          :
-                          <div onClick={() => props.thunk_setFollowing(!props.following)} className='button-subscribe'>
-                            SUBSCRIBE
-                          </div>
+                          {((props.userAuthenticatedId) && (props.userAuthenticatedId != props.user.email)) ? 
+                                <div>
+                                {props.following ? 
+                                <div onClick={() => props.thunk_setFollowing(!props.following)}className='button-subscribe'>
+                                  UNSUBSCRIBE
+                                </div>
+                                :
+                                <div onClick={() => props.thunk_setFollowing(!props.following)} className='button-subscribe'>
+                                  SUBSCRIBE
+                                </div>
+                                }
+                                </div>
+                            : <div></div>
                           }
+
                         </div>
                     <div className='bottom-info'>
                       <div className='bottom-block'>

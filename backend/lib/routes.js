@@ -211,6 +211,56 @@ module.exports = function (app) {
 		client.release();
 
 	});
+	app.get('/api/getSubscribers', async function (req, res) {
+		res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+		res.header('Access-Control-Allow-Credentials', true);
+		res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+
+		client = await pool.connect();
+		await client.query('BEGIN');
+		let username = req.user.email.replace(/\s+/g,'');
+		let str = `SELECT * FROM USERS_SUBSCRIBERS WHERE REPLACE(username,' ','') ='${username}'`;
+		console.log(str);
+		client.query(str, (err, result) => {
+			if (err) {
+				throw err;
+			} else {
+				client.query('COMMIT');;
+				let subscribers = result.rows.map(e => e.subscriber);
+				console.log(subscribers);
+				console.log(result.rows);
+				res.json({subscribers: subscribers});
+			}
+		});
+		client.release();
+
+	});
+	app.get('/api/getSubscribtions', async function (req, res) {
+		res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+		res.header('Access-Control-Allow-Credentials', true);
+		res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+
+		client = await pool.connect();
+		await client.query('BEGIN');
+		let subscriber = req.user.email.replace(/\s+/g,'');
+		let str = `SELECT * FROM USERS_SUBSCRIBERS WHERE REPLACE(subscriber,' ','') ='${subscriber}'`;
+		console.log(str);
+		client.query(str, (err, result) => {
+			if (err) {
+				throw err;
+			} else {
+				client.query('COMMIT');;
+				let subscribtions = result.rows.map(e => e.username);
+				console.log(subscribtions);
+				console.log(result.rows);
+				res.json({subscribtions: subscribtions});
+			}
+		});
+		client.release();
+
+	});
 	app.post('/api/setFollowing', async function (req, res) {
 		res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
 		res.header('Access-Control-Allow-Credentials', true);

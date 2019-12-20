@@ -7,6 +7,8 @@ import RegistrationPage from './components/registration/RegistrationPage';
 import AccountPageContainer from './components/account/AccountPageContainer';
 import RegistrationContainer from './components/registration/RegistrationContainer'
 import SignUpContainer from './components/signup/SignUpContainer';
+import SubscriberPageContainer from './components/subcribers/SubcribersPageContainer';
+import SubscribtionPageContainer from './components/subscribtion/subscribtionPageContainer';
 import { withRouter } from "react-router";
 class App extends Component {
   render() {
@@ -24,11 +26,14 @@ class App extends Component {
           path = '/signup'
           render = { (props) => <SignUpContainer {...props}/>}
         />
-        {/* <Route 
-          path='/'
-          render = {() => <Redirect to='/registration'></Redirect>}
-        /> */}
-        
+        <Route 
+          path='/subscribers'
+          render = {(props) => <SubscriberPageContainer {...props}/>}
+        />
+        <Route 
+          path='/subscribtions'
+          render = {(props) => <SubscribtionPageContainer {...props}/>}
+        />
       </div>
     );
   }

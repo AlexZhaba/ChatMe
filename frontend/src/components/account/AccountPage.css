@@ -289,8 +289,14 @@ html, body {
   width: 150px;
   right: 20px;
   top: 20px;
+  cursor: pointer;
   font-family: 'Montserrat';
-
+  transition: 0.15s all ease-in-out;
   height: 35px;
   position: absolute;
+}
+.button-subscribe:hover {
+  transition: 0.15s all ease-in-out;
+  background-color: rgb(16, 88, 156);
+
 }
