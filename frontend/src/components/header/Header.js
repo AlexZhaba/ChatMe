@@ -12,7 +12,7 @@ class Header extends React.Component {
     };
   }
   render() {
-    if ((this.props.user) && (this.props.isAuthenticated)) {
+    if ( (this.props.isAuthenticated)) {
        let logo = 'https://bonuspark.ru/logo/default.png';
        let clickToHeaderProfile = () => {
          this.setState({show: !this.state.show});

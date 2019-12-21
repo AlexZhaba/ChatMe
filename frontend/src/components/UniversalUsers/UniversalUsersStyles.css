@@ -1,0 +1,13 @@
+.UniversalUsers-wrapper {
+  width: 100%;
+  min-height: 1000px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.UniversalUsers-block {
+  width: 800px;
+  background: #fff;
+  min-height: 700px;
+  margin-top: 100px;
+}

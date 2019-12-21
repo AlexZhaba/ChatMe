@@ -42,6 +42,17 @@ module.exports = function (app) {
 			console.log('Пользователь не зарегистрирован');
 		}
 	});
+	app.get('/api/getAuthenticatedStatus', (req, res) => {
+		res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+		res.header('Access-Control-Allow-Credentials', true);
+		res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+		if (req.user) {
+			res.json({isAuthenticated: true, userAuthenticatedId: req.user.email.replace(/\s+/g,'')})
+		} else {
+			res.json({isAuthenticated: false, userAuthenticatedId: null});
+		}
+	});
 	app.post('/api/registration', async function (req, res) {
 		console.log('req = ',req.body);
 

@@ -191,15 +191,3 @@ export const thunk_setFollowing = (newFollowing) => {
     });
   }
 }
-export const thunk_logout = () => {
-  return (dispatch) => {
-    axios.get('http://localhost:5003/api/logout',{
-      withCredentials: true
-    }).then((answer) => {
-        console.log('answer = ',answer.data);
-        dispatch(isAuthenticatedAC(false));
-        dispatch(myAccountAC(false));
-      }
-    )
-  }
-}

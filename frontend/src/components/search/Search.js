@@ -6,8 +6,6 @@ const Search = (props) => {
   return (
     <div className='search-block'>
         <input
-          onSelect = {() => alert('SELECT')}
-          onMouseOut = {() => alert('DROp')}
           onClick={() =>
             {setShowUser(!showUser)}} type='text' placeholder='Search' onChange = {(event) => props.updateSearchText(event.target.value)} value={props.searchText}/>
       {showUser ?

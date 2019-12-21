@@ -21,7 +21,6 @@ let AccountPage = (props) => {
             <Header
                 userAuthenticatedId = {props.userAuthenticatedId}
                 isAuthenticated = {props.isAuthenticated}
-                user = {props.user}
                 logout={props.logout}
                 updateSearchText = {props.updateSearchText}
                 searchText = {props.searchText}

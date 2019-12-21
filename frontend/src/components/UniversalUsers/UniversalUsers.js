@@ -1,9 +1,16 @@
 import React from 'react';
+import './UniversalUsersStyles.css';
 let UniversalUsers = (props) => {
-  return (
+  let users = props.users.map(e => 
     <div>
-      Подпесщеки
-      {props.users}
+      {e}
+    </div>
+  );
+  return (
+    <div className='UniversalUsers-wrapper'>
+      <div className='UniversalUsers-block'>
+        {users}
+      </div>
     </div>
   )
 }

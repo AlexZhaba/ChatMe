@@ -26,11 +26,11 @@ class App extends Component {
           path = '/signup'
           render = { (props) => <SignUpContainer {...props}/>}
         />
-        <Route 
+        <Route
           path='/subscribers'
           render = {(props) => <SubscriberPageContainer {...props}/>}
         />
-        <Route 
+        <Route
           path='/subscribtions'
           render = {(props) => <SubscribtionPageContainer {...props}/>}
         />
