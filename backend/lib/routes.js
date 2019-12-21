@@ -273,7 +273,7 @@ module.exports = function (app) {
 		let subscriber = req.user.email.replace(/\s+/g,'');
 		let username = req.body.username.replace(/\s+/g,'');
 		if (newFollowing) {
-			// if we need to add 
+			// if we need to add
 			let str = `INSERT INTO USERS_SUBSCRIBERS VALUES('${username}','${subscriber}');`;
 			client.query(str, (err, result) => {
 				if (err) {
@@ -298,7 +298,7 @@ module.exports = function (app) {
 			});
 		}
 		client.release();
-	
+
 
 	})
 	app.post('/api/newPostValue', async function (req, res)  {
@@ -329,7 +329,7 @@ module.exports = function (app) {
 				res.json({data: 'Posts was created', posts : newPost});
 			}
 		});
-		client.release();	
+		client.release();
 	})
 	app.get('/api/logout', function(req, res){
 	res.header('Access-Control-Allow-Origin', 'http://localhost:3000');

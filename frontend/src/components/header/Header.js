@@ -1,44 +1,8 @@
 import React from 'react';
 import './HeaderStyles.css'
 import {NavLink} from 'react-router-dom'
-// let Header = (props) => {
-//   if (props.user) {
-//     let logo = 'https://bonuspark.ru/logo/default.png';
-//     let clickToHeaderProfile = () => {
-//     }
-//     return (
-//         <div className='main-header-block'>
-//             LOGO
-//           <div className='ChatME-block'>
-//             <div>
-//               <b>ChatME</b>
-//             </div>
-//           </div>
-//           <div className='profile-button-header'>
-//             <img src={logo}/>
-//             {/* <NavLink to='/signup'>{props.user.first_name}</NavLink> */}
-//             <div onClick={clickToHeaderProfile}>
-//               {props.user.first_name}
-//             </div>
-//           </div>
-//       </div>
-//     )
-//   }else {
-//     return (
-//       <div className='main-header-block'>
-//         <div>
-//           LOGO
-//         </div>
-//         <div>
-//           MAIN CORE
-//         </div>
-//         <div>
-//           <NavLink to='/signup'>Вход</NavLink>
-//         </div>
-//       </div>
-//     )
-//   };
-// }
+import Search from './../search/Search';
+
 
 class Header extends React.Component {
   constructor(props) {
@@ -56,7 +20,10 @@ class Header extends React.Component {
        let AuthenticatedUserURL = `/account/${this.props.userAuthenticatedId}`;
        return (
            <div className='main-header-block'>
-               LOGO
+             <Search
+                updateSearchText = {this.props.updateSearchText}
+                searchText = {this.props.searchText}
+             />
              <div className='ChatME-block'>
                <div>
                  <b>ChatME</b>
@@ -65,10 +32,10 @@ class Header extends React.Component {
              <div className='profile-button-header'>
                <img src={logo}/>
                {/* <NavLink to='/signup'>{props.user.first_name}</NavLink> */}
-               <div onClick={clickToHeaderProfile}>
+               <div className='Profile-header'onClick={clickToHeaderProfile}>
                   Profile
                </div>
-               {this.state.show ? 
+               {this.state.show ?
                <div className='addMenuHeader'>
                  <div>
                    <NavLink to={AuthenticatedUserURL}>My profile</NavLink>
@@ -77,7 +44,7 @@ class Header extends React.Component {
                    settings
                  </div>
                  <div onClick={this.props.logout}>logout</div>
-                 
+
                 </div> : <div> </div> }
              </div>
          </div>

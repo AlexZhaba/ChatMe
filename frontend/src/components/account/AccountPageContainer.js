@@ -10,6 +10,7 @@ import {
   setURLAdressAC,
   setUserAuthenticatedIdAC,
   updateNewPostValueAC,
+  updateSearchTextAC,
   thunk_getUserPosts,
   //IT'S THUNKS
   thunk_GetAccountInfo,
@@ -21,11 +22,12 @@ import {
 import AccountPage0 from './AccountPage0'
 let AccountContainer = (props) => {
   useEffect( () => {
-    if ((props.user.email) && (props.posts.length != 0)) {
+    console.log('USE EFFECT == ' + props.user.email,' ');
+    if ((props.user.email) && (props.posts != null)) {
       debugger;
       props.thunk_getFollowing(props.user.email);
     }
-  },[props.posts.length]);
+  },[props.match.params.id, props.posts]);
   useEffect( () => {
     if ((props.user.email)) {
       props.thunk_getUserPosts(props.user.email);
@@ -49,10 +51,12 @@ let AccountContainer = (props) => {
           userAuthenticatedId = {props.userAuthenticatedId}
           logout = {logout}
           notFound = {props.notFound}
+          searchText = {props.searchText}
           updateNewPostValue = {props.updateNewPostValueAC}
           newPostValue = {props.newPostValue}
           following = {props.following}
           thunk_setFollowing = {props.thunk_setFollowing}
+          updateSearchText = {props.updateSearchTextAC}
           //thunk
           thunk_addNewPost = {props.thunk_addNewPost}
         />
@@ -70,8 +74,9 @@ const mapStateToProps = (state) => {
     notFound : state.accountReducer.notFound,
     newPostValue : state.accountReducer.newPostValue,
     posts : state.accountReducer.posts,
-    following: state.accountReducer.following
+    following: state.accountReducer.following,
+    searchText: state.accountReducer.searchText
   }
 }
-export default connect(mapStateToProps, {thunk_GetAccountInfo, thunk_addNewPost, thunk_getFollowing, thunk_setFollowing, 
-                                       thunk_logout, updateNewPostValueAC, thunk_getUserPosts})(AccountContainer);
+export default connect(mapStateToProps, {thunk_GetAccountInfo, thunk_addNewPost, thunk_getFollowing, thunk_setFollowing,
+                                       updateSearchTextAC, thunk_logout, updateNewPostValueAC, thunk_getUserPosts})(AccountContainer);

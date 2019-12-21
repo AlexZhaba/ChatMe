@@ -16,12 +16,11 @@ let NewPost = (props) => {
             event.target.style.height = (+event.target.style.height.slice(0, event.target.style.height.length - 2) + 19).toString() + 'px';
         }
         // if (event.keyCode == 8) {
-            
+
         //     event.target.style.height = (+event.target.style.height.slice(0, event.target.style.height.length - 2) - 20).toString() + 'px';
         }
         console.log('NewPost = ' +  props.addNewPost);
     let myRef = React.createRef();
-    debugger;
     console.log('NEWPOST_VALUE_REACT = ', props.newPostValue)
     return(
         <div className='new-post-block'>

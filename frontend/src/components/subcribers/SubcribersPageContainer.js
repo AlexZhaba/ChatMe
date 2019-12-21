@@ -3,9 +3,9 @@ import React, { useEffect } from 'react';
 import {
     thunk_getSubscribers
 } from './../../redux/reducers/subscribersPageReducer';
-
+import UniversalUsers from './../UniversalUsers/UniversalUsers'
+import Header from './../header/Header';
 let SubscriberPageContainer = (props) => {
-
     useEffect(() => {
         console.log('UserID = ' + props.userAuthenticatedId)
         // if (props.userAuthenticatedId) {
@@ -14,8 +14,11 @@ let SubscriberPageContainer = (props) => {
     },[]);
     return (
         <div>
-            ПОДПЕСЩЕКИ
-            {props.subscribers}
+            <Header
+          />
+          <UniversalUsers
+              users = {props.subscribers}
+          />
         </div>
     );
 }

@@ -9,7 +9,6 @@ let initialState = {
 };
 
 let subscribtionReducer = (state = initialState, action) => {
-    debugger;
     switch (action.type) {
         case SET_SUBSCRIBTIONS: {
             return {

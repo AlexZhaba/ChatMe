@@ -1,0 +1,27 @@
+.search-user-block {
+  background: #fff;
+
+  width: 220px;
+  min-height: 100px;
+  position: absolute;
+  left: -10px;
+  top: 35px;
+  border: 1px solid #DADADA;
+
+}
+
+.search-block {
+  height: 100%;
+  width: 200px;
+  margin-left: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+.search-block input {
+  outline: none;
+  border: none;
+  height: 70%;
+  font-size: 17px;
+}

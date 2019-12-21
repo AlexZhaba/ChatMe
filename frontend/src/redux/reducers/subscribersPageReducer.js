@@ -9,7 +9,6 @@ let initialState = {
 };
 
 let subscribersPageReducer = (state = initialState, action) => {
-    debugger;
     switch (action.type) {
         case SET_SUBSCRIBERS: {
             return {

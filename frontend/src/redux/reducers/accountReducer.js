@@ -10,6 +10,8 @@ const UPDATE_NEW_POST_VALUE = 'UPDATE_NEW_POST_VALUE';
 const ADD_USER_POSTS = 'ADD_USER_POSTS';
 const SET_USER_POSTS = 'SET_USER_POSTS';
 const SET_FOLLOWING = 'SET_FOLLOWING';
+const UPDATE_SEARCH_TEXT = 'UPDATE_SEARCH_TEXT';
+
 let initialState = {
   isAuthenticated: false,
   myAccount: false,
@@ -18,7 +20,8 @@ let initialState = {
   userAuthenticatedId: 0,
   URLAdress: '/account',
   newPostValue: 'Hello',
-  posts : [],
+  posts : null,
+  searchText: '',
   following: false
 };
 //          REDUCER
@@ -63,6 +66,9 @@ const accountReducer = (state = initialState, action) => {
     case SET_FOLLOWING: {
       return {...state, following: action.following}
     }
+    case UPDATE_SEARCH_TEXT: {
+      return {...state, searchText: action.searchText}
+    }
     default:
       return state;
   }
@@ -80,6 +86,8 @@ const updateNewPostValueAC = (newPostValue) => ({type: UPDATE_NEW_POST_VALUE, ne
 const addUserPostsAC = (posts) => ({type: ADD_USER_POSTS, posts : posts[0]});
 const setUserPostsAC = (posts) => ({type: SET_USER_POSTS, posts});
 const setFollowingAC = (following) => ({type: SET_FOLLOWING, following})
+const updateSearchTextAC = (searchText) => ({type: UPDATE_SEARCH_TEXT, searchText})
+
 export {setUserAC};
 export {setURLAdressAC};
 export {myAccountAC};
@@ -89,7 +97,7 @@ export {notFoundAC};
 export {updateNewPostValueAC};
 export {addUserPostsAC};
 export {setUserPostsAC};
-
+export {updateSearchTextAC};
 
 // THUNKS
 export const thunk_GetAccountInfo = (id) => {
@@ -102,7 +110,7 @@ export const thunk_GetAccountInfo = (id) => {
         dispatch(notFoundAC(true));
       } else {
         console.log('ДАТА ПРИШЛА  ! ', response.data);
-        
+
         console.log('----- ', isAuthenticatedAC(response.data.isAuthenticated));
         dispatch(isAuthenticatedAC(response.data.isAuthenticated));
         dispatch(myAccountAC(response.data.myAccount));
@@ -116,7 +124,7 @@ export const thunk_GetAccountInfo = (id) => {
 
 export const thunk_getUserPosts = (username) => {
   return (dispatch) => {
-    
+
     let dataInJSON = {
       "username" : username
     }
@@ -148,12 +156,12 @@ export const thunk_getFollowing = (username) => {
 }
 export const thunk_addNewPost = () => {
   // debugger;
-  
+
   return (dispatch, getState) => {
     debugger;
     console.log('NEWPOSTVALUEIFADDNEWPOST = ', getState() );
     let dataInJSON = {
-      "newPostValue": getState().accountReducer.newPostValue 
+      "newPostValue": getState().accountReducer.newPostValue
     }
     axios('http://localhost:5003/api/newPostValue', {
       method: "post",
