@@ -6,7 +6,10 @@ import {Redirect} from 'react-router-dom';
 import {
   updateSearchTextAC,
   thunk_logout,
-  thunk_getAuthenticatedStatus
+  thunk_getAuthenticatedStatus,
+  thunk_searchUsers,
+  setSearchUsersAC,
+  setLastFetchTextAC
 } from './../../redux/reducers/searchReducer'
 let SearchPageContainer = (props) => {
   useEffect(() => {
@@ -27,6 +30,9 @@ let SearchPageContainer = (props) => {
             fetching = {props.fetching}
             lastFetchText = {props.lastFetchText}
             searchUsers = {props.searchUsers}
+            thunk_searchUsers = {props.thunk_searchUsers}
+            setSearchUsers = {props.setSearchUsersAC}
+            setLastFetchText = {props.setLastFetchTextAC}
           />
         :
         <Redirect to='/signup'></Redirect>
@@ -36,7 +42,6 @@ let SearchPageContainer = (props) => {
 }
 
 let mapStateToProps = (state) => {
-  debugger;
   return {
     userAuthenticatedId : state.searchReducer.userAuthenticatedId,
     isAuthenticated: state.searchReducer.isAuthenticated,
@@ -47,5 +52,5 @@ let mapStateToProps = (state) => {
   }
 };
 
-export default connect(mapStateToProps, {updateSearchTextAC, thunk_logout,
-                                         thunk_getAuthenticatedStatus})(SearchPageContainer);
+export default connect(mapStateToProps, {updateSearchTextAC, thunk_logout, thunk_searchUsers,
+                                         thunk_getAuthenticatedStatus, setSearchUsersAC, setLastFetchTextAC})(SearchPageContainer);

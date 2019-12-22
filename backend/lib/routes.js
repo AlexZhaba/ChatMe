@@ -168,6 +168,24 @@ module.exports = function (app) {
 		});
 
 	});
+	app.post('/api/searchUsers', async function (req, res) {
+		res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+		res.header('Access-Control-Allow-Credentials', true);
+		res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+		pool.connect((err, client, done) => {
+			let str = `SELECT EMAIL, FIRST_NAME, LAST_NAME FROM USERS WHERE EMAIL LIKE '${req.body.searchText}%'`;
+			client.query(str,(err, result) => {
+				done();
+				if (err) {
+					throw err
+				} else {
+					console.log(result.rows);
+					res.json({searchUsers: result.rows})
+				}
+			});
+		});
+	})
 	app.post('/api/getAllPosts', async function (req, res) {
 		res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
 		res.header('Access-Control-Allow-Credentials', true);

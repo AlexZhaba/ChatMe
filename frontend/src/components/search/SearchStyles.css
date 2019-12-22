@@ -1,12 +1,10 @@
 .search-user-block {
-  background: #fff;
 
-  width: 220px;
+  width: 100%;
   min-height: 100px;
   position: absolute;
   left: -10px;
   top: 35px;
-  border: 1px solid #DADADA;
 
 }
 
