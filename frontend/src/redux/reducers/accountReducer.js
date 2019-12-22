@@ -86,7 +86,6 @@ const updateNewPostValueAC = (newPostValue) => ({type: UPDATE_NEW_POST_VALUE, ne
 const addUserPostsAC = (posts) => ({type: ADD_USER_POSTS, posts : posts[0]});
 const setUserPostsAC = (posts) => ({type: SET_USER_POSTS, posts});
 const setFollowingAC = (following) => ({type: SET_FOLLOWING, following})
-const updateSearchTextAC = (searchText) => ({type: UPDATE_SEARCH_TEXT, searchText})
 
 export {setUserAC};
 export {setURLAdressAC};
@@ -97,7 +96,6 @@ export {notFoundAC};
 export {updateNewPostValueAC};
 export {addUserPostsAC};
 export {setUserPostsAC};
-export {updateSearchTextAC};
 
 // THUNKS
 export const thunk_GetAccountInfo = (id) => {
@@ -189,5 +187,17 @@ export const thunk_setFollowing = (newFollowing) => {
     }).then(data => {
       dispatch(setFollowingAC(newFollowing));
     });
+  }
+}
+export const thunk_logout = () => {
+  return (dispatch) => {
+    axios.get('http://localhost:5003/api/logout',{
+      withCredentials: true
+    }).then((answer) => {
+        console.log('answer = ',answer.data);
+        dispatch(isAuthenticatedAC(false));
+        dispatch(myAccountAC(false));
+      }
+    )
   }
 }

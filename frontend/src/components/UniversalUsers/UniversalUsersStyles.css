@@ -11,3 +11,23 @@
   min-height: 700px;
   margin-top: 100px;
 }
+.UnUser-block {
+  border-bottom: 1px solid #DADADA;
+  width: 100%;
+  height: 100px;
+  /* margin-bottom: 30px; */
+  display: flex;
+  align-items: center;
+}
+.UnUser-block img {
+  margin-left: 20px;
+  height: 70px;
+  width: 70px;
+  border-radius: 50%;
+}
+.UnUser-info {
+  height: 100%;
+  width: 710px;
+  display: flex;
+  justify-content: center;
+}

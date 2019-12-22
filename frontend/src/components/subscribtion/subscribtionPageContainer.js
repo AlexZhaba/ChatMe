@@ -6,9 +6,6 @@ import {
     thunk_getAuthenticatedStatus,
     thunk_logout
 } from './../../redux/reducers/subscribtionReducer';
-import {
-  updateSearchTextAC
-} from './../../redux/reducers/accountReducer';
 import SubscribtionPage from './subscribtionPage';
 import Header from './../header/Header';
 
@@ -29,8 +26,6 @@ let SubscribtionsPageContainer = (props) => {
               userAuthenticatedId = {props.userAuthenticatedId}
               isAuthenticated = {props.isAuthenticated}
               logout={props.thunk_logout}
-              updateSearchText = {props.updateSearchTextAC}
-              searchText = {props.searchText}
             />
           {((props.isAuthenticated)||(props.userAuthenticatedId == '')) ?
             <SubscribtionPage
@@ -48,10 +43,9 @@ let mapStateToProps = (state) => {
     return {
         subscribtions : state.subscribtionReducer.subscribtions,
         userAuthenticatedId: state.subscribtionReducer.userAuthenticatedId,
-        isAuthenticated: state.subscribtionReducer.isAuthenticated,
-        searchText : state.accountReducer.searchText,
+        isAuthenticated: state.subscribtionReducer.isAuthenticated
     }
 };
 
 export default connect(mapStateToProps, {thunk_getSubscribtions, thunk_logout,
-                                          updateSearchTextAC, thunk_getAuthenticatedStatus})(SubscribtionsPageContainer);
+                                           thunk_getAuthenticatedStatus})(SubscribtionsPageContainer);

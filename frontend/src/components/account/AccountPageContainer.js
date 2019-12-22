@@ -23,7 +23,7 @@ import AccountPage0 from './AccountPage0'
 let AccountContainer = (props) => {
   useEffect( () => {
     console.log('USE EFFECT == ' + props.user.email,' ');
-    if ((props.user.email) && (props.posts != null)) {
+    if ((props.user.email)) {
       debugger;
       props.thunk_getFollowing(props.user.email);
     }
@@ -51,12 +51,10 @@ let AccountContainer = (props) => {
           userAuthenticatedId = {props.userAuthenticatedId}
           logout = {logout}
           notFound = {props.notFound}
-          searchText = {props.searchText}
           updateNewPostValue = {props.updateNewPostValueAC}
           newPostValue = {props.newPostValue}
           following = {props.following}
           thunk_setFollowing = {props.thunk_setFollowing}
-          updateSearchText = {props.updateSearchTextAC}
           //thunk
           thunk_addNewPost = {props.thunk_addNewPost}
         />
@@ -74,9 +72,8 @@ const mapStateToProps = (state) => {
     notFound : state.accountReducer.notFound,
     newPostValue : state.accountReducer.newPostValue,
     posts : state.accountReducer.posts,
-    following: state.accountReducer.following,
-    searchText: state.accountReducer.searchText
+    following: state.accountReducer.following
   }
 }
 export default connect(mapStateToProps, {thunk_GetAccountInfo, thunk_addNewPost, thunk_getFollowing, thunk_setFollowing,
-                                       updateSearchTextAC, thunk_logout, updateNewPostValueAC, thunk_getUserPosts})(AccountContainer);
+                                        thunk_logout, updateNewPostValueAC, thunk_getUserPosts})(AccountContainer);

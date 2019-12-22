@@ -1,7 +1,6 @@
 import React from 'react';
 import './HeaderStyles.css'
 import {NavLink} from 'react-router-dom'
-import Search from './../search/Search';
 
 
 class Header extends React.Component {
@@ -20,10 +19,6 @@ class Header extends React.Component {
        let AuthenticatedUserURL = `/account/${this.props.userAuthenticatedId}`;
        return (
            <div className='main-header-block'>
-             <Search
-                updateSearchText = {this.props.updateSearchText}
-                searchText = {this.props.searchText}
-             />
              <div className='ChatME-block'>
                <div>
                  <b>ChatME</b>

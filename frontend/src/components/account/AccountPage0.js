@@ -22,8 +22,6 @@ let AccountPage = (props) => {
                 userAuthenticatedId = {props.userAuthenticatedId}
                 isAuthenticated = {props.isAuthenticated}
                 logout={props.logout}
-                updateSearchText = {props.updateSearchText}
-                searchText = {props.searchText}
               />
               <div className='account-wrapper'>
                 <div className='top-content'>

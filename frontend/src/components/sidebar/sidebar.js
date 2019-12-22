@@ -6,6 +6,7 @@ let Sidebar = (props) => {
         <div className='sidebar-menu-block'>
         <div className='sidebar-my-profile'>My profile</div>
         <div>News</div>
+      <div><NavLink to='/search'>Search</NavLink></div>
       <div>Messages</div>
 
         <div><NavLink to='/subscribers'>Subscribers</NavLink></div>

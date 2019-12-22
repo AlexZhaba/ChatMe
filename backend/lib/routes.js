@@ -57,9 +57,7 @@ module.exports = function (app) {
 		console.log('req = ',req.body);
 
 		try{
-			const client = await pool.connect();
 			console.log('Я вошёл в обработчик get запроса на end point /signup');
-			await client.query('BEGIN');
 		//	var pwd = await bcrypt.hash(req.body.password, 5);
 			var pwd = req.body.password;
 			let userPasswordMessage = userValidate.checkPassword(pwd);
@@ -68,35 +66,36 @@ module.exports = function (app) {
 				console.log('ПАРОЛЬ СЛИШКОМ МАЛЕНЬКИЙ!');
 				return 0;
 			}
-			await JSON.stringify(client.query('SELECT id FROM users WHERE "email"=$1', [req.body.username], function(err, result) {
-				console.log('Это все пользователи с почтой, указанной пользователем ',result.rows);
-				if(result.rows[0] != null){
-					console.log('Пользователь с данной почтой существует!');
-          res.json({errorCode: 1, data: 'Email not unique'});
-				}
-				else{
-					let str = `INSERT INTO users VALUES ('${uuidv4()}', '${req.body.firstName}', '${req.body.lastName}', '${req.body.username}', '${pwd}')`;
-					//console.log(str);
-					//let str = ('INSERT INTO users (id, firstname, lastname, email, password) VALUES ($1, $2, $3, $4, $5)', [uuidv4(), req.body.firstName, req.body.lastName, req.body.username, pwd]);
-					console.log('str = ',str);
-					console.log('Создаю пользователя...');
-					console.log('pwd = ', pwd);
-          			client.query(str, function(err, result) {
-						//console.log('str = ', str);
-						if(err){console.log(err);}
-						else {
-
-							client.query('COMMIT')
-					    console.log('Пользователь создан');
-							res.json({errorCode: 0, data: 'User was created', username: req.body.username});
+			pool.connect(function (err, client, done) {
+					client.query('SELECT id FROM users WHERE "email"=$1', [req.body.username], function(err, result) {
+						console.log('Это все пользователи с почтой, указанной пользователем ',result.rows);
+						if(result.rows[0] != null){
+							console.log('Пользователь с данной почтой существует!');
+		          res.json({errorCode: 1, data: 'Email not unique'});
 						}
+						else{
+							let str = `INSERT INTO users VALUES ('${uuidv4()}', '${req.body.firstName}', '${req.body.lastName}', '${req.body.username}', '${pwd}')`;
+							//console.log(str);
+							//let str = ('INSERT INTO users (id, firstname, lastname, email, password) VALUES ($1, $2, $3, $4, $5)', [uuidv4(), req.body.firstName, req.body.lastName, req.body.username, pwd]);
+							console.log('str = ',str);
+							console.log('Создаю пользователя...');
+							console.log('pwd = ', pwd);
+		          client.query(str, function(err, result) {
+								done();
+								//console.log('str = ', str);
+								if(err){console.log(err);}
+								else {
+
+							    console.log('Пользователь создан');
+									res.json({errorCode: 0, data: 'User was created', username: req.body.username});
+								}
+							});
+
+
+						}
+
 					});
-
-
-				}
-
-			}));
-			client.release();
+			});
 		}
 		catch(e){
 			console.log('ТЫ ДОЛБАЕБ БРАТИШКА!');
@@ -139,33 +138,34 @@ module.exports = function (app) {
 		// res.json({errorCode :2})
 		// return 0;
 		// console.log('ДЕЛАЮ ЛОГАУТ ',req.user);
-		const client = await pool.connect();
-		console.log('Я вошёл в обработчик get запроса на end point /ACCOUNT/:', req.params.id);
-		await client.query('BEGIN');
-		if (req.user) {
-			ans.isAuthenticated = true;
-			ans.userAuthenticatedId = req.user.email;
-			if (req.user.email.replace(/\s+/g,'') == req.params.id) {
-				console.log('req.user = ', req.user);
-				ans.myAccount = true;
-				ans.isAuthenticated = true;
-				ans.errorCode = 0;
-			}
-		}
-		console.log('Пользователь, который авторизован = ', req.user);
-		let currentAccountsData = await JSON.stringify(client.query('SELECT first_name, last_name, email FROM users WHERE email=$1', [req.params.id], function(err, result) {
-			console.log('currentAccountsData = ', result.rows[0]);
-			if (result.rows[0] == null) {
-				ans.errorCode = 2;
-				console.log('Пользователя с данным id не существует!');
-				res.json(ans);
-				return 0;
-			}
-			ans.errorCode = 0;
-			ans.user = result.rows[0];
-			res.json(ans)
-		}));
-		client.release();
+
+		pool.connect(function (err, client, done) {
+				console.log('Я вошёл в обработчик get запроса на end point /ACCOUNT/:', req.params.id);
+				if (req.user) {
+					ans.isAuthenticated = true;
+					ans.userAuthenticatedId = req.user.email;
+					if (req.user.email.replace(/\s+/g,'') == req.params.id) {
+						console.log('req.user = ', req.user);
+						ans.myAccount = true;
+						ans.isAuthenticated = true;
+						ans.errorCode = 0;
+					}
+				}
+				console.log('Пользователь, который авторизован = ', req.user);
+				client.query('SELECT first_name, last_name, email FROM users WHERE email=$1', [req.params.id], function(err, result) {
+					done();
+					console.log('currentAccountsData = ', result.rows[0]);
+					if (result.rows[0] == null) {
+						ans.errorCode = 2;
+						console.log('Пользователя с данным id не существует!');
+						res.json(ans);
+						return 0;
+					}
+					ans.errorCode = 0;
+					ans.user = result.rows[0];
+					res.json(ans);
+				});
+		});
 
 	});
 	app.post('/api/getAllPosts', async function (req, res) {
@@ -173,25 +173,28 @@ module.exports = function (app) {
 		res.header('Access-Control-Allow-Credentials', true);
 		res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
 		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-		client = await pool.connect()
+		console.log('GET POSTS');
+
 		console.log('req.body = ', req.body);
 		console.log('req.user = ', req.user);
 		let username = req.body.username.replace(/\s+/g,'');
-		await client.query('BEGIN');
 		let str = `SELECT * FROM USER_POSTS WHERE REPLACE(username, ' ','')='${username}'`;
 		console.log(str);
-		client.query(str, (err, result) => {
-			console.log(err)
-			if (err) {
-				res.json(err);
-			} else {
-				// console.log('Везвращаю посты пользователя ',username,' ',result.rows);
-				res.json({posts: result.rows.reverse()});
-			}
-		});
+		pool.connect(function (err, client, done) {
+					console.log('client = ',err)
+					client.query(str, (err, result) => {
+						done();
+						console.log(err)
+						if (err) {
+							res.json(err);
 
+						} else {
+							// console.log('Везвращаю посты пользователя ',username,' ',result.rows);
+							res.json({posts: result.rows.reverse()});
+						}
+					});
+				});
 
-		client.release();
 	});
 	app.post('/api/following', async function (req, res) {
 		res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
@@ -199,28 +202,26 @@ module.exports = function (app) {
 		res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
 		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 
-		client = await pool.connect();
-		await client.query('BEGIN');
-		let subsciber = req.user.email.replace(/\s+/g,'');
-		let username = req.body.username.replace(/\s+/g,'');
-		let str = `SELECT * FROM USERS_SUBSCRIBERS WHERE REPLACE(username, ' ','')='${username}' AND REPLACE(subscriber, ' ','')='${subsciber}'`;
-		console.log(str);
-		await client.query(str, (err, result) => {
-			if (err) {
-				console.log(err);
-				res.json(err);
-			} else {
-				client.query('COMMIT');
-				let following = false;
-				if (result.rows[0] != null) {
-					following = true;
-				};
-				console.log(following);
-				res.json({following: following });
-			}
+		pool.connect(function (err, client, done) {
+				let subsciber = req.user.email.replace(/\s+/g,'');
+				let username = req.body.username.replace(/\s+/g,'');
+				let str = `SELECT * FROM USERS_SUBSCRIBERS WHERE REPLACE(username, ' ','')='${username}' AND REPLACE(subscriber, ' ','')='${subsciber}'`;
+				console.log(str);
+				client.query(str, (err, result) => {
+					done();
+					if (err) {
+						console.log(err);
+						res.json(err);
+					} else {
+						let following = false;
+						if (result.rows[0] != null) {
+							following = true;
+						};
+						console.log(following);
+						res.json({following: following });
+					}
+				});
 		});
-		client.release();
-
 	});
 	app.get('/api/getSubscribers', async function (req, res) {
 		res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
@@ -228,24 +229,22 @@ module.exports = function (app) {
 		res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
 		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 
-		client = await pool.connect();
-		await client.query('BEGIN');
 		let username = req.user.email.replace(/\s+/g,'');
 		let str = `SELECT * FROM USERS_SUBSCRIBERS WHERE REPLACE(username,' ','') ='${username}'`;
 		console.log(str);
-		client.query(str, (err, result) => {
-			if (err) {
-				throw err;
-			} else {
-				client.query('COMMIT');;
-				let subscribers = result.rows.map(e => e.subscriber);
-				console.log(subscribers);
-				console.log(result.rows);
-				res.json({subscribers: subscribers});
-			}
+		pool.connect(function (err, client, done) {
+				client.query(str, (err, result) => {
+					done();
+					if (err) {
+						throw err;
+					} else {
+						let subscribers = result.rows.map(e => e.subscriber);
+						console.log(subscribers);
+						console.log(result.rows);
+						res.json({subscribers: subscribers});
+					}
+				});
 		});
-		client.release();
-
 	});
 	app.get('/api/getSubscribtions', async function (req, res) {
 		res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
@@ -253,24 +252,22 @@ module.exports = function (app) {
 		res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
 		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 
-		client = await pool.connect();
-		await client.query('BEGIN');
 		let subscriber = req.user.email.replace(/\s+/g,'');
 		let str = `SELECT * FROM USERS_SUBSCRIBERS WHERE REPLACE(subscriber,' ','') ='${subscriber}'`;
 		console.log(str);
-		client.query(str, (err, result) => {
-			if (err) {
-				throw err;
-			} else {
-				client.query('COMMIT');;
-				let subscribtions = result.rows.map(e => e.username);
-				console.log(subscribtions);
-				console.log(result.rows);
-				res.json({subscribtions: subscribtions});
-			}
+		pool.connect(function (err, client, done) {
+				client.query(str, (err, result) => {
+					done();
+					if (err) {
+						throw err;
+					} else {
+						let subscribtions = result.rows.map(e => e.username);
+						console.log(subscribtions);
+						console.log(result.rows);
+						res.json({subscribtions: subscribtions});
+					}
+				});
 		});
-		client.release();
-
 	});
 	app.post('/api/setFollowing', async function (req, res) {
 		res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
@@ -278,37 +275,38 @@ module.exports = function (app) {
 		res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
 		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 
-		client = await pool.connect();
-		await client.query('BEGIN');
 		let newFollowing = req.body.newFollowing;
 		let subscriber = req.user.email.replace(/\s+/g,'');
 		let username = req.body.username.replace(/\s+/g,'');
 		if (newFollowing) {
 			// if we need to add
 			let str = `INSERT INTO USERS_SUBSCRIBERS VALUES('${username}','${subscriber}');`;
-			client.query(str, (err, result) => {
-				if (err) {
-					throw err;
-				} else {
-					client.query('COMMIT');
-					console.log('ДОБАВЛЕН ПОДПИСЧИК');
-					res.json({errorCode: 0});
-				}
+			pool.connect(function (err, client, done) {
+					client.query(str, (err, result) => {
+						done();
+						if (err) {
+							throw err;
+						} else {
+							console.log('ДОБАВЛЕН ПОДПИСЧИК');
+							res.json({errorCode: 0});
+						}
+					});
 			});
 		} else {
 			// if we need to delete column
 			let str = `DELETE FROM USERS_SUBSCRIBERS WHERE username = '${username}' AND subscriber='${subscriber}'`;
-			client.query(str, (err, result) => {
-				if (err) {
-					throw err;
-				} else {
-					client.query('COMMIT');
-					console.log('УДАЛЕН ПОДПИСЧИК');
-					res.json({errorCode: 0});
-				}
+			pool.connect(function (err, client, done) {
+					client.query(str, (err, result) => {
+						done();
+						if (err) {
+							throw err;
+						} else {
+							console.log('УДАЛЕН ПОДПИСЧИК');
+							res.json({errorCode: 0});
+						}
+					});
 			});
 		}
-		client.release();
 
 
 	})
@@ -319,28 +317,26 @@ module.exports = function (app) {
 		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 		let data = new Date();
 		let DATA_POST = data.getHours()+ ':' + data.getMinutes()  + ', '  + data.getUTCDate() + '.' + parseInt(data.getUTCMonth() + 1).toString() + '.' + data.getFullYear();
-		const client = await pool.connect();
-
 		console.log('req = ', req.user);
 		let str = `INSERT INTO user_posts VALUES ('${req.user.email}', '3', '${req.body.newPostValue}', '0', '${DATA_POST}')`;
 		console.log('str = ' + str)
-		await client.query('BEGIN');
-		client.query(str, (err, result) => {
-			console.log('YA V QUERY');
-			console.log(err);
-			if (err) {
-				res.json(err)
-			} else {
-				client.query('COMMIT')
-				console.log(result)
-				let newPost = [{
-					text: req.body.newPostValue,
-					publicdata : DATA_POST
-				}];
-				res.json({data: 'Posts was created', posts : newPost});
-			}
+		pool.connect(function (err, client, done) {
+				client.query(str, (err, result) => {
+					done();
+					console.log('YA V QUERY');
+					console.log(err);
+					if (err) {
+						res.json(err)
+					} else {
+						console.log(result)
+						let newPost = [{
+							text: req.body.newPostValue,
+							publicdata : DATA_POST
+						}];
+						res.json({data: 'Posts was created', posts : newPost});
+					}
+				});
 		});
-		client.release();
 	})
 	app.get('/api/logout', function(req, res){
 	res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
@@ -356,14 +352,14 @@ module.exports = function (app) {
 
 
 	app.post('/api/getuser', async function (req, res) {
-		const client = await pool.connect();
-		await client.query('BEGIN');
 		console.log('Чел хочет юзера ',req.body.email);
-		var currentAccountsData = await JSON.stringify(client.query('SELECT first_name, last_name, email, password FROM users WHERE email=$1', [req.body.email], function(err, result) {
-			console.log('currentAccountsData = ', result.rows[0]);
-			res.json(result.rows[0])
-		}));
-		client.release();
+		pool.connect(function (err, client, done) {
+				client.query('SELECT first_name, last_name, email, password FROM users WHERE email=$1', [req.body.email], function(err, result) {
+					done();
+					console.log('currentAccountsData = ', result.rows[0]);
+					res.json(result.rows[0])
+				});
+		});
 	});
 
 	app.post('/api/signup',	passport.authenticate('local', {failureRedirect: '/failureLogin'}), function (req, res) {
@@ -401,53 +397,38 @@ passport.use('local', new  LocalStrategy({passReqToCallback : true}, (req, usern
 	async function loginAttempt() {
 
 
-		const client = await pool.connect()
 		console.log('ЭТО ШО Я В ПАСПОРТЕ?');
 		try{
-			await client.query('BEGIN')
 			console.log('username = |', username);
 			username = username.replace(/\s+/g,'');
-			var currentAccountsData = await JSON.stringify(client.query('SELECT id, first_name, last_name,  email, password FROM users WHERE email=$1', [username], function(err, result) {
-				console.log('ТО Я КАРОЧЕ В ПАСПОРТЕ ДАТУ ПОЛУЧИЛ ', result.rows[0]);
-				if(err) {
-					return done(err)
-				}
-				if(result.rows[0] == null){
-					req.flash('danger', "Oops. Incorrect login details.");
-					console.log('НЕТ ТАКОГО ПОЛЬЗОВАТЕЛЯ!');
-					return done(null, false, {message : 'user didnt found'});
-				}
-				else {
-
-					// bcrypt.compare(password, result.rows[0].password, function(err, check) {
-					// 	if (err){
-					// 		console.log('Error while checking password');
-					// 		return done();
-					// 	}
-					// 	else if (check){
-					// 		console.log('НАКОНЕЦ-ТО ТЫ ДОЛБАЕБ ЗАШЕЛ ', [{email: result.rows[0].email, firstname: result.rows[0].firstname}]);
-					// 		return done(null, [{email: result.rows[0].email, firstname: result.rows[0].firstname}]);
-					// 	}
-					// 	else{
-					// 		console.log('КЛОУН БЛЯТЬ ЛОГИН НЕПРАВИЛЬНЫЙ');
-					// 		req.flash('danger', "Oops. Incorrect login details.");
-					// 		return done(null, false);
-					// 	}
-					// });
-					let resPas = result.rows[0].password.replace(/\s+/g,'');
-					console.log('resPas = ', resPas);
-					if (password == resPas){
-							console.log('НАКОНЕЦ-ТО ТЫ ДОЛБАЕБ ЗАШЕЛ ', {email: result.rows[0].email, first_name: result.rows[0].first_name});
-							return done(null, {email: result.rows[0].email, first_name: result.rows[0].first_name});
+			pool.connect(function (err, client, donePool) {
+					client.query('SELECT id, first_name, last_name,  email, password FROM users WHERE email=$1', [username], function(err, result) {
+						donePool(12);
+						console.log('ТО Я КАРОЧЕ В ПАСПОРТЕ ДАТУ ПОЛУЧИЛ ', result.rows[0]);
+						if(err) {
+							return done(err)
 						}
-						else{
-							console.log('КЛОУН БЛЯТЬ ЛОГИН НЕПРАВИЛЬНЫЙ');
+						if(result.rows[0] == null){
 							req.flash('danger', "Oops. Incorrect login details.");
-							return done(null, false);
+							console.log('НЕТ ТАКОГО ПОЛЬЗОВАТЕЛЯ!');
+							return done(null, false, {message : 'user didnt found'});
 						}
+						else {
+							let resPas = result.rows[0].password.replace(/\s+/g,'');
+							console.log('resPas = ', resPas);
+							if (password == resPas){
+									console.log('НАКОНЕЦ-ТО ТЫ ДОЛБАЕБ ЗАШЕЛ ', {email: result.rows[0].email, first_name: result.rows[0].first_name});
+									return done(null, {email: result.rows[0].email, first_name: result.rows[0].first_name});
+								}
+								else{
+									console.log('КЛОУН БЛЯТЬ ЛОГИН НЕПРАВИЛЬНЫЙ');
+									req.flash('danger', "Oops. Incorrect login details.");
+									return done(null, false);
+								}
 
-				}
-			}))
+						}
+					});
+			});
 		}
 
 		catch(e){throw (e);}
