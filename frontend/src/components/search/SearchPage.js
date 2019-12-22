@@ -3,20 +3,14 @@ import './SearchStyles.css';
 const Search = (props) => {
   const [showUser, setShowUser] = useState(false);
   const [user, setUser] = useState(null);
+
   return (
     <div className='search-block'>
         <input
-          onClick={() =>
-            {setShowUser(!showUser)}} type='text' placeholder='Search' onChange = {(event) => props.updateSearchText(event.target.value)} value={props.searchText}/>
-      {showUser ?
+          onChange = {(event) => props.updateSearchText(event.target.value)} value={props.searchText}/>
         <div className='search-user-block'>
-          пРИВЕТ
+          {props.searchUsers}
         </div>
-       :
-        <div>
-
-        </div>
-      }
     </div>
   )
 }

@@ -24,6 +24,9 @@ let SearchPageContainer = (props) => {
           <SearchPage
             searchText = {props.searchText}
             updateSearchText = {props.updateSearchTextAC}
+            fetching = {props.fetching}
+            lastFetchText = {props.lastFetchText}
+            searchUsers = {props.searchUsers}
           />
         :
         <Redirect to='/signup'></Redirect>
@@ -37,7 +40,10 @@ let mapStateToProps = (state) => {
   return {
     userAuthenticatedId : state.searchReducer.userAuthenticatedId,
     isAuthenticated: state.searchReducer.isAuthenticated,
-    searchText: state.searchReducer.searchText
+    searchText: state.searchReducer.searchText,
+    fetching: state.searchReducer.fetching,
+    lastFetchText: state.searchReducer.lastFetchText,
+    searchUsers: state.searchReducer.searchUsers
   }
 };
 

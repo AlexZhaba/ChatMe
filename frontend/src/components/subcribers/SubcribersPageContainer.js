@@ -15,12 +15,6 @@ let SubscriberPageContainer = (props) => {
     return (
         <div>
             <Header
-              userAuthenticatedId = {props.userAuthenticatedId}
-              isAuthenticated = {props.isAuthenticated}
-              user = {props.user}
-              logout={props.logout}
-              updateSearchText = {props.updateSearchText}
-              searchText = {props.searchText}
           />
           <UniversalUsers
               users = {props.subscribers}
