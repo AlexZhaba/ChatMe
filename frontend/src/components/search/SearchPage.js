@@ -16,7 +16,7 @@ const Search = (props) => {
     props.setLastFetchText('');
   }
   if (props.searchUsers.length > 0) {
-    var searchUsers = props.searchUsers.map (e => e.email)
+    var searchUsers = props.searchUsers;
   }
   if ((props.searchText.length == 0) && (props.searchUsers.length > 0)) {
     props.setSearchUsers([]);
@@ -24,8 +24,14 @@ const Search = (props) => {
   console.log(searchUsers)
   return (
     <div className='search-block'>
+      <div className='search-inputk'>
+
+        <div>
         <input
+          placeholder='search users'
           onChange = {(event) => props.updateSearchText(event.target.value)} value={props.searchText}/>
+        </div>
+      </div>
         <div className='search-user-block'>
           <UniversalUsers
             users = {searchUsers}

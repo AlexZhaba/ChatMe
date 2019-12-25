@@ -275,7 +275,7 @@ module.exports = function (app) {
 		console.log(str);
 		pool.connect(function (err, client, done) {
 				client.query(str, (err, result) => {
-					done();
+					// done();
 					if (err) {
 						throw err;
 					} else {
