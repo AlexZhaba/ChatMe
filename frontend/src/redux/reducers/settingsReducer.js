@@ -93,13 +93,17 @@ export const thunk_getAllInfoAuthenticatedUser = () => {
       if (data.data.errorCode == 1) {
         dispatch(isAuthenticatedAC(false));
       } else {
-        debugger;
         dispatch(isAuthenticatedAC(true));
         dispatch(setUserAuthenticatedIdAC(data.data.user.email));
         dispatch(setFirstNameAC(data.data.user.first_name));
         dispatch(setLastNameAC(data.data.user.last_name));
         dispatch(setPasswordAC(data.data.user.password));
         dispatch(setUsernameAC(data.data.user.email));
+
+        dispatch(setStatusAC(data.data.user.status));
+        dispatch(setBirthdayAC(data.data.user.birthday));
+        dispatch(setCountryAC(data.data.user.country));
+        dispatch(setAboutAC(data.data.user.About));
         console.log(data);
       }
     })

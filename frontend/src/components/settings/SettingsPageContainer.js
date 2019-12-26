@@ -18,7 +18,7 @@ import {
   setAboutAC
 } from './../../redux/reducers/settingsReducer';
 import Sidebar from './../sidebar/sidebar'
-
+import SettingsPage from './SettingsPage'
 
 let SettingsPageContainer = (props) => {
   useEffect(() => {
@@ -32,102 +32,27 @@ let SettingsPageContainer = (props) => {
         isAuthenticated = {props.isAuthenticated}
         logout={props.thunk_logout}
       />
-    <Sidebar/>
-      <div className='settings-wrapper'>
-            <div className='settings-article'>
-                USER SETTINGS
-            </div>
-            <div className='main-block-settings'>
-              <div className='wrapper-main'>
-                  <div className='name-wrapper'>
-                    User
-                  </div>
-                  <div className='left-block-set'>
-                      <div className='section-block'>
-                          <div className='section-content'>
-                              <div className='name-content'>
-                                  Firstname
-                              </div>
+      <Sidebar/>
+    <SettingsPage
+      first_name = {props.first_name}
+      last_name = {props.last_name}
+      username = {props.username}
+      password = {props.password}
+      status = {props.status}
+      birthday = {props.birthday}
+      country = {props.country}
+      about = {props.about}
 
-                              <div className='name-content'>
-                                  Lastname
-                              </div>
-                              <div className='name-content'>
-                                  Password
-                              </div>
-                              <div className='name-content'>
-                                  Username
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-                  <div className='right-block-set'>
-                      <div className='section-block'>
+      setFirstName = {props.setFirstNameAC}
+      setLastName = {props.setLastNameAC}
+      setPassword = {props.setPasswordAC}
+      setUsername = {props.setUsernameAC}
+      setStatus = {props.setStatusAC}
+      setBirthday = {props.setBirthdayAC}
+      setCountry = {props.setCountryAC}
+      setAbout =  {props.setAboutAC}
 
-                          <div className='section-content'>
-                              <div className='input-content'>
-                                  <input type='text' placeholder='Firstname' value={props.first_name} onChange={(event) => props.setFirstNameAC(event.target.value)}/>
-                              </div>
-                              <div className='input-content'>
-                                  <input type='text' placeholder='Lastname' value={props.last_name} onChange={(event) => props.setLastNameAC(event.target.value)}/>
-                              </div>
-                              <div className='input-content'>
-                                  <input type='text' placeholder='password' value={props.password} onChange={(event) => props.setPasswordAC(event.target.value)}/>
-                              </div>
-                              <div className='input-content'>
-                                  <input type='text' placeholder='Username' value={props.username} onChange={(event) => props.setUsernameAC(event.target.value)}/>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-                <div className='wrapper-main'>
-                  <div className='name-wrapper'>
-                    Profile
-                  </div>
-                    <div className='left-block-set'>
-                        <div className='section-block'>
-                            <div className='section-content'>
-                                <div className='name-content'>
-                                    Status
-                                </div>
-                                <div className='name-content'>
-                                    Birthday
-                                </div>
-                                <div className='name-content'>
-                                    Country
-                                </div>
-                                <div className='name-content'>
-                                    About
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className='right-block-set'>
-                        <div className='section-block'>
-
-                            <div className='section-content'>
-                                <div className='input-content'>
-                                    <input type='text' placeholder='Status' value={props.status} onChange={(event) => props.setStatusAC(event.target.value)}/>
-                                </div>
-                                <div className='input-content'>
-                                    <input type='text' placeholder='Birthday' value={props.birthday} onChange={(event) => props.setBirthdayAC(event.target.value)}/>
-                                </div>
-                                <div className='input-content'>
-                                    <input type='text' placeholder='Country' value={props.country} onChange={(event) => props.setCountryAC(event.target.value)}/>
-                                </div>
-                                <div className='input-content'>
-                                    <input type='text' placeholder='About' value={props.about} onChange={(event) => props.setAboutAC(event.target.value)}/>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className='button-accept' onClick={props.thunk_acceptSettings}>
-                  Accept
-                </div>
-            </div>
-        </div>
+    />
     </div>
   )
 }
