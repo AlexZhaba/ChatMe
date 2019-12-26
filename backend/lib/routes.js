@@ -252,14 +252,28 @@ module.exports = function (app) {
 		console.log(str);
 		pool.connect(function (err, client, done) {
 				client.query(str, (err, result) => {
-					done();
+					// done();
 					if (err) {
 						throw err;
 					} else {
-						let subscribers = result.rows.map(e => e.subscriber);
-						console.log(subscribers);
-						console.log(result.rows);
-						res.json({subscribers: subscribers});
+						let ans = [];
+						let userCount = result.rows.length;
+						console.log(userCount);
+						for (let i = 0; i < userCount; i++) {
+							let str = `SELECT first_name, last_name, email FROM USERS WHERE email='${result.rows[i].username}'`;
+							client.query(str, (err, result) => {
+								console.log('err = ', err);
+								console.log(str)
+								console.log(i,' - ', result.rows[0])
+								ans.push(result.rows[0]);
+								if (ans.length == userCount) {
+									done();
+									console.log('я отправил ', ans)
+									res.json({subscribers: ans});
+									return 0;
+								}
+							});
+						};
 					}
 				});
 		});
@@ -279,10 +293,28 @@ module.exports = function (app) {
 					if (err) {
 						throw err;
 					} else {
-						let subscribtions = result.rows.map(e => e.username);
-						console.log(subscribtions);
-						console.log(result.rows);
-						res.json({subscribtions: subscribtions});
+						let ans = [];
+						let userCount = result.rows.length;
+						console.log(userCount);
+						for (let i = 0; i < userCount; i++) {
+							let str = `SELECT first_name, last_name, email FROM USERS WHERE email='${result.rows[i].username}'`;
+							client.query(str, (err, result) => {
+								console.log('err = ', err);
+								console.log(str)
+								console.log(i,' - ', result.rows[0])
+								ans.push(result.rows[0]);
+								if (ans.length == userCount) {
+									done();
+									console.log('я отправил ', ans)
+									res.json({subscribtions: ans});
+									return 0;
+								}
+							});
+						};
+						// let subscribtions = result.rows.map(e => e.username);
+						// console.log(result.rows);
+						// console.log('ans = ', ans)
+
 					}
 				});
 		});

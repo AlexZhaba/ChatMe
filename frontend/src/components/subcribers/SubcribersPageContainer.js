@@ -1,9 +1,13 @@
 import {connect} from 'react-redux';
+import {Redirect} from 'react-router-dom';
 import React, { useEffect } from 'react';
 import {
-    thunk_getSubscribers
+    thunk_getSubscribers,
+    thunk_getAuthenticatedStatus,
+    thunk_logout
 } from './../../redux/reducers/subscribersPageReducer';
-import UniversalUsers from './../UniversalUsers/UniversalUsers'
+import UniversalUsers from './../UniversalUsers/UniversalUsers';
+import SubscribersPage from './subscribersPage'
 import Header from './../header/Header';
 let SubscriberPageContainer = (props) => {
     useEffect(() => {
@@ -12,14 +16,25 @@ let SubscriberPageContainer = (props) => {
             props.thunk_getSubscribers();
         // }
     },[]);
+    useEffect(() => {
+      props.thunk_getAuthenticatedStatus();
+    },[]);
+    debugger;
     return (
-        <div>
-            <Header
+      <div>
+          <Header
+            userAuthenticatedId = {props.userAuthenticatedId}
+            isAuthenticated = {props.isAuthenticated}
+            logout={props.thunk_logout}
           />
-          <UniversalUsers
-              users = {props.subscribers}
+        {((props.isAuthenticated)||(props.userAuthenticatedId == '')) ?
+          <SubscribersPage
+              subscribers = {props.subscribers}
           />
-        </div>
+        :
+        <Redirect to='/signup'></Redirect>
+        }
+      </div>
     );
 }
 
@@ -27,8 +42,10 @@ let mapStateToProps = (state) => {
     debugger;
     return {
         subscribers : state.subscribersPageReducer.subscribers,
-        userAuthenticatedId : state.subscribersPageReducer.userAuthenticatedId
-    }
+        userAuthenticatedId : state.subscribersPageReducer.userAuthenticatedId,
+        isAuthenticated : state.subscribersPageReducer.isAuthenticated
+    };
 };
 
-export default connect(mapStateToProps, {thunk_getSubscribers})(SubscriberPageContainer);
+export default connect(mapStateToProps, {thunk_getSubscribers,
+                       thunk_getAuthenticatedStatus, thunk_logout})(SubscriberPageContainer);

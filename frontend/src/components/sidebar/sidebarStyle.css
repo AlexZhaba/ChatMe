@@ -22,6 +22,12 @@
 .sidebar-menu-block div {
     padding: 10px;
     cursor: pointer;
+    border-radius: 4px;
+}
+.sidebar-menu-block div:hover {
+    background: #f5f5f5;
+    padding: 9px;
+    border: 1px solid #DADADA;
 }
 
 .sidebar-menu-block a {
@@ -30,6 +36,7 @@
   cursor: pointer;
 }
 .sidebar-my-profile {
+  cursor: pointer;
   font-size: 17px;
   font-weight: bold;
   border-bottom: 1px solid black;
