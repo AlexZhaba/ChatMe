@@ -74,7 +74,8 @@ module.exports = function (app) {
 		          res.json({errorCode: 1, data: 'Email not unique'});
 						}
 						else{
-							let str = `INSERT INTO users VALUES ('${uuidv4()}', '${req.body.firstName}', '${req.body.lastName}', '${req.body.username}', '${pwd}')`;
+							let str = `INSERT INTO users (id,first_name, last_name, email,password, postsCount, likesCount, subscribersCount, subscribtionsCount, avatar)
+							VALUES ('${uuidv4()}', '${req.body.firstName}', '${req.body.lastName}', '${req.body.username}', '${pwd}', 0, 0, 0, 0, false)`;
 							//console.log(str);
 							//let str = ('INSERT INTO users (id, firstname, lastname, email, password) VALUES ($1, $2, $3, $4, $5)', [uuidv4(), req.body.firstName, req.body.lastName, req.body.username, pwd]);
 							console.log('str = ',str);
@@ -90,10 +91,7 @@ module.exports = function (app) {
 									res.json({errorCode: 0, data: 'User was created', username: req.body.username});
 								}
 							});
-
-
 						}
-
 					});
 			});
 		}
@@ -152,7 +150,9 @@ module.exports = function (app) {
 					}
 				}
 				console.log('Пользователь, который авторизован = ', req.user);
-				client.query('SELECT first_name, last_name, email FROM users WHERE email=$1', [req.params.id], function(err, result) {
+				client.query(`SELECT first_name, last_name, email, status, datebirthday,
+											country, about, postsCount, likesCount, subscribersCount, subscribtionsCount
+											FROM users WHERE email=$1`, [req.params.id], function(err, result) {
 					done();
 					console.log('currentAccountsData = ', result.rows[0]);
 					if (result.rows[0] == null) {
@@ -341,6 +341,31 @@ module.exports = function (app) {
 				})
 			})
 		}
+	});
+	app.post('/api/acceptSettings', async function (req, res) {
+		res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+		res.header('Access-Control-Allow-Credentials', true);
+		res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+		let str = `UPDATE USERS SET first_name='${req.body.first_name}',
+										last_name='${req.body.last_name}',
+										password='${req.body.password}',
+										email='${req.body.username}',
+										status='${req.body.status}',
+										datebirthday='${req.body.birthday}',
+										country='${req.body.country}',
+										about='${req.body.about}'`;
+		console.log(str);
+		pool.connect((err, client, done) => {
+			client.query(str, (err, result) => {
+				done();
+				if (err) throw err
+				else {
+					console.log('ДАННЫЕ ОБНОВЛЕНЫ!');
+					res.json({message: 'Settings was update'});
+				}
+			})
+		})
 	});
 	app.post('/api/setFollowing', async function (req, res) {
 		res.header('Access-Control-Allow-Origin', 'http://localhost:3000');

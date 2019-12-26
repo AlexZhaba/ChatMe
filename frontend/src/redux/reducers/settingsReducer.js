@@ -116,3 +116,25 @@ export const thunk_logout = () => {
     )
   }
 }
+
+export const thunk_acceptSettings = () => {
+  return (dispatch, getState) => {
+    let data = {
+      first_name: getState().settingsReducer.first_name,
+      last_name: getState().settingsReducer.last_name,
+      password: getState().settingsReducer.password,
+      username: getState().settingsReducer.username,
+      status: getState().settingsReducer.status,
+      birthday: getState().settingsReducer.birthday,
+      country: getState().settingsReducer.country,
+      about: getState().settingsReducer.about
+    };
+    axios('http://localhost:5003/api/acceptSettings', {
+      method: "post",
+      data: data,
+      withCredentials: true
+    }).then(data => {
+      alert('All good!')
+    })
+  }
+}

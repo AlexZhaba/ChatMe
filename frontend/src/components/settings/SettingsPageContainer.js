@@ -7,6 +7,7 @@ import './settingsStyles.css'
 import {
   thunk_logout,
   thunk_getAllInfoAuthenticatedUser,
+  thunk_acceptSettings,
   setFirstNameAC,
   setLastNameAC,
   setPasswordAC,
@@ -122,7 +123,7 @@ let SettingsPageContainer = (props) => {
                         </div>
                     </div>
                 </div>
-                <div className='button-accept'>
+                <div className='button-accept' onClick={props.thunk_acceptSettings}>
                   Accept
                 </div>
             </div>
@@ -149,5 +150,6 @@ let mapStateToProps = (state) => {
 export default connect(mapStateToProps, {
   thunk_logout, thunk_getAllInfoAuthenticatedUser,
   setFirstNameAC, setLastNameAC, setPasswordAC, setUsernameAC,
-  setStatusAC, setBirthdayAC, setCountryAC, setAboutAC
+  setStatusAC, setBirthdayAC, setCountryAC, setAboutAC,
+  thunk_acceptSettings
 })(SettingsPageContainer);

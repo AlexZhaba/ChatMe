@@ -38,7 +38,8 @@ let AccountPage = (props) => {
                           {props.user.first_name} {props.user.last_name}
                           </div>
                         <div className='profile-status'>
-                          Ало, это Владимир Путин?
+                          
+                          {props.user.status}
                         </div>
                           <div className='profile-about-block'>
                             <div className='name-about-block'>
@@ -57,10 +58,10 @@ let AccountPage = (props) => {
                                 {props.user.email}
                               </div>
                               <div className='child-value-block'>
-                                Russia
+                                {props.user.country}
                               </div>
                               <div className='child-value-block'>
-                                27.05.2003
+                                {props.user.datebirthday}
                               </div>
                             </div>
                           </div>
@@ -83,7 +84,7 @@ let AccountPage = (props) => {
                     <div className='bottom-info'>
                       <div className='bottom-block'>
                         <div className='value-bottom'>
-                          100
+                          {props.user.subscriberscount}
                         </div>
                         <div className='name-bottom'>
                           subscriber
@@ -92,7 +93,7 @@ let AccountPage = (props) => {
                       </div>
                       <div className='bottom-block'>
                         <div className='value-bottom'>
-                          100
+                          {props.user.subscribtionscount}
                         </div>
                         <div className='name-bottom'>
                           subscribtion
@@ -101,7 +102,7 @@ let AccountPage = (props) => {
                       </div>
                       <div className='bottom-block'>
                         <div className='value-bottom'>
-                          100
+                          {props.user.likescount}
                         </div>
                         <div className='name-bottom'>
                           likes
@@ -110,7 +111,7 @@ let AccountPage = (props) => {
                       </div>
                       <div className='bottom-block'>
                         <div className='value-bottom'>
-                          100
+                          {props.user.postscount}
                         </div>
                         <div className='name-bottom'>
                           posts
