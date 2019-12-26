@@ -10,6 +10,7 @@ import SignUpContainer from './components/signup/SignUpContainer';
 import SubscriberPageContainer from './components/subcribers/SubcribersPageContainer';
 import SubscribtionPageContainer from './components/subscribtion/subscribtionPageContainer';
 import SearchPageContainer from './components/search/SearchPageContainer'
+import SettingsPageContainer from './components/settings/SettingsPageContainer';
 import { withRouter } from "react-router";
 class App extends Component {
   render() {
@@ -38,6 +39,10 @@ class App extends Component {
         <Route
           path='/search'
           render = {(props) => <SearchPageContainer {...props}/>}
+        />
+        <Route
+          path='/settings'
+          render = {(props) => <SettingsPageContainer {...props}/>}
         />
       </div>
     );

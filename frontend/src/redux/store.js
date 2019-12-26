@@ -1,12 +1,12 @@
 import {combineReducers, createStore, applyMiddleware} from "redux";
 import thunkMiddleware from 'redux-thunk';
 import accountReducer from './reducers/accountReducer';
-import settingsReducer from './reducers/settingsReducer'
 import registrationReducer from './reducers/registrationReducer'
 import signUpReducer from './reducers/signUpReducer'
 import subscribersPageReducer from './reducers/subscribersPageReducer';
 import subscribtionReducer from './reducers/subscribtionReducer';
 import searchReducer from './reducers/searchReducer';
+import settingsReducer from './reducers/settingsReducer';
 let reducers = combineReducers({
   accountReducer,
   settingsReducer,
@@ -14,7 +14,8 @@ let reducers = combineReducers({
   signUpReducer,
   subscribersPageReducer,
   subscribtionReducer,
-  searchReducer
+  searchReducer,
+  settingsReducer
 })
 
 let store = createStore(reducers, applyMiddleware(thunkMiddleware));

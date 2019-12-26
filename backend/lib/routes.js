@@ -319,6 +319,29 @@ module.exports = function (app) {
 				});
 		});
 	});
+	app.get('/api/getAllInfoAuthenticatedUser', async function (req, res) {
+		res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+		res.header('Access-Control-Allow-Credentials', true);
+		res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+		if (!req.user) {
+			res.json({errorCode: 1})
+		}
+		else {
+			let username = req.user.email.replace(/\s+/g,'');
+			let str = `SELECT * FROM USERS WHERE EMAIL='${username}'`;
+			pool.connect((err, client, done) => {
+				client.query(str, (err, result) => {
+					done();
+					if (err) throw err
+					else {
+						console.log('ВОТ КАРОЧЕ МОЙ ЮЗЕР ', result.rows[0]);
+						res.json({user: result.rows[0]})
+					}
+				})
+			})
+		}
+	});
 	app.post('/api/setFollowing', async function (req, res) {
 		res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
 		res.header('Access-Control-Allow-Credentials', true);
