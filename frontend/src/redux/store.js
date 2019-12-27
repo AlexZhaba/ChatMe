@@ -7,6 +7,7 @@ import subscribersPageReducer from './reducers/subscribersPageReducer';
 import subscribtionReducer from './reducers/subscribtionReducer';
 import searchReducer from './reducers/searchReducer';
 import settingsReducer from './reducers/settingsReducer';
+import newsReducer from './reducers/newsReducer'
 let reducers = combineReducers({
   accountReducer,
   settingsReducer,
@@ -15,7 +16,8 @@ let reducers = combineReducers({
   subscribersPageReducer,
   subscribtionReducer,
   searchReducer,
-  settingsReducer
+  settingsReducer,
+  newsReducer
 })
 
 let store = createStore(reducers, applyMiddleware(thunkMiddleware));

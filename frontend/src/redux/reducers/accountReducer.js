@@ -19,8 +19,8 @@ let initialState = {
   user: {},
   userAuthenticatedId: 0,
   URLAdress: '/account',
-  newPostValue: 'Hello',
-  posts : null,
+  newPostValue: '',
+  posts : null,                   
   searchText: '',
   following: false
 };
@@ -168,6 +168,7 @@ export const thunk_addNewPost = () => {
     }).then((data) => {
       debugger;
       dispatch(addUserPostsAC(data.data.posts));
+      dispatch(updateNewPostValueAC(''));
     })
   }
 }

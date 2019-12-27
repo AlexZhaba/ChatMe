@@ -4,13 +4,13 @@ import './sidebarStyle.css';
 let Sidebar = (props) => {
     return (
         <div className='sidebar-menu-block'>
-        <div className='sidebar-my-profile'>My profile</div>
-        <div>News</div>
-        <div><NavLink to='/search'>Search</NavLink></div>
-        <div><NavLink to='/settings'>Settings</NavLink></div>
+        <NavLink to={`/account/${props.userAuthenticatedId}`}><div >My Profile</div></NavLink>
+        <NavLink to='/news'><div>News</div></NavLink>
+        <NavLink to='/search'><div>Search</div></NavLink>
+        <NavLink to='/settings'><div>Settings</div></NavLink>
 
-        <div><NavLink to='/subscribers'>Subscribers</NavLink></div>
-        <div><NavLink to='/subscribtions'>Subscribtion</NavLink></div>
+        <NavLink to='/subscribers'><div>Subscribers</div></NavLink>
+        <NavLink to='/subscribtions'><div>Subscribtion</div></NavLink>
       </div>
     );
 };

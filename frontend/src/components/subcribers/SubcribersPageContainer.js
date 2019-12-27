@@ -24,7 +24,10 @@ let SubscriberPageContainer = (props) => {
     debugger;
     return (
       <div>
-        <Sidebar/>
+        <Sidebar
+          userAuthenticatedId = {props.userAuthenticatedId}
+
+        />
           <Header
             userAuthenticatedId = {props.userAuthenticatedId}
             isAuthenticated = {props.isAuthenticated}

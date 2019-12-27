@@ -11,13 +11,16 @@ import {
   setSearchUsersAC,
   setLastFetchTextAC
 } from './../../redux/reducers/searchReducer'
+import Sidebar from './../sidebar/sidebar';
 let SearchPageContainer = (props) => {
   useEffect(() => {
     props.thunk_getAuthenticatedStatus();
   },[]);
   return (
     <div>
-        {}
+        <Sidebar
+          userAuthenticatedId = {props.userAuthenticatedId}
+          />
         <Header
           logout = {props.thunk_logout}
           userAuthenticatedId = {props.userAuthenticatedId}

@@ -33,7 +33,9 @@ let SettingsPageContainer = (props) => {
         isAuthenticated = {props.isAuthenticated}
         logout={props.thunk_logout}
       />
-      <Sidebar/>
+      <Sidebar
+        userAuthenticatedId = {props.userAuthenticatedId}
+      />
     <SettingsPage
       userAuthenticatedId = {props.userAuthenticatedId}
       first_name = {props.first_name}

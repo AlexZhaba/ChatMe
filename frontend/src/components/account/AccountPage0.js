@@ -17,7 +17,9 @@ let AccountPage = (props) => {
           <div> NOT FOUND </div>
             :
           <div>
-            <Sidebar/>
+            <Sidebar
+                userAuthenticatedId = {props.userAuthenticatedId}
+              />
             <Header
                 userAuthenticatedId = {props.userAuthenticatedId}
                 isAuthenticated = {props.isAuthenticated}

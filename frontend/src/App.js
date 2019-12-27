@@ -11,6 +11,7 @@ import SubscriberPageContainer from './components/subcribers/SubcribersPageConta
 import SubscribtionPageContainer from './components/subscribtion/subscribtionPageContainer';
 import SearchPageContainer from './components/search/SearchPageContainer'
 import SettingsPageContainer from './components/settings/SettingsPageContainer';
+import NewsPageContainer from './components/news/NewsPageContainer'
 import { withRouter } from "react-router";
 class App extends Component {
   render() {
@@ -43,6 +44,10 @@ class App extends Component {
         <Route
           path='/settings'
           render = {(props) => <SettingsPageContainer {...props}/>}
+        />
+        <Route
+          path='/news'
+          render = {(props) => <NewsPageContainer {...props}/>}
         />
       </div>
     );
