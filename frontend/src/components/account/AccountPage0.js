@@ -28,7 +28,7 @@ let AccountPage = (props) => {
                 <div className='main-profile-block'>
                   <div className='left-profile-block'>
                     <div className='profile-image-block'>
-                    <img src='https://st.kp.yandex.net/im/kadr/2/5/7/kinopoisk.ru-Dmitriy-Nagiev-2574443.jpg'/>
+                    <img src={`http://localhost:5003/api/avatar/${props.userAuthenticatedId}@${Date.now()}`}/>
                     </div>
                   </div>
                   <div className='right-profile-block'>
@@ -38,7 +38,7 @@ let AccountPage = (props) => {
                           {props.user.first_name} {props.user.last_name}
                           </div>
                         <div className='profile-status'>
-                          
+
                           {props.user.status}
                         </div>
                           <div className='profile-about-block'>
