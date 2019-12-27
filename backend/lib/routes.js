@@ -5,13 +5,11 @@ var passport = require("passport");
 
 var fs = require('fs');
 var request = require('request');
+var multer = require('multer');
 const { Pool, Client } = require('pg')
 const bcrypt= require('bcrypt')
 const uuidv4 = require('uuid/v4');
-//TODO
-//Add forgot password functionality
-//Add email confirmation functionality
-//Add edit account page
+const path = require('path')
 
 app.use(express.static('public'));
 
@@ -31,6 +29,17 @@ const pool = new Pool({
 
 let userValidate = require('./userValidate');
 
+let storage = multer.diskStorage({
+		destination: (req, file, cb) => {
+			cb(null, path.join(__dirname,'public/avatars'));
+		},
+		filename: (req, file, cb) => {
+			console.log('file = ',file)
+			cb(null, req.user.email.replace(/\s+/g,''));
+		}
+})
+let upload = multer({ storage: storage }).single('file');
+
 module.exports = function (app) {
 	app.get('/api/isAuthenticated', (req, res) => {
 		console.log('user = ', req.user);
@@ -42,6 +51,10 @@ module.exports = function (app) {
 			console.log('Пользователь не зарегистрирован');
 		}
 	});
+	app.get('/api/avatar/:id', (req, res) => {
+		console.log('req.params = ',req.params.id)
+		res.sendfile(path.join(__dirname, '/public/avatars', req.params.id));
+	})
 	app.get('/api/getAuthenticatedStatus', (req, res) => {
 		res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
 		res.header('Access-Control-Allow-Credentials', true);
@@ -274,10 +287,32 @@ module.exports = function (app) {
 								}
 							});
 						};
+						if (userCount == 0) {
+							done();
+							res.json({subscribers: []});
+							return 0;
+						}
 					}
 				});
 		});
 	});
+	app.post('/api/uploadAvatar', (req, res) => {
+		res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+		res.header('Access-Control-Allow-Credentials', true);
+		res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+		console.log('req.user = ',req.user)
+		upload(req, res, function (err) {
+					console.log(err)
+           if (err instanceof multer.MulterError) {
+						 return res.json({message: err})
+           } else if (err) {
+      				return res.json({message: err})
+           }
+      return res.json({message: 'NICE'})
+    })
+		// res.json({message:'NICE'})
+	})
 	app.get('/api/getSubscribtions', async function (req, res) {
 		res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
 		res.header('Access-Control-Allow-Credentials', true);
@@ -296,6 +331,7 @@ module.exports = function (app) {
 						let ans = [];
 						let userCount = result.rows.length;
 						console.log(userCount);
+						console.log('rows = ', result.rows)
 						for (let i = 0; i < userCount; i++) {
 							let str = `SELECT first_name, last_name, email FROM USERS WHERE email='${result.rows[i].username}'`;
 							client.query(str, (err, result) => {
@@ -311,6 +347,11 @@ module.exports = function (app) {
 								}
 							});
 						};
+						if (userCount == 0) {
+							done();
+							res.json({subscribtions: []});
+							return 0;
+						}
 						// let subscribtions = result.rows.map(e => e.username);
 						// console.log(result.rows);
 						// console.log('ans = ', ans)

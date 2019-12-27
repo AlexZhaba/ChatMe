@@ -9,6 +9,8 @@ import {
 import UniversalUsers from './../UniversalUsers/UniversalUsers';
 import SubscribersPage from './subscribersPage'
 import Header from './../header/Header';
+import Sidebar from './../sidebar/sidebar'
+
 let SubscriberPageContainer = (props) => {
     useEffect(() => {
         console.log('UserID = ' + props.userAuthenticatedId)
@@ -22,6 +24,7 @@ let SubscriberPageContainer = (props) => {
     debugger;
     return (
       <div>
+        <Sidebar/>
           <Header
             userAuthenticatedId = {props.userAuthenticatedId}
             isAuthenticated = {props.isAuthenticated}

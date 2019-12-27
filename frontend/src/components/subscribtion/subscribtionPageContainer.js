@@ -8,20 +8,22 @@ import {
 } from './../../redux/reducers/subscribtionReducer';
 import SubscribtionPage from './subscribtionPage';
 import Header from './../header/Header';
-
+import Sidebar from './../sidebar/sidebar'
 let SubscribtionsPageContainer = (props) => {
     useEffect(() => {
-        console.log('UserID = ' + props.userAuthenticatedId)
+        console.log('UserID = ' + props.userAuthenticatedId);
         // if (props.userAuthenticatedId) {
+            debugger;
             props.thunk_getSubscribtions();
         // }
     },[]);
     useEffect(() => {
       props.thunk_getAuthenticatedStatus();
     },[]);
-    debugger;
+    // debugger;
     return (
         <div>
+            <Sidebar/>
             <Header
               userAuthenticatedId = {props.userAuthenticatedId}
               isAuthenticated = {props.isAuthenticated}

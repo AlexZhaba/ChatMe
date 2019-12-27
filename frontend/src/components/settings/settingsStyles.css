@@ -4,6 +4,7 @@
   background: #E5E5E5;
   width: 100%;
   min-height: 1000px;
+  /* position: relative; */
 }
 
 .settings-article {
@@ -118,4 +119,21 @@ input {
   transition: 0.1s all ease-in-out;
   background: #2F6CA5;
   color: white;
+}
+.avatar-wrapper {
+  position: absolute;
+  right: 150px;
+  top: 140px;
+  width: 280px;
+  height: 480px;
+  padding: 10px;
+  background: white;
+  border: 1px solid #DADADA;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+}
+.avatar-wrapper img {
+  width:280px;
+  height: 430px;
 }

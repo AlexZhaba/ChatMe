@@ -34,6 +34,7 @@ let SettingsPageContainer = (props) => {
       />
       <Sidebar/>
     <SettingsPage
+      userAuthenticatedId = {props.userAuthenticatedId}
       first_name = {props.first_name}
       last_name = {props.last_name}
       username = {props.username}
@@ -51,7 +52,7 @@ let SettingsPageContainer = (props) => {
       setBirthday = {props.setBirthdayAC}
       setCountry = {props.setCountryAC}
       setAbout =  {props.setAboutAC}
-
+      thunk_acceptSettings = {props.thunk_acceptSettings}
     />
     </div>
   )

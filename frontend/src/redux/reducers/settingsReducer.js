@@ -11,7 +11,7 @@ const SET_SETT_STATUS = 'SET_SETT_STATUS';
 const SET_SETT_BIRTHDAY = 'SET_SETT_BIRTHDAY';
 const SET_SETT_COUNTRY = 'SET_SETT_COUNTRY';
 const SET_SETT_ABOUT = 'SET_SETT_ABOUT';
-
+const SET_SETT_AVATAR_URL = 'SET_SETT_AVATAR_URL';
 
 
 let initialState = {
@@ -24,7 +24,8 @@ let initialState = {
   status: '',
   birthday: '',
   country: '',
-  about: ''
+  about: '',
+  avatarURL: ''
 }
 
 const settingsReducer = (state = initialState, action) => {
@@ -60,6 +61,9 @@ const settingsReducer = (state = initialState, action) => {
     case SET_SETT_ABOUT: {
       return {...state, about: action.about}
     }
+    case SET_SETT_AVATAR_URL: {
+      return {...state, avatarURL: action.avatarURL}
+    }
     default:
         return state;
   }
@@ -81,6 +85,7 @@ export const setBirthdayAC = (birthday) => ({type: SET_SETT_BIRTHDAY, birthday})
 export const setCountryAC = (country) => ({type: SET_SETT_COUNTRY, country});
 export const setAboutAC = (about) => ({type: SET_SETT_ABOUT, about});
 
+export const setAvatarURL = (avatarURL) => ({type:SET_SETT_AVATAR_URL, avatarURL});
 
 export const thunk_getAllInfoAuthenticatedUser = () => {
   return (dispatch) => {
@@ -99,11 +104,11 @@ export const thunk_getAllInfoAuthenticatedUser = () => {
         dispatch(setLastNameAC(data.data.user.last_name));
         dispatch(setPasswordAC(data.data.user.password));
         dispatch(setUsernameAC(data.data.user.email));
-
         dispatch(setStatusAC(data.data.user.status));
-        dispatch(setBirthdayAC(data.data.user.birthday));
+        dispatch(setBirthdayAC(data.data.user.datebirthday));
         dispatch(setCountryAC(data.data.user.country));
-        dispatch(setAboutAC(data.data.user.About));
+        dispatch(setAboutAC(data.data.user.about));
+        //dipatch()
         console.log(data);
       }
     })
