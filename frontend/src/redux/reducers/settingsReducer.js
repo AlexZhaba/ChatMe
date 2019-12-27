@@ -12,7 +12,7 @@ const SET_SETT_BIRTHDAY = 'SET_SETT_BIRTHDAY';
 const SET_SETT_COUNTRY = 'SET_SETT_COUNTRY';
 const SET_SETT_ABOUT = 'SET_SETT_ABOUT';
 const SET_SETT_AVATAR_URL = 'SET_SETT_AVATAR_URL';
-
+const SET_SETT_DATE = 'SET_SETT_DATE';
 
 let initialState = {
   isAuthenticated: false,
@@ -25,7 +25,8 @@ let initialState = {
   birthday: '',
   country: '',
   about: '',
-  avatarURL: ''
+  avatarURL: '',
+  date: ''
 }
 
 const settingsReducer = (state = initialState, action) => {
@@ -64,6 +65,9 @@ const settingsReducer = (state = initialState, action) => {
     case SET_SETT_AVATAR_URL: {
       return {...state, avatarURL: action.avatarURL}
     }
+    case SET_SETT_DATE: {
+      return {...state, date: action.date}
+    }
     default:
         return state;
   }
@@ -84,7 +88,7 @@ export const setStatusAC = (status) => ({type: SET_SETT_STATUS, status});
 export const setBirthdayAC = (birthday) => ({type: SET_SETT_BIRTHDAY, birthday});
 export const setCountryAC = (country) => ({type: SET_SETT_COUNTRY, country});
 export const setAboutAC = (about) => ({type: SET_SETT_ABOUT, about});
-
+export const setDateAC = (date) => ({type: SET_SETT_DATE, date});
 export const setAvatarURL = (avatarURL) => ({type:SET_SETT_AVATAR_URL, avatarURL});
 
 export const thunk_getAllInfoAuthenticatedUser = () => {
@@ -145,5 +149,20 @@ export const thunk_acceptSettings = () => {
     }).then(data => {
       alert('All good!')
     })
+  }
+}
+
+export const thunk_UploadImage = (selectedFile) => {
+  return (dispatch) => {
+    const data = new FormData();
+    data.append('file', selectedFile);
+    axios('http://localhost:5003/api/uploadAvatar',{
+      data: data,
+      withCredentials: true,
+      method: 'post'
+    }).then(data => {
+      //alert(data.data.message);
+      dispatch(setDateAC(Date.now()));
+    });
   }
 }

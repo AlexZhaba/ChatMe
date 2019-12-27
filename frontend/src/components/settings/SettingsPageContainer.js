@@ -8,6 +8,7 @@ import {
   thunk_logout,
   thunk_getAllInfoAuthenticatedUser,
   thunk_acceptSettings,
+  thunk_UploadImage,
   setFirstNameAC,
   setLastNameAC,
   setPasswordAC,
@@ -53,6 +54,7 @@ let SettingsPageContainer = (props) => {
       setCountry = {props.setCountryAC}
       setAbout =  {props.setAboutAC}
       thunk_acceptSettings = {props.thunk_acceptSettings}
+      thunk_UploadImage = {props.thunk_UploadImage}
     />
     </div>
   )
@@ -69,7 +71,8 @@ let mapStateToProps = (state) => {
     status: state.settingsReducer.status,
     birthday: state.settingsReducer.birthday,
     country: state.settingsReducer.country,
-    about: state.settingsReducer.about
+    about: state.settingsReducer.about,
+    date: state.settingsReducer.date
   }
 }
 
@@ -77,5 +80,5 @@ export default connect(mapStateToProps, {
   thunk_logout, thunk_getAllInfoAuthenticatedUser,
   setFirstNameAC, setLastNameAC, setPasswordAC, setUsernameAC,
   setStatusAC, setBirthdayAC, setCountryAC, setAboutAC,
-  thunk_acceptSettings
+  thunk_acceptSettings, thunk_UploadImage
 })(SettingsPageContainer);

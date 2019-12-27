@@ -6,27 +6,20 @@ let SettingsPage = (props) => {
   debugger;
   const [selectedFile, selectFile] = useState(null);
   console.log('SELECTED_FILE = ', selectedFile);
-  let onUploadImage = () => {
-    const data = new FormData();
-    data.append('file', selectedFile);
-    axios('http://localhost:5003/api/uploadAvatar',{
-      data: data,
-      withCredentials: true,
-      method: 'post'
-    }).then(res => alert(res.data.message));
-  }
   console.log('userAID = ', props.userAuthenticatedId);
+  let avatar = `http://localhost:5003/api/avatar/${props.userAuthenticatedId}@${Date.now()}`;
+  debugger;
   return (
     <div className='settings-wrapper'>
           <div className='avatar-wrapper'>
             <div className='avatar-block'>
-              <img src={`http://localhost:5003/api/avatar/${props.userAuthenticatedId}`}/>
+              <img src={avatar}/>
             </div>
             <div>
               <input type='file' onChange={(event) => selectFile(event.target.files[0])}/>
             </div>
             <div>
-              <button type='button' onClick={onUploadImage}>Change</button>
+              <button type='button' onClick={() => props.thunk_UploadImage(selectedFile)}>Change</button>
             </div>
           </div>
           <div className='settings-article'>

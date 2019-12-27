@@ -52,8 +52,11 @@ module.exports = function (app) {
 		}
 	});
 	app.get('/api/avatar/:id', (req, res) => {
-		console.log('req.params = ',req.params.id)
-		res.sendfile(path.join(__dirname, '/public/avatars', req.params.id));
+		console.log('req.params = ',req.params.id);
+		let username = req.params.id.slice(0, req.params.id.indexOf('@'));
+		console.log(username, ' ',req.params.id.indexOf('@'))
+		console.log(username)
+		res.sendfile(path.join(__dirname, '/public/avatars', username));
 	})
 	app.get('/api/getAuthenticatedStatus', (req, res) => {
 		res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
