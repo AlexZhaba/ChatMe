@@ -28,7 +28,7 @@ let AccountPage = (props) => {
                 <div className='main-profile-block'>
                   <div className='left-profile-block'>
                     <div className='profile-image-block'>
-                    <img src={`http://localhost:5003/api/avatar/${props.userAuthenticatedId}@${Date.now()}`}/>
+                    <img src={`http://localhost:5003/api/avatar/${props.user.email}@${Date.now()}`}/>
                     </div>
                   </div>
                   <div className='right-profile-block'>
