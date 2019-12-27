@@ -80,15 +80,15 @@ module.exports = function (app) {
 				return 0;
 			}
 			pool.connect(function (err, client, done) {
-					client.query('SELECT id FROM users WHERE "email"=$1', [req.body.username], function(err, result) {
+					client.query('SELECT *  FROM users WHERE "email"=$1', [req.body.username], function(err, result) {
 						console.log('Это все пользователи с почтой, указанной пользователем ',result.rows);
 						if(result.rows[0] != null){
 							console.log('Пользователь с данной почтой существует!');
 		          res.json({errorCode: 1, data: 'Email not unique'});
 						}
 						else{
-							let str = `INSERT INTO users (id,first_name, last_name, email,password, postsCount, likesCount, subscribersCount, subscribtionsCount, avatar)
-							VALUES ('${uuidv4()}', '${req.body.firstName}', '${req.body.lastName}', '${req.body.username}', '${pwd}', 0, 0, 0, 0, false)`;
+							let str = `INSERT INTO users (first_name, last_name, email,password, postsCount, likesCount, subscribersCount, subscribtionsCount, avatar)
+							VALUES ('${req.body.firstName}', '${req.body.lastName}', '${req.body.username}', '${pwd}', 0, 0, 0, 0, 0)`;
 							//console.log(str);
 							//let str = ('INSERT INTO users (id, firstname, lastname, email, password) VALUES ($1, $2, $3, $4, $5)', [uuidv4(), req.body.firstName, req.body.lastName, req.body.username, pwd]);
 							console.log('str = ',str);
@@ -395,7 +395,7 @@ module.exports = function (app) {
 										status='${req.body.status}',
 										datebirthday='${req.body.birthday}',
 										country='${req.body.country}',
-										about='${req.body.about}'`;
+										about='${req.body.about}' WHERE email='${req.body.username}'`;
 		console.log(str);
 		pool.connect((err, client, done) => {
 			client.query(str, (err, result) => {
@@ -541,9 +541,9 @@ passport.use('local', new  LocalStrategy({passReqToCallback : true}, (req, usern
 			console.log('username = |', username);
 			username = username.replace(/\s+/g,'');
 			pool.connect(function (err, client, donePool) {
-					client.query('SELECT id, first_name, last_name,  email, password FROM users WHERE email=$1', [username], function(err, result) {
-						donePool(12);
-						console.log('ТО Я КАРОЧЕ В ПАСПОРТЕ ДАТУ ПОЛУЧИЛ ', result.rows[0]);
+					client.query('SELECT  first_name, last_name,  email, password FROM users WHERE email=$1', [username], function(err, result) {
+						donePool();
+						// console.log('ТО Я КАРОЧЕ В ПАСПОРТЕ ДАТУ ПОЛУЧИЛ ', result.rows[0]);
 						if(err) {
 							return done(err)
 						}
