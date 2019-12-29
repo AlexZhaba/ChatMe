@@ -12,6 +12,7 @@ import {
   updateNewPostValueAC,
   updateSearchTextAC,
   thunk_getUserPosts,
+  setUpdateAC,
   //IT'S THUNKS
   thunk_GetAccountInfo,
   thunk_logout,
@@ -21,16 +22,18 @@ import {
 } from '../../redux/reducers/accountReducer';
 import AccountPage0 from './AccountPage0'
 let AccountContainer = (props) => {
+  debugger;
   useEffect( () => {
     console.log('USE EFFECT == ' + props.user.email,' ');
     if ((props.user.email)) {
-      debugger;
+      // debugger;
       props.thunk_getFollowing(props.user.email);
     }
-  },[props.match.params.id, props.posts]);
+  },[props.match.params.id, props.user]);
   useEffect( () => {
     if ((props.user.email)) {
       props.thunk_getUserPosts(props.user.email);
+      // props.thunk_GetAccountInfo(props.match.params.id)
     }
   }, [props.user]);
   useEffect( () => {
@@ -38,6 +41,11 @@ let AccountContainer = (props) => {
    }, [props.match.params.id]);
   let logout = () => {
     props.thunk_logout();
+  }
+  if (props.update) {
+    debugger;
+    props.thunk_GetAccountInfo(props.match.params.id);
+    props.setUpdateAC(false);
   }
     console.log('really_props = ', props);
     return (
@@ -72,8 +80,9 @@ const mapStateToProps = (state) => {
     notFound : state.accountReducer.notFound,
     newPostValue : state.accountReducer.newPostValue,
     posts : state.accountReducer.posts,
-    following: state.accountReducer.following
+    following: state.accountReducer.following,
+    update: state.accountReducer.update
   }
 }
 export default connect(mapStateToProps, {thunk_GetAccountInfo, thunk_addNewPost, thunk_getFollowing, thunk_setFollowing,
-                                        thunk_logout, updateNewPostValueAC, thunk_getUserPosts})(AccountContainer);
+                                        thunk_logout, updateNewPostValueAC, thunk_getUserPosts, setUpdateAC})(AccountContainer);

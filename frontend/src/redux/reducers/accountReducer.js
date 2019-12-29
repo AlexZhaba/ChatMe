@@ -11,6 +11,8 @@ const ADD_USER_POSTS = 'ADD_USER_POSTS';
 const SET_USER_POSTS = 'SET_USER_POSTS';
 const SET_FOLLOWING = 'SET_FOLLOWING';
 const UPDATE_SEARCH_TEXT = 'UPDATE_SEARCH_TEXT';
+const UPDATE_ACC = 'UPDATE_ACC';
+
 
 const MY_IP = require('./../../../config').MY_IP;
 
@@ -24,7 +26,8 @@ let initialState = {
   newPostValue: '',
   posts : null,
   searchText: '',
-  following: false
+  following: false,
+  update: false
 };
 //          REDUCER
 
@@ -71,6 +74,9 @@ const accountReducer = (state = initialState, action) => {
     case UPDATE_SEARCH_TEXT: {
       return {...state, searchText: action.searchText}
     }
+    case UPDATE_ACC: {
+      return {...state, update: action.update}
+    }
     default:
       return state;
   }
@@ -88,6 +94,7 @@ const updateNewPostValueAC = (newPostValue) => ({type: UPDATE_NEW_POST_VALUE, ne
 const addUserPostsAC = (posts) => ({type: ADD_USER_POSTS, posts : posts[0]});
 const setUserPostsAC = (posts) => ({type: SET_USER_POSTS, posts});
 const setFollowingAC = (following) => ({type: SET_FOLLOWING, following})
+const setUpdateAC = (update) => ({type: UPDATE_ACC, update})
 
 export {setUserAC};
 export {setURLAdressAC};
@@ -98,7 +105,7 @@ export {notFoundAC};
 export {updateNewPostValueAC};
 export {addUserPostsAC};
 export {setUserPostsAC};
-
+export {setUpdateAC}
 // THUNKS
 export const thunk_GetAccountInfo = (id) => {
   return (dispatch) => {
@@ -171,6 +178,7 @@ export const thunk_addNewPost = () => {
       withCredentials: true
     }).then((data) => {
       debugger;
+      dispatch(setUpdateAC(true));
       dispatch(addUserPostsAC(data.data.posts));
       dispatch(updateNewPostValueAC(''));
     })

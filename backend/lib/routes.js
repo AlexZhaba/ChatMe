@@ -469,23 +469,47 @@ module.exports = function (app) {
 		console.log('req = ', req.user);
 		let str = `INSERT INTO user_posts VALUES ('${req.user.email}', '3', '${req.body.newPostValue}', '0', '${DATA_POST}')`;
 		console.log('str = ' + str)
-		pool.connect(function (err, client, done) {
+		// pool.connect(function (err, client, done) {
+		// 		client.query(str, (err, result) => {
+		// 			done();
+		// 			console.log('YA V QUERY');
+		// 			console.log(err);
+		// 			if (err) {
+		// 				res.json(err)
+		// 			} else {
+		// 				console.log(result)
+		// 				let newPost = [{
+		// 					text: req.body.newPostValue,
+		// 					publicdata : DATA_POST
+		// 				}];
+		// 				res.json({data: 'Posts was created', posts : newPost});
+		// 			}
+		// 		});
+		// });
+		pool.connect((err, client, done) => {
+			if (err) throw err;
+			client.query(`SELECT postscount FROM USERS WHERE EMAIL='${req.user.email}'`, (err, result) => {
+				if (err) throw err;
+				let postsCount = parseInt(result.rows[0].postscount);
+				let data = new Date();
+				let DATA_POST = data.getHours()+ ':' + data.getMinutes()  + ', '  + data.getUTCDate() + '.' + parseInt(data.getUTCMonth() + 1).toString() + '.' + data.getFullYear();
+				let str = `INSERT INTO user_posts VALUES ('${req.user.email}', '${postsCount + 1}', '${req.body.newPostValue}', '0', '${DATA_POST}')`;
 				client.query(str, (err, result) => {
-					done();
-					console.log('YA V QUERY');
-					console.log(err);
-					if (err) {
-						res.json(err)
-					} else {
-						console.log(result)
+					if (err) throw err;
+					client.query(`UPDATE USERS SET POSTSCOUNT=POSTSCOUNT+1 WHERE EMAIL='${req.user.email}'`, (err, result) => {
+						done();
+						if (err) throw err;
 						let newPost = [{
-							text: req.body.newPostValue,
-							publicdata : DATA_POST
-						}];
+								text: req.body.newPostValue,
+								publicdata : DATA_POST,
+								id: postsCount + 1
+							}];
+						console.log('newPost = ', newPost)
 						res.json({data: 'Posts was created', posts : newPost});
-					}
-				});
-		});
+					})
+				})
+			});
+		})
 	})
 	app.get('/api/logout', function(req, res){
 	res.header('Access-Control-Allow-Origin', `http://${MY_IP}:3000`);
