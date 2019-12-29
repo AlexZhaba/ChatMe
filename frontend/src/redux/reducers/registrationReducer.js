@@ -8,6 +8,8 @@ const UPDATE_ACTION_NEWS = 'UPDATE_ACTION_NEWS';
 const UPDATE_SHOW = 'UPDATE_SHOW';
 const UPDATE_REDIRECT_URL = 'UPDATE_REDIRECT_URL';
 const DISCHARGE_ACCOUNT_PAGE = 'DISCHARGE_ACCOUNT_PAGE';
+
+const MY_IP = require('./../../../config').MY_IP;
 let initialState = {
   name: '',
   surname: '',
@@ -86,7 +88,7 @@ export const dischargeAccountPageAC = () => ({type: DISCHARGE_ACCOUNT_PAGE});
 export const thunk_addForm = () => {
   return (dispatch, getState) => {
     console.log('ЩАС БУДЕТ ДЖЕЛАТЬСЯ ЗАПРОС!');
-    axios.post('http://localhost:5003/api/registration', {
+    axios.post(`http://${MY_IP}:5003/api/registration`, {
       firstName: getState().registrationReducer.name,
       lastName: getState().registrationReducer.surname,
       username: getState().registrationReducer.email,

@@ -14,6 +14,7 @@ const SET_SETT_ABOUT = 'SET_SETT_ABOUT';
 const SET_SETT_AVATAR_URL = 'SET_SETT_AVATAR_URL';
 const SET_SETT_DATE = 'SET_SETT_DATE';
 
+const MY_IP = require('./../../../config').MY_IP;
 let initialState = {
   isAuthenticated: false,
   userAuthenticatedId: '',
@@ -93,7 +94,7 @@ export const setAvatarURL = (avatarURL) => ({type:SET_SETT_AVATAR_URL, avatarURL
 
 export const thunk_getAllInfoAuthenticatedUser = () => {
   return (dispatch) => {
-    axios.get('http://localhost:5003/api/getAllInfoAuthenticatedUser', {
+    axios.get(`http://${MY_IP}:5003/api/getAllInfoAuthenticatedUser`, {
       withCredentials: true
     }).then(data => {
       debugger;
@@ -120,7 +121,7 @@ export const thunk_getAllInfoAuthenticatedUser = () => {
 }
 export const thunk_logout = () => {
   return (dispatch) => {
-    axios.get('http://localhost:5003/api/logout',{
+    axios.get(`http://${MY_IP}:5003/api/logout`,{
       withCredentials: true
     }).then((answer) => {
         console.log('answer = ',answer.data);
@@ -142,7 +143,7 @@ export const thunk_acceptSettings = () => {
       country: getState().settingsReducer.country,
       about: getState().settingsReducer.about
     };
-    axios('http://localhost:5003/api/acceptSettings', {
+    axios(`http://${MY_IP}:5003/api/acceptSettings`, {
       method: "post",
       data: data,
       withCredentials: true
@@ -156,7 +157,7 @@ export const thunk_UploadImage = (selectedFile) => {
   return (dispatch) => {
     const data = new FormData();
     data.append('file', selectedFile);
-    axios('http://localhost:5003/api/uploadAvatar',{
+    axios(`http://${MY_IP}:5003/api/uploadAvatar`,{
       data: data,
       withCredentials: true,
       method: 'post'

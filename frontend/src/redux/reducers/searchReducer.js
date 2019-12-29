@@ -6,6 +6,8 @@ const SET_SRC_USER_AUTHENTICATED_ID = 'SET_SRC_USER_AUTHENTICATED_ID';
 const SET_SEARCH_USERS = 'SET_SEARCH_USERS';
 const SET_LAST_FETCH_TEXT = 'SET_LAST_FETCH_TEXT';
 const SET_FETCHING = 'SET_FETCHING';
+
+const MY_IP = require('./../../../config').MY_IP;
 let initialState = {
   searchText: '',
   isAuthenticated: false,
@@ -51,7 +53,7 @@ export const setLastFetchTextAC = (lastFetchText) =>  ({type: SET_LAST_FETCH_TEX
 export const setFetchingAC = (fetching) =>  ({type: SET_FETCHING, fetching});
 export const thunk_getAuthenticatedStatus = () => {
   return (dispatch) => {
-    axios.get('http://localhost:5003/api/getAuthenticatedStatus', {
+    axios.get(`http://${MY_IP}:5003/api/getAuthenticatedStatus`, {
       withCredentials: true
     }).then(data => {
       debugger;
@@ -62,7 +64,7 @@ export const thunk_getAuthenticatedStatus = () => {
 }
 export const thunk_logout = () => {
   return (dispatch) => {
-    axios.get('http://localhost:5003/api/logout',{
+    axios.get(`http://${MY_IP}:5003/api/logout`,{
       withCredentials: true
     }).then((answer) => {
         console.log('answer = ',answer.data);
@@ -76,7 +78,7 @@ export const thunk_logout = () => {
 export const thunk_searchUsers = (searchText) => {
   return (dispatch) => {
     dispatch(setFetchingAC(true));
-    axios.post('http://localhost:5003/api/searchUsers', {
+    axios.post(`http://${MY_IP}:5003/api/searchUsers`, {
       searchText: searchText
     }).then(data => {
       dispatch(setFetchingAC(false));

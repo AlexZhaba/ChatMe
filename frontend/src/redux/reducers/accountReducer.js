@@ -12,6 +12,8 @@ const SET_USER_POSTS = 'SET_USER_POSTS';
 const SET_FOLLOWING = 'SET_FOLLOWING';
 const UPDATE_SEARCH_TEXT = 'UPDATE_SEARCH_TEXT';
 
+const MY_IP = require('./../../../config').MY_IP;
+
 let initialState = {
   isAuthenticated: false,
   myAccount: false,
@@ -20,7 +22,7 @@ let initialState = {
   userAuthenticatedId: 0,
   URLAdress: '/account',
   newPostValue: '',
-  posts : null,                   
+  posts : null,
   searchText: '',
   following: false
 };
@@ -100,9 +102,11 @@ export {setUserPostsAC};
 // THUNKS
 export const thunk_GetAccountInfo = (id) => {
   return (dispatch) => {
-    axios.get(`http://localhost:5003/api/account/${id}`, {
+    // debugger;
+    axios.get(`http://${MY_IP}:5003/api/account/${id}`, {
       withCredentials: true
     }).then(response => {
+      // debugger;
       if (response.data.errorCode != 0) {
         console.log('НАДА NOT FOUND! ',);
         dispatch(notFoundAC(true));
@@ -126,7 +130,7 @@ export const thunk_getUserPosts = (username) => {
     let dataInJSON = {
       "username" : username
     }
-    axios('http://localhost:5003/api/getAllPosts', {
+    axios(`http://${MY_IP}:5003/api/getAllPosts`, {
       method: "post",
       data: dataInJSON,
       withCredentials: true
@@ -142,7 +146,7 @@ export const thunk_getFollowing = (username) => {
     let dataInJSON = {
       "username" : username
     };
-    axios('http://localhost:5003/api/following', {
+    axios(`http://${MY_IP}:5003/api/following`, {
       method: "post",
       data: dataInJSON,
       withCredentials: true
@@ -161,7 +165,7 @@ export const thunk_addNewPost = () => {
     let dataInJSON = {
       "newPostValue": getState().accountReducer.newPostValue
     }
-    axios('http://localhost:5003/api/newPostValue', {
+    axios(`http://${MY_IP}:5003/api/newPostValue`, {
       method: "post",
       data: dataInJSON,
       withCredentials: true
@@ -181,7 +185,7 @@ export const thunk_setFollowing = (newFollowing) => {
     }
     console.log(getState().accountReducer);
     debugger;
-    axios('http://localhost:5003/api/setFollowing', {
+    axios(`http://${MY_IP}:5003/api/setFollowing`, {
       method: "post",
       data: dataInJSON,
       withCredentials: true
@@ -192,7 +196,7 @@ export const thunk_setFollowing = (newFollowing) => {
 }
 export const thunk_logout = () => {
   return (dispatch) => {
-    axios.get('http://localhost:5003/api/logout',{
+    axios.get(`http://${MY_IP}:5003/api/logout`,{
       withCredentials: true
     }).then((answer) => {
         console.log('answer = ',answer.data);

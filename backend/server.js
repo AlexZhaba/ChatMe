@@ -17,7 +17,8 @@ app.use(express.cookieParser())
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors({credentials: true,
-  origin: "http://localhost:3000"}));
+  origin: "http://192.168.0.238:3000"
+}));
 app.use(passport.initialize());
 app.use(passport.session());
 

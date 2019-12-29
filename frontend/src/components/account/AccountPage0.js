@@ -8,6 +8,7 @@ import MyPosts from './MyPosts';
 import NewPost from './NewPost';
 import {NavLink} from 'react-router-dom';
 import Sidebar from '../sidebar/sidebar';
+const MY_IP = require('./../../../config').MY_IP;
 
 let AccountPage = (props) => {
       console.log('AccountPageProps = ', props);
@@ -30,7 +31,7 @@ let AccountPage = (props) => {
                 <div className='main-profile-block'>
                   <div className='left-profile-block'>
                     <div className='profile-image-block'>
-                    <img src={`http://localhost:5003/api/avatar/${props.user.email}@${Date.now()}`}/>
+                    <img src={`http://${MY_IP}:5003/api/avatar/${props.user.email}@${Date.now()}`}/>
                     </div>
                   </div>
                   <div className='right-profile-block'>

@@ -1,11 +1,13 @@
 import React from 'react';
 import './UniversalUsersStyles.css';
 import {NavLink} from 'react-router-dom';
+const MY_IP = require('./../../../config').MY_IP;
+
 let UniversalUsers = (props) => {
   if (props.users ) {
       var users = props.users.map(e =>
         <div className='UnUser-block'>
-          <img src ={`http://localhost:5003/api/avatar/${e.email}@${Date.now()}`}/>
+          <img src ={`http://${MY_IP}:5003/api/avatar/${e.email}@${Date.now()}`}/>
         <div className='UnUser-info'>
           <div className='UnUser-name'>
             <div>

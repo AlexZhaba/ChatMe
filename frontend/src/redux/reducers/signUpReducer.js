@@ -6,6 +6,8 @@ const UPDATE_SIGN_UP_ACTION_NEWS = 'UPDATE_SIGN_UP_ACTION_NEWS';
 const UPDATE_SIGN_UP_SHOW = 'UPDATE_SIGN_UP_SHOW';
 const DISCHARGE_SIGN_UP_PAGE = 'DISCHARGE_SIGN_UP_PAGE';
 
+const MY_IP = require('./../../../config').MY_IP;
+
 let initialState = {
   actionNews : '',
   email: '',
@@ -63,7 +65,9 @@ export const thunk_addForm = () => {
       "username" : getState().signUpReducer.email,
       "password": getState().signUpReducer.password
     };
-    axios('http://localhost:5003/api/signup',{
+    console.log(`http://${MY_IP}:5003/api/signup`)
+    debugger;
+    axios(`http://${MY_IP}:5003/api/signup`,{
       method: "post",
       data: dataInJSON,
       withCredentials: true

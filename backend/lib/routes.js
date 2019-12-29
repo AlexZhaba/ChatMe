@@ -16,6 +16,8 @@ app.use(express.static('public'));
 const LocalStrategy = require('passport-local').Strategy;
 //const connectionString = process.env.DATABASE_URL;
 
+var MY_IP = require('./config').MY_IP;
+
 var currentAccountsData = [];
 
 const pool = new Pool({
@@ -52,6 +54,10 @@ module.exports = function (app) {
 		}
 	});
 	app.get('/api/avatar/:id', (req, res) => {
+		res.header('Access-Control-Allow-Origin', `http://${MY_IP}:3000`);
+		res.header('Access-Control-Allow-Credentials', true);
+		res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 		console.log('req.params = ',req.params.id);
 		let username = req.params.id.slice(0, req.params.id.indexOf('@'));
 		console.log(username, ' ',req.params.id.indexOf('@'))
@@ -59,7 +65,7 @@ module.exports = function (app) {
 		res.sendfile(path.join(__dirname, '/public/avatars', username));
 	})
 	app.get('/api/getAuthenticatedStatus', (req, res) => {
-		res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+		res.header('Access-Control-Allow-Origin', `http://${MY_IP}:3000`);
 		res.header('Access-Control-Allow-Credentials', true);
 		res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
 		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -118,7 +124,7 @@ module.exports = function (app) {
 	});
 	app.get('/api/account', function (req, res, next) {
 		//console.log('АХУЕННЫЙ ПАСПОРТ = ');
-		res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+		res.header('Access-Control-Allow-Origin', `http://${MY_IP}:3000`);
 		res.header('Access-Control-Allow-Credentials', true);
 		res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
 		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -142,7 +148,7 @@ module.exports = function (app) {
 			errorCode : 123,
 			userAuthenticatedId : ''
 		};
-		res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+		res.header('Access-Control-Allow-Origin', `http://${MY_IP}:3000`);
 		res.header('Access-Control-Allow-Credentials', true);
 		res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
 		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -185,7 +191,7 @@ module.exports = function (app) {
 
 	});
 	app.post('/api/searchUsers', async function (req, res) {
-		res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+		res.header('Access-Control-Allow-Origin', `http://${MY_IP}:3000`);
 		res.header('Access-Control-Allow-Credentials', true);
 		res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
 		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -203,7 +209,7 @@ module.exports = function (app) {
 		});
 	})
 	app.post('/api/getAllPosts', async function (req, res) {
-		res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+		res.header('Access-Control-Allow-Origin', `http://${MY_IP}:3000`);
 		res.header('Access-Control-Allow-Credentials', true);
 		res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
 		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -231,7 +237,7 @@ module.exports = function (app) {
 
 	});
 	app.post('/api/following', async function (req, res) {
-		res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+		res.header('Access-Control-Allow-Origin', `http://${MY_IP}:3000`);
 		res.header('Access-Control-Allow-Credentials', true);
 		res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
 		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -258,7 +264,7 @@ module.exports = function (app) {
 		});
 	});
 	app.get('/api/getSubscribers', async function (req, res) {
-		res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+		res.header('Access-Control-Allow-Origin', `http://${MY_IP}:3000`);
 		res.header('Access-Control-Allow-Credentials', true);
 		res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
 		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -275,8 +281,9 @@ module.exports = function (app) {
 						let ans = [];
 						let userCount = result.rows.length;
 						console.log(userCount);
+						console.log(result.rows)
 						for (let i = 0; i < userCount; i++) {
-							let str = `SELECT first_name, last_name, email FROM USERS WHERE email='${result.rows[i].username}'`;
+							let str = `SELECT first_name, last_name, email FROM USERS WHERE email='${result.rows[i].subscriber}'`;
 							client.query(str, (err, result) => {
 								console.log('err = ', err);
 								console.log(str)
@@ -300,7 +307,7 @@ module.exports = function (app) {
 		});
 	});
 	app.post('/api/uploadAvatar', (req, res) => {
-		res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+		res.header('Access-Control-Allow-Origin', `http://${MY_IP}:3000`);
 		res.header('Access-Control-Allow-Credentials', true);
 		res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
 		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -317,7 +324,7 @@ module.exports = function (app) {
 		// res.json({message:'NICE'})
 	})
 	app.get('/api/getSubscribtions', async function (req, res) {
-		res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+		res.header('Access-Control-Allow-Origin', `http://${MY_IP}:3000`);
 		res.header('Access-Control-Allow-Credentials', true);
 		res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
 		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -364,7 +371,7 @@ module.exports = function (app) {
 		});
 	});
 	app.get('/api/getAllInfoAuthenticatedUser', async function (req, res) {
-		res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+		res.header('Access-Control-Allow-Origin', `http://${MY_IP}:3000`);
 		res.header('Access-Control-Allow-Credentials', true);
 		res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
 		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -387,7 +394,7 @@ module.exports = function (app) {
 		}
 	});
 	app.post('/api/acceptSettings', async function (req, res) {
-		res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+		res.header('Access-Control-Allow-Origin', `http://${MY_IP}:3000`);
 		res.header('Access-Control-Allow-Credentials', true);
 		res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
 		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -412,7 +419,7 @@ module.exports = function (app) {
 		})
 	});
 	app.post('/api/setFollowing', async function (req, res) {
-		res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+		res.header('Access-Control-Allow-Origin', `http://${MY_IP}:3000`);
 		res.header('Access-Control-Allow-Credentials', true);
 		res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
 		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -453,7 +460,7 @@ module.exports = function (app) {
 
 	})
 	app.post('/api/newPostValue', async function (req, res)  {
-		res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+		res.header('Access-Control-Allow-Origin', `http://${MY_IP}:3000`);
 		res.header('Access-Control-Allow-Credentials', true);
 		res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
 		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -481,7 +488,7 @@ module.exports = function (app) {
 		});
 	})
 	app.get('/api/logout', function(req, res){
-	res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+	res.header('Access-Control-Allow-Origin', `http://${MY_IP}:3000`);
     res.header('Access-Control-Allow-Credentials', true);
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -505,7 +512,7 @@ module.exports = function (app) {
 	});
 
 	app.post('/api/signup',	passport.authenticate('local', {failureRedirect: '/failureLogin'}), function (req, res) {
-	res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+	res.header('Access-Control-Allow-Origin', `http://${MY_IP}:3000`);
     res.header('Access-Control-Allow-Credentials', true);
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");

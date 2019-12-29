@@ -5,6 +5,7 @@ const SET_SUBSCRIBERS = 'SET_SUBSCRIBERS';
 const SET_SUBB_IS_AUTHENTICATED = 'SET_SUBB_IS_AUTHENTICATED';
 const SET_SUBB_USER_AUTHENTICATED_ID = 'SET_SUBB_USER_AUTHENTICATED_ID';
 
+const MY_IP = require('./../../../config').MY_IP;
 let initialState = {
     subscribers: [],
     userAuthenticatedId: '',
@@ -38,7 +39,7 @@ export const isAuthenticatedAC = (isAuthenticated) => ({type: SET_SUBB_IS_AUTHEN
 
 export const thunk_getSubscribers = () => {
     return (dispatch) => {
-        axios.get('http://localhost:5003/api/getSubscribers', {
+        axios.get(`http://${MY_IP}:5003/api/getSubscribers`, {
             withCredentials: true
         }).then(data => {
             debugger;
@@ -48,7 +49,7 @@ export const thunk_getSubscribers = () => {
 }
 export const thunk_getAuthenticatedStatus = () => {
   return (dispatch) => {
-    axios.get('http://localhost:5003/api/getAuthenticatedStatus', {
+    axios.get(`http://${MY_IP}:5003/api/getAuthenticatedStatus`, {
       withCredentials: true
     }).then(data => {
       //debugger;
@@ -59,7 +60,7 @@ export const thunk_getAuthenticatedStatus = () => {
 }
 export const thunk_logout = () => {
   return (dispatch) => {
-    axios.get('http://localhost:5003/api/logout',{
+    axios.get(`http://${MY_IP}:5003/api/logout`,{
       withCredentials: true
     }).then((answer) => {
         console.log('answer = ',answer.data);

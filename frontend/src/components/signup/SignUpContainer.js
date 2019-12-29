@@ -11,12 +11,16 @@ import {
   thunk_addForm
 } from '../../redux/reducers/signUpReducer'
 
+const MY_IP = require('./../../../config').MY_IP;
+
 let SignUpContainer = (props) => {
   console.log('ContainerProps = ',props.updateSignUpPasswordAC);
   useEffect(() => {
-    axios.get('http://localhost:5003/api/isAuthenticated', {
+    axios.get(`http://${MY_IP}:5003/api/isAuthenticated`, {
       withCredentials: true
     }).then((answer) => {
+      alert('Data');
+
       console.log(answer.data);
       if (answer.data.errorCode == 1) {
         console.log('data = ', answer.data);
@@ -58,4 +62,3 @@ let mapStateToProps = (state) => {
 // second arguments will become to (value) => dispatch(NAME_OF_ACTION_CREATOR(value))
 export default connect(mapStateToProps, {updateSignUpEmailAC, dischargeSignUpPage,
             updateSignUpPasswordAC, thunk_addForm, updateSignUpShowAC})(SignUpContainer);
-  
