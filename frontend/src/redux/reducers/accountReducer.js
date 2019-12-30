@@ -198,6 +198,7 @@ export const thunk_setFollowing = (newFollowing) => {
       data: dataInJSON,
       withCredentials: true
     }).then(data => {
+      dispatch(setUpdateAC(true));
       dispatch(setFollowingAC(newFollowing));
     });
   }

@@ -9,6 +9,7 @@ let MyPosts = (props) => {
                                 text={p.text}
                                 datePublic = {p.publicdata}
                                 likesCount = {p.likescount}
+                                commentsCount = {p.commentscount}
                                 thunk_onLike = {props.thunk_onLike}
                                 post_id = {p.post_id}
                                 users_profile_id = {props.users_profile_id}

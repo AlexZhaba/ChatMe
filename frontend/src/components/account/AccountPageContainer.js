@@ -14,6 +14,7 @@ import {
   thunk_getUserPosts,
   setUpdateAC,
   //IT'S THUNKS
+  thunk_sendComment,
   thunk_GetAccountInfo,
   thunk_logout,
   thunk_addNewPost,
@@ -48,6 +49,12 @@ let AccountContainer = (props) => {
     props.thunk_GetAccountInfo(props.match.params.id);
     props.setUpdateAC(false);
   }
+    useEffect(() => {
+      const interval = setInterval(() => {
+        props.thunk_GetAccountInfo(props.match.params.id);
+      }, 3000);
+      return () => clearInterval(interval);
+    }, [props.match.params.id]);
     console.log('really_props = ', props);
     return (
       <div>

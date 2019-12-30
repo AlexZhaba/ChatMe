@@ -2,6 +2,7 @@ import React from 'react';
 import './HeaderStyles.css'
 import {NavLink} from 'react-router-dom'
 
+const MY_IP = require('./../../../config').MY_IP;
 
 class Header extends React.Component {
   constructor(props) {
@@ -12,7 +13,7 @@ class Header extends React.Component {
   }
   render() {
     if ( (this.props.isAuthenticated)) {
-       let logo = 'https://bonuspark.ru/logo/default.png';
+       let logo = `http://${MY_IP}:5003/api/avatar/${this.props.userAuthenticatedId}@${Date.now()}`;
        let clickToHeaderProfile = () => {
          this.setState({show: !this.state.show});
        }

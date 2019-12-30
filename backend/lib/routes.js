@@ -218,7 +218,7 @@ module.exports = function (app) {
 		console.log('req.body = ', req.body);
 		console.log('req.user = ', req.user);
 		let username = req.body.username.replace(/\s+/g,'');
-		let str = `SELECT * FROM USER_POSTS WHERE REPLACE(username, ' ','')='${username}' ORDER BY POST_ID`;
+		let str = `SELECT * FROM USER_POSTS WHERE REPLACE(username, ' ','')='${username}' ORDER BY POST_ID DESC`;
 		console.log(str);
 		pool.connect(function (err, client, done) {
 					console.log('client = ',err)
@@ -452,13 +452,17 @@ module.exports = function (app) {
 			let str = `INSERT INTO USERS_SUBSCRIBERS VALUES('${username}','${subscriber}');`;
 			pool.connect(function (err, client, done) {
 					client.query(str, (err, result) => {
-						done();
-						if (err) {
-							throw err;
-						} else {
-							console.log('ДОБАВЛЕН ПОДПИСЧИК');
-							res.json({errorCode: 0});
-						}
+						// done();
+						if (err) throw err;
+						client.query(`UPDATE USERS SET subscribtionscount=subscribtionscount+1 WHERE email='${subscriber}'`, (err, result) => {
+							if (err) throw err;
+							client.query(`UPDATE USERS SET subscriberscount=subscriberscount+1 WHERE email='${username}'`, (err, result) => {
+								done();
+								if (err) throw err;
+								console.log('ДОБАВЛЕН ПОДПИСЧИК');
+								res.json({errorCode: 0});
+							})
+						})
 					});
 			});
 		} else {
@@ -466,13 +470,17 @@ module.exports = function (app) {
 			let str = `DELETE FROM USERS_SUBSCRIBERS WHERE username = '${username}' AND subscriber='${subscriber}'`;
 			pool.connect(function (err, client, done) {
 					client.query(str, (err, result) => {
-						done();
-						if (err) {
-							throw err;
-						} else {
-							console.log('УДАЛЕН ПОДПИСЧИК');
-							res.json({errorCode: 0});
-						}
+						// done();
+						if (err) throw err;
+						client.query(`UPDATE USERS SET subscribtionscount=subscribtionscount-1 WHERE email='${subscriber}'`, (err, result) => {
+							if (err) throw err;
+							client.query(`UPDATE USERS SET subscriberscount=subscriberscount-1 WHERE email='${username}'`, (err, result) => {
+								done();
+								if (err) throw err;
+								console.log('УДАЛЕН ПОДПИСЧИК');
+								res.json({errorCode: 0});
+							})
+						})
 					});
 			});
 		}
@@ -513,7 +521,7 @@ module.exports = function (app) {
 				let postsCount = parseInt(result.rows[0].postscount);
 				let data = new Date();
 				let DATA_POST = data.getHours()+ ':' + data.getMinutes()  + ', '  + data.getUTCDate() + '.' + parseInt(data.getUTCMonth() + 1).toString() + '.' + data.getFullYear();
-				let str = `INSERT INTO user_posts VALUES ('${req.user.email}', '${postsCount + 1}', '${req.body.newPostValue}', '0', '${DATA_POST}')`;
+				let str = `INSERT INTO user_posts VALUES ('${req.user.email}', '${postsCount + 1}', '${req.body.newPostValue}', '0', '${DATA_POST}', '0')`;
 				client.query(str, (err, result) => {
 					if (err) throw err;
 					client.query(`UPDATE USERS SET POSTSCOUNT=POSTSCOUNT+1 WHERE EMAIL='${req.user.email}'`, (err, result) => {
@@ -551,8 +559,11 @@ module.exports = function (app) {
 									if (err) throw err;
 									client.query(`INSERT INTO POSTS_LIKES VALUES ('${profile_id}', ${post_id}, '${username}')`, (err, result) => {
 										if (err) throw err;
-										done();
-										res.json({message: "POSTS WAS LIKED"});
+										client.query(`UPDATE USERS SET likescount=likescount+1 WHERE email='${profile_id}'`, (err, result) => {
+											if (err) throw err;
+											done();
+											res.json({message: "POSTS WAS LIKED"});
+										})
 									});
 								});
 				} else {
@@ -560,14 +571,59 @@ module.exports = function (app) {
 									if (err) throw err;
 									client.query(`DELETE FROM POSTS_LIKES WHERE username='${profile_id}' AND post_id=${post_id} AND liker='${username}' `, (err, result) => {
 										if (err) throw err;
-										done();
-										res.json({message: "POST WAS DISLIKED"});
+										client.query(`UPDATE USERS SET likescount=likescount-1 WHERE email='${profile_id}'`, (err, result) => {
+											if (err) throw err;
+											done();
+											res.json({message: "POSTS WAS DISLIKED"});
+										})
 									});
 								});
 				}
 			});
 		});
 	});
+	app.post('/api/sendComment', (req, res) => {
+		res.header('Access-Control-Allow-Origin', `http://${MY_IP}:3000`);
+    res.header('Access-Control-Allow-Credentials', true);
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+		let profile_id = req.body.profile_id;
+		let post_id = req.body.post_id;
+		let commentText = req.body.commentText;
+		let commentator = req.user.email;
+		pool.connect((err, client, done) => {
+			if (err) throw err;
+			client.query(`INSERT INTO POSTS_COMMENTS VALUES('${profile_id}', ${post_id}, '${commentator}', '${commentText}')`, (err, result) => {
+				if (err) throw err;
+				// done();
+				client.query(`UPDATE USER_POSTS SET commentscount=commentscount+1 WHERE username='${profile_id}' AND post_id=${post_id}`, (err, result) => {
+					if (err) throw err;
+					done();
+					res.json({
+						newComment: {
+							commentator: commentator, commenttext: commentText}
+						});
+				});
+			});
+		});
+	})
+	app.post('/api/getComments', (req, res) => {
+		res.header('Access-Control-Allow-Origin', `http://${MY_IP}:3000`);
+    res.header('Access-Control-Allow-Credentials', true);
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+		let profile_id = req.body.profile_id;
+		let post_id = req.body.post_id;
+		pool.connect((err, client, done) => {
+			if (err) throw err;
+			client.query(`SELECT * FROM POSTS_COMMENTS WHERE username='${profile_id}' AND post_id=${post_id}`, (err, result) => {
+				if (err) throw err;
+				done();
+				console.log('ВОТ КОММЕНТЫ ', result.rows);
+				res.json({comments: result.rows});
+			})
+		});
+	})
 	app.get('/api/logout', function(req, res){
 		res.header('Access-Control-Allow-Origin', `http://${MY_IP}:3000`);
     res.header('Access-Control-Allow-Credentials', true);
