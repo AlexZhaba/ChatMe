@@ -6,7 +6,7 @@ html, body {
 .account-wrapper {
   margin-top: 50px;
   width: 100%;
-  min-height: 500px;
+  min-height: 1500px;
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -302,7 +302,8 @@ html, body {
 }
 .comment-input {
   border-radius: 3px;
-  border: 1px solid black;
+  border: 1px solid #DADADA;
+  padding: 3px;
 }
 .comments-block {
   width: 100%;

@@ -1,15 +1,20 @@
 import axios from 'axios';
 import React from 'react';
 import {useState} from 'react';
+import {Redirect} from 'react-router-dom';
+
+const MY_IP = require('./../../../config').MY_IP;
 
 let SettingsPage = (props) => {
   debugger;
   const [selectedFile, selectFile] = useState(null);
   console.log('SELECTED_FILE = ', selectedFile);
   console.log('userAID = ', props.userAuthenticatedId);
-  let avatar = `http://localhost:5003/api/avatar/${props.userAuthenticatedId}@${Date.now()}`;
+  let avatar = `http://${MY_IP}:5003/api/avatar/${props.userAuthenticatedId}@${Date.now()}`;
   debugger;
   return (
+    <div>
+    {((props.isAuthenticated)||(props.userAuthenticatedId == '')) ?
     <div className='settings-wrapper'>
           <div className='avatar-wrapper'>
             <div className='avatar-block'>
@@ -118,7 +123,12 @@ let SettingsPage = (props) => {
               </div>
           </div>
       </div>
-
+    :
+    <div>
+      <Redirect to='/signup'></Redirect>
+    </div>
+    }
+    </div>
   )
 }
 

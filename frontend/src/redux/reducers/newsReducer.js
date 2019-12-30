@@ -49,6 +49,8 @@ export const thunk_logout = () => {
     }).then((answer) => {
         console.log('answer = ',answer.data);
         dispatch(isAuthenticatedAC(false));
+        dispatch(setUserAuthenticatedIdAC(''));
+
       }
     )
   }

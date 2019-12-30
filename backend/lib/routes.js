@@ -61,8 +61,12 @@ module.exports = function (app) {
 		console.log('req.params = ',req.params.id);
 		let username = req.params.id.slice(0, req.params.id.indexOf('@'));
 		console.log(username, ' ',req.params.id.indexOf('@'))
-		console.log(username)
-		res.sendfile(path.join(__dirname, '/public/avatars', username));
+		console.log(username);
+		if (fs.existsSync(path.join(__dirname, '/public/avatars', username))) {
+			res.sendfile(path.join(__dirname, '/public/avatars', username));
+		} else {
+			if (username) res.sendfile(path.join(__dirname, '/public/avatars', 'default.jpg'));
+		}
 	})
 	app.get('/api/getAuthenticatedStatus', (req, res) => {
 		res.header('Access-Control-Allow-Origin', `http://${MY_IP}:3000`);
@@ -146,7 +150,7 @@ module.exports = function (app) {
 			isAuthenticated: false,
 			user: {},
 			errorCode : 123,
-			userAuthenticatedId : ''
+			userAuthenticatedId : null
 		};
 		res.header('Access-Control-Allow-Origin', `http://${MY_IP}:3000`);
 		res.header('Access-Control-Allow-Credentials', true);

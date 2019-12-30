@@ -6,6 +6,7 @@ const SET_SETT_FIRST_NAME = 'SET_SETT_FIRST_NAME';
 const SET_SETT_LAST_NAME = 'SET_SETT_LAST_NAME';
 const SET_SETT_PASSWORD = 'SET_SETT_PASSWORD';
 const SET_SETT_USERNAME = 'SET_SETT_USERNAME';
+const SET_SETT_INITIAL_STATE = 'SET_SETT_INITIAL_STATE';
 
 const SET_SETT_STATUS = 'SET_SETT_STATUS';
 const SET_SETT_BIRTHDAY = 'SET_SETT_BIRTHDAY';
@@ -69,6 +70,9 @@ const settingsReducer = (state = initialState, action) => {
     case SET_SETT_DATE: {
       return {...state, date: action.date}
     }
+    case SET_SETT_INITIAL_STATE: {
+      return initialState;
+    }
     default:
         return state;
   }
@@ -91,7 +95,7 @@ export const setCountryAC = (country) => ({type: SET_SETT_COUNTRY, country});
 export const setAboutAC = (about) => ({type: SET_SETT_ABOUT, about});
 export const setDateAC = (date) => ({type: SET_SETT_DATE, date});
 export const setAvatarURL = (avatarURL) => ({type:SET_SETT_AVATAR_URL, avatarURL});
-
+export const setInitialStateAC = () => ({type: SET_SETT_INITIAL_STATE})
 export const thunk_getAllInfoAuthenticatedUser = () => {
   return (dispatch) => {
     axios.get(`http://${MY_IP}:5003/api/getAllInfoAuthenticatedUser`, {
@@ -126,6 +130,7 @@ export const thunk_logout = () => {
     }).then((answer) => {
         console.log('answer = ',answer.data);
         dispatch(isAuthenticatedAC(false));
+        dispatch(setUserAuthenticatedIdAC(''));
       }
     )
   }

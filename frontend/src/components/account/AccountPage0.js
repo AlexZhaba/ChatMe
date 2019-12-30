@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import axios from 'axios';
 import Header from '../header/Header'
 import './AccountPage.css'
@@ -26,12 +26,14 @@ let AccountPage = (props) => {
                 isAuthenticated = {props.isAuthenticated}
                 logout={props.logout}
               />
+            {/* {((props.user.email) && (props.posts != null)) ? */}
+            {true ?
               <div className='account-wrapper'>
                 <div className='top-content'>
                 <div className='main-profile-block'>
                   <div className='left-profile-block'>
                     <div className='profile-image-block'>
-                    <img src={`http://${MY_IP}:5003/api/avatar/${props.user.email}@${Date.now()}`}/>
+                    <img  src={`http://${MY_IP}:5003/api/avatar/${props.user.email}@${Date.now()}`}/>
                     </div>
                   </div>
                   <div className='right-profile-block'>
@@ -146,7 +148,8 @@ let AccountPage = (props) => {
                   />
 
                 </div>
-            </div>
+              </div>
+            :<div>LOADING</div>}
             {/* <Footer/> */}
           </div>
           }

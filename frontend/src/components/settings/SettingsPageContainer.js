@@ -16,13 +16,15 @@ import {
   setStatusAC,
   setBirthdayAC,
   setCountryAC,
-  setAboutAC
+  setAboutAC,
+  setInitialStateAC
 } from './../../redux/reducers/settingsReducer';
 import Sidebar from './../sidebar/sidebar'
 import SettingsPage from './SettingsPage'
 
 let SettingsPageContainer = (props) => {
   useEffect(() => {
+    props.setInitialStateAC();
     props.thunk_getAllInfoAuthenticatedUser();
   },[]);
   debugger;
@@ -38,6 +40,7 @@ let SettingsPageContainer = (props) => {
       />
     <SettingsPage
       userAuthenticatedId = {props.userAuthenticatedId}
+      isAuthenticated = {props.isAuthenticated}
       first_name = {props.first_name}
       last_name = {props.last_name}
       username = {props.username}
@@ -81,6 +84,6 @@ let mapStateToProps = (state) => {
 export default connect(mapStateToProps, {
   thunk_logout, thunk_getAllInfoAuthenticatedUser,
   setFirstNameAC, setLastNameAC, setPasswordAC, setUsernameAC,
-  setStatusAC, setBirthdayAC, setCountryAC, setAboutAC,
+  setStatusAC, setBirthdayAC, setCountryAC, setAboutAC, setInitialStateAC,
   thunk_acceptSettings, thunk_UploadImage
 })(SettingsPageContainer);

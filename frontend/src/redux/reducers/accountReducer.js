@@ -12,7 +12,7 @@ const SET_USER_POSTS = 'SET_USER_POSTS';
 const SET_FOLLOWING = 'SET_FOLLOWING';
 const UPDATE_SEARCH_TEXT = 'UPDATE_SEARCH_TEXT';
 const UPDATE_ACC = 'UPDATE_ACC';
-
+const SET_ACC_INITIAL_STATE = 'SET_ACC_INITIAL_STATE';
 
 const MY_IP = require('./../../../config').MY_IP;
 
@@ -21,7 +21,7 @@ let initialState = {
   myAccount: false,
   notFound: false,
   user: {},
-  userAuthenticatedId: 0,
+  userAuthenticatedId: '',
   URLAdress: '/account',
   newPostValue: '',
   posts : null,
@@ -77,6 +77,9 @@ const accountReducer = (state = initialState, action) => {
     case UPDATE_ACC: {
       return {...state, update: action.update}
     }
+    case SET_ACC_INITIAL_STATE: {
+      return initialState;
+    }
     default:
       return state;
   }
@@ -95,7 +98,7 @@ const addUserPostsAC = (posts) => ({type: ADD_USER_POSTS, posts : posts[0]});
 const setUserPostsAC = (posts) => ({type: SET_USER_POSTS, posts});
 const setFollowingAC = (following) => ({type: SET_FOLLOWING, following})
 const setUpdateAC = (update) => ({type: UPDATE_ACC, update})
-
+const setInitialStateAC = () => ({type: SET_ACC_INITIAL_STATE});
 export {setUserAC};
 export {setURLAdressAC};
 export {myAccountAC};
@@ -106,6 +109,7 @@ export {updateNewPostValueAC};
 export {addUserPostsAC};
 export {setUserPostsAC};
 export {setUpdateAC}
+export {setInitialStateAC};
 // THUNKS
 export const thunk_GetAccountInfo = (id) => {
   return (dispatch) => {
@@ -122,9 +126,9 @@ export const thunk_GetAccountInfo = (id) => {
 
         console.log('----- ', isAuthenticatedAC(response.data.isAuthenticated));
         dispatch(isAuthenticatedAC(response.data.isAuthenticated));
+        dispatch(setUserAuthenticatedIdAC(response.data.userAuthenticatedId));
         dispatch(myAccountAC(response.data.myAccount));
         dispatch(setUserAC(response.data.user));
-        dispatch(setUserAuthenticatedIdAC(response.data.userAuthenticatedId));
         dispatch(notFoundAC(false));
        }
     });
@@ -231,6 +235,8 @@ export const thunk_logout = () => {
         console.log('answer = ',answer.data);
         dispatch(isAuthenticatedAC(false));
         dispatch(myAccountAC(false));
+        dispatch(setUserAuthenticatedIdAC(''));
+
       }
     )
   }

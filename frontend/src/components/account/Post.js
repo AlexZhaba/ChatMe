@@ -14,6 +14,7 @@ const Post = (props) => {
         "post_id" : post_id,
         "commentText": commentText
       }
+      refComment.current.value = '';
       axios(`http://${MY_IP}:5003/api/sendComment`, {
         method: "post",
         data: data,

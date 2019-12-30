@@ -19,8 +19,6 @@ let SignUpContainer = (props) => {
     axios.get(`http://${MY_IP}:5003/api/isAuthenticated`, {
       withCredentials: true
     }).then((answer) => {
-      alert('Data');
-
       console.log(answer.data);
       if (answer.data.errorCode == 1) {
         console.log('data = ', answer.data);
