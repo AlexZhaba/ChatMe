@@ -8,7 +8,11 @@ let MyPosts = (props) => {
           props.posts.map( p => <Post
                                 text={p.text}
                                 datePublic = {p.publicdata}
-
+                                likesCount = {p.likescount}
+                                thunk_onLike = {props.thunk_onLike}
+                                post_id = {p.post_id}
+                                users_profile_id = {props.users_profile_id}
+                                liked = {p.liked}
                                />  )
 
     } else {var PostsElements = 'NO POSTS'}

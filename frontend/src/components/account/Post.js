@@ -6,23 +6,16 @@ const Post = (props) => {
         <div className='post-block'>
             <div className='post-text'>
             {props.text}
-            {/* Hello everybody! Today i want to speak about Javascript. It’s really good language, but in future we can use TypeScript for production */}
-            {/* Hello everybody! Today i want to speak about Javascript. It’s really good language, but in future we can use TypeScript for production
-            Hello everybody! Today i want to speak about Javascript. It’s really good language, but in future we can use TypeScript for production
-            Hello everybody! Today i want to speak about Javascript. It’s really good language, but in future we can use TypeScript for production
-            Hello everybody! Today i want to speak about Javascript. It’s really good language, but in future we can use TypeScript for production
-            Hello everybody! Today i want to speak about Javascript. It’s really good language, but in future we can use TypeScript for production
-            Hello everybody! Today i want to speak about Javascript. It’s really good language, but in future we can use TypeScript for production
-            Hello everybody! Today i want to speak about Javascript. It’s really good language, but in future we can use TypeScript for production
-             */}
             </div>
             <div className='bottom-post-block'>
                 <div className='child-bottom-post-block'>
-                    <div className='img-child-post'>
-                        <img src='https://image.flaticon.com/icons/png/512/149/149217.png'/>
+                    <div className='img-child-post' onClick={() => props.thunk_onLike(props.users_profile_id, props.post_id, props.likesCount)}>
+                        {props.liked ?
+                          <img src="https://img.icons8.com/ios-filled/50/000000/like.png"/> :
+                           <img src="https://img.icons8.com/ios/50/000000/like.png"/> }
                     </div>
-                    <div className='value-child-post'>
-                        10
+                    <div className='value-child-post' >
+                        {props.likesCount}
                     </div>
                 </div>
                 <div className='child-bottom-post-block'>
@@ -30,7 +23,7 @@ const Post = (props) => {
                         <img src='https://image.flaticon.com/icons/png/512/1380/1380338.png'/>
                     </div>
                     <div className='value-child-post'>
-                        10
+                        {props.post_id}
                     </div>
                 </div>
                  <div className='date-public-post-block'>
@@ -41,7 +34,7 @@ const Post = (props) => {
                         {props.datePublic}
                     </div>
                 </div>
-            
+
             </div>
         </div>
     )

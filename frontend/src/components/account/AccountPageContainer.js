@@ -18,7 +18,8 @@ import {
   thunk_logout,
   thunk_addNewPost,
   thunk_getFollowing,
-  thunk_setFollowing
+  thunk_setFollowing,
+  thunk_onLike
 } from '../../redux/reducers/accountReducer';
 import AccountPage0 from './AccountPage0'
 let AccountContainer = (props) => {
@@ -65,6 +66,7 @@ let AccountContainer = (props) => {
           thunk_setFollowing = {props.thunk_setFollowing}
           //thunk
           thunk_addNewPost = {props.thunk_addNewPost}
+          thunk_onLike = {props.thunk_onLike}
         />
       </div>
     )
@@ -84,5 +86,5 @@ const mapStateToProps = (state) => {
     update: state.accountReducer.update
   }
 }
-export default connect(mapStateToProps, {thunk_GetAccountInfo, thunk_addNewPost, thunk_getFollowing, thunk_setFollowing,
+export default connect(mapStateToProps, {thunk_GetAccountInfo, thunk_addNewPost, thunk_getFollowing, thunk_setFollowing, thunk_onLike,
                                         thunk_logout, updateNewPostValueAC, thunk_getUserPosts, setUpdateAC})(AccountContainer);

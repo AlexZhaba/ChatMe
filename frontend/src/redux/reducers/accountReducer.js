@@ -202,6 +202,26 @@ export const thunk_setFollowing = (newFollowing) => {
     });
   }
 }
+
+export const thunk_onLike = (username, post_id, likesCount) => {
+  return (dispatch) => {
+    let data = {
+      "username": username,
+      "post_id": post_id,
+      "likesCount": likesCount
+    }
+    axios(`http://${MY_IP}:5003/api/likePost`, {
+      method: "post",
+      data: data,
+      withCredentials: true
+    }).then(data => {
+      // alert(data.data.message);
+      dispatch(setUpdateAC(true));
+
+    });
+  }
+}
+
 export const thunk_logout = () => {
   return (dispatch) => {
     axios.get(`http://${MY_IP}:5003/api/logout`,{

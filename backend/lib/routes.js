@@ -196,7 +196,7 @@ module.exports = function (app) {
 		res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
 		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 		pool.connect((err, client, done) => {
-			let str = `SELECT EMAIL, FIRST_NAME, LAST_NAME FROM USERS WHERE EMAIL LIKE '${req.body.searchText}%'`;
+			let str = `SELECT EMAIL, FIRST_NAME, LAST_NAME FROM USERS WHERE EMAIL LIKE '%${req.body.searchText}%'`;
 			client.query(str,(err, result) => {
 				done();
 				if (err) {
@@ -218,19 +218,39 @@ module.exports = function (app) {
 		console.log('req.body = ', req.body);
 		console.log('req.user = ', req.user);
 		let username = req.body.username.replace(/\s+/g,'');
-		let str = `SELECT * FROM USER_POSTS WHERE REPLACE(username, ' ','')='${username}'`;
+		let str = `SELECT * FROM USER_POSTS WHERE REPLACE(username, ' ','')='${username}' ORDER BY POST_ID`;
 		console.log(str);
 		pool.connect(function (err, client, done) {
 					console.log('client = ',err)
 					client.query(str, (err, result) => {
-						done();
-						console.log(err)
-						if (err) {
-							res.json(err);
-
-						} else {
-							// console.log('Везвращаю посты пользователя ',username,' ',result.rows);
-							res.json({posts: result.rows.reverse()});
+						if (err) throw err;
+						// done();
+						// console.log(err)
+						// if (err) {
+						// 	res.json(err);
+						//
+						// } else {
+						// 	// console.log('Везвращаю посты пользователя ',username,' ',result.rows);
+						// 	res.json({posts: result.rows.reverse()});
+						// }
+						let postsCount = result.rows.length;
+						let ans = [];
+						for (let i = 0; i < postsCount; i++) {
+							let post = result.rows[i];
+							client.query(`SELECT * FROM POSTS_LIKES WHERE username='${username}' AND post_id=${post.post_id} AND liker='${req.user.email}'`, (err, result) => {
+								if (err) throw err;
+								post.liked = (result.rows.length == 0) ? false : true;
+								ans.push(post);
+								if (i == postsCount - 1) {
+									done();
+									console.log('ВОТ ЭТИ ПОСТЫ Я ОТПРАВИЛ ', ans);
+									res.json({posts: ans});
+								}
+							});
+						}
+						if (postsCount == 0) {
+							done();
+							res.json({posts: []});
 						}
 					});
 				});
@@ -511,8 +531,45 @@ module.exports = function (app) {
 			});
 		})
 	})
+	app.post('/api/likePost', (req, res) => {
+		res.header('Access-Control-Allow-Origin', `http://${MY_IP}:3000`);
+    res.header('Access-Control-Allow-Credentials', true);
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+		// console.log('НУ ДА ХОТЯТ ЛАЙКНУТЬ ПОСТ')
+		let profile_id = req.body.username;
+		let post_id = req.body.post_id;
+		let username = req.user.email;
+		let likesCount = req.body.likesCount;
+		console.log(req.body);
+		pool.connect((err, client, done) => {
+			if (err) throw err;
+			client.query(`SELECT * FROM POSTS_LIKES WHERE username='${profile_id}' AND post_id=${post_id} AND liker='${username}'`, (err, result) => {
+				if (err) throw err;
+				if (result.rows.length == 0) { // IF WE DON'T LIKE IT EARLEY
+								client.query(`UPDATE USER_POSTS SET likescount=likescount+1 WHERE username='${profile_id}' AND post_id=${post_id}`, (err, result) => {
+									if (err) throw err;
+									client.query(`INSERT INTO POSTS_LIKES VALUES ('${profile_id}', ${post_id}, '${username}')`, (err, result) => {
+										if (err) throw err;
+										done();
+										res.json({message: "POSTS WAS LIKED"});
+									});
+								});
+				} else {
+								client.query(`UPDATE USER_POSTS SET likescount=likescount-1 WHERE username='${profile_id}' AND post_id=${post_id}`, (err, result) => {
+									if (err) throw err;
+									client.query(`DELETE FROM POSTS_LIKES WHERE username='${profile_id}' AND post_id=${post_id} AND liker='${username}' `, (err, result) => {
+										if (err) throw err;
+										done();
+										res.json({message: "POST WAS DISLIKED"});
+									});
+								});
+				}
+			});
+		});
+	});
 	app.get('/api/logout', function(req, res){
-	res.header('Access-Control-Allow-Origin', `http://${MY_IP}:3000`);
+		res.header('Access-Control-Allow-Origin', `http://${MY_IP}:3000`);
     res.header('Access-Control-Allow-Credentials', true);
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");

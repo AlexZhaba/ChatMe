@@ -140,7 +140,9 @@ let AccountPage = (props) => {
                   <div></div>
                   }
                   <MyPosts
+                    thunk_onLike = {props.thunk_onLike}
                     posts = {props.posts}
+                    users_profile_id = {props.user.email}
                   />
 
                 </div>
