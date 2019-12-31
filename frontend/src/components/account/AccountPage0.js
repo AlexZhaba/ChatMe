@@ -40,11 +40,11 @@ let AccountPage = (props) => {
                     <div className='profile-info-block'>
                       <div className='top-info'>
                         <div className='profile-name-and-surname'>
-                          {props.user.first_name} {props.user.last_name}
+                          &nbsp;{props.user.first_name} {props.user.last_name}
                           </div>
                         <div className='profile-status'>
 
-                          {props.user.status}
+                          &nbsp;{props.user.status}
                         </div>
                           <div className='profile-about-block'>
                             <div className='name-about-block'>

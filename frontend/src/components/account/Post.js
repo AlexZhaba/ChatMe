@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import Comments from './comments'
+import {NavLink} from 'react-router-dom';
 const MY_IP = require('./../../../config').MY_IP;
 
 const Post = (props) => {
@@ -83,11 +84,25 @@ const Post = (props) => {
                     </div>
                     <div className='value-date'>
                         {props.datePublic}
+
+
                     </div>
                 </div>
+                <div className='author-block'>
+                  <div >
+                    Author:
+                  </div>
+                  <div className='author-name'>
+                    <NavLink to={`/account/${props.users_profile_id}`}>
+                        <img src={`http://${MY_IP}:5003/api/avatar/${props.users_profile_id}@${Date.now()}`}/>
+                    </NavLink>
 
+                    {props.users_profile_id}
+                  </div>
+                </div>
             </div>
             <div>
+
               {showComment ?
                 <div className='comments-block'>
                   <Comments

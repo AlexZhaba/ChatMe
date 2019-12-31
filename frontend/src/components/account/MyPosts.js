@@ -12,7 +12,7 @@ let MyPosts = (props) => {
                                 commentsCount = {p.commentscount}
                                 thunk_onLike = {props.thunk_onLike}
                                 post_id = {p.post_id}
-                                users_profile_id = {props.users_profile_id}
+                                users_profile_id = {p.username}
                                 liked = {p.liked}
                                />  )
 

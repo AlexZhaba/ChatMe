@@ -371,3 +371,23 @@ a {
   cursor: pointer;
   background: #2F6CA5;
 }
+.author-block {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.author-name {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #2F6CA5;
+  margin-left: 15px;
+  font-size: 20px;
+}
+.author-name img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}

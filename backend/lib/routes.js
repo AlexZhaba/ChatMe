@@ -499,7 +499,7 @@ module.exports = function (app) {
 		let data = new Date();
 		let DATA_POST = data.getHours()+ ':' + data.getMinutes()  + ', '  + data.getUTCDate() + '.' + parseInt(data.getUTCMonth() + 1).toString() + '.' + data.getFullYear();
 		console.log('req = ', req.user);
-		let str = `INSERT INTO user_posts VALUES ('${req.user.email}', '3', '${req.body.newPostValue}', '0', '${DATA_POST}')`;
+		let str = `INSERT INTO user_posts VALUES ('${req.user.email}', '3', '${req.body.newPostValue}', '0', '${DATA_POST}', ${Date.now()})`;
 		console.log('str = ' + str)
 		// pool.connect(function (err, client, done) {
 		// 		client.query(str, (err, result) => {
@@ -525,7 +525,7 @@ module.exports = function (app) {
 				let postsCount = parseInt(result.rows[0].postscount);
 				let data = new Date();
 				let DATA_POST = data.getHours()+ ':' + data.getMinutes()  + ', '  + data.getUTCDate() + '.' + parseInt(data.getUTCMonth() + 1).toString() + '.' + data.getFullYear();
-				let str = `INSERT INTO user_posts VALUES ('${req.user.email}', '${postsCount + 1}', '${req.body.newPostValue}', '0', '${DATA_POST}', '0')`;
+				let str = `INSERT INTO user_posts VALUES ('${req.user.email}', '${postsCount + 1}', '${req.body.newPostValue}', '0', '${DATA_POST}', '0', ${Date.now()})`;
 				client.query(str, (err, result) => {
 					if (err) throw err;
 					client.query(`UPDATE USERS SET POSTSCOUNT=POSTSCOUNT+1 WHERE EMAIL='${req.user.email}'`, (err, result) => {
@@ -605,7 +605,10 @@ module.exports = function (app) {
 					done();
 					res.json({
 						newComment: {
-							commentator: commentator, commenttext: commentText}
+							commentator: commentator,
+							commenttext: commentText,
+							username: profile_id
+							}
 						});
 				});
 			});
@@ -628,6 +631,40 @@ module.exports = function (app) {
 			})
 		});
 	})
+	app.get('/api/getNews', (req, res) => {
+		res.header('Access-Control-Allow-Origin', `http://${MY_IP}:3000`);
+		res.header('Access-Control-Allow-Credentials', true);
+		res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+		let authenticatedUser = req.user.email;
+		pool.connect((err, client, done) => {
+			if (err) throw err;
+			client.query(` SELECT * FROM USER_POSTS WHERE USERNAME IN (SELECT USERNAME FROM USERS_SUBSCRIBERS WHERE SUBSCRIBER='${authenticatedUser}') ORDER BY DATEINT DESC`, (err, result) => {
+				if (err) throw err;
+				// done();
+				// console.log('Я ОТПРАВИЛ НОВОСТИ')
+				// res.json({posts: result.rows});
+				let postsCount = result.rows.length;
+				let ans = [];
+				for (let i = 0; i < postsCount; i++) {
+					let post = result.rows[i];
+					client.query(`SELECT * FROM POSTS_LIKES WHERE username='${post.username}' AND post_id=${post.post_id} AND liker='${req.user.email}'`, (err, result) => {
+						if (err) throw err;
+						post.liked = (result.rows.length == 0) ? false : true;
+						ans.push(post);
+						if (i == postsCount - 1) {
+							done();
+							res.json({posts: ans});
+						}
+					});
+				}
+				if (postsCount == 0) {
+					done();
+					res.json({posts: []});
+				}
+			});
+		});
+	});
 	app.get('/api/logout', function(req, res){
 		res.header('Access-Control-Allow-Origin', `http://${MY_IP}:3000`);
     res.header('Access-Control-Allow-Credentials', true);

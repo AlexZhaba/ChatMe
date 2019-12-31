@@ -57,7 +57,7 @@ let AccountContainer = (props) => {
     useEffect(() => {
       const interval = setInterval(() => {
         props.thunk_GetAccountInfo(props.match.params.id);
-      }, 3000);
+      }, 1000);
       return () => clearInterval(interval);
     }, [props.match.params.id]);
     console.log('really_props = ', props);
