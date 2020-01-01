@@ -32,7 +32,6 @@ let initialState = {
 }
 
 const settingsReducer = (state = initialState, action) => {
-  debugger;
   switch (action.type) {
     case SET_SETT_USER_AUTHENTICATED_ID: {
       return {...state, userAuthenticatedId: action.userAuthenticatedId}

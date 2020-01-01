@@ -183,7 +183,7 @@ export const thunk_addNewPost = () => {
     }).then((data) => {
       debugger;
       dispatch(setUpdateAC(true));
-      dispatch(addUserPostsAC(data.data.posts));
+      // dispatch(addUserPostsAC(data.data.posts));
       dispatch(updateNewPostValueAC(''));
     })
   }

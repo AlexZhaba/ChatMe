@@ -2,7 +2,6 @@ import React from 'react';
 import {NavLink} from 'react-router-dom';
 const MY_IP = require('./../../../config').MY_IP;
 let Comments = (props) => {
-  debugger;
   var formatComments = props.comments.map(comment =>
     <div className='comment'>
       <div class='comment-img'>

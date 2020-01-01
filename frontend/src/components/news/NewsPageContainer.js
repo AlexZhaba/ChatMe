@@ -18,7 +18,7 @@ let NewsPageContainer = (props) => {
   },[]);
   useEffect(() => {
     props.thunk_getNews();
-  },[])
+  },[]);
   // if (props.update) {
   //   // alert('UPDATE');
   //   setUpdateAC(false);
@@ -49,7 +49,6 @@ let NewsPageContainer = (props) => {
 }
 
 let mapStateToProps = (state) => {
-  debugger;
   return {
     isAuthenticated: state.newsReducer.isAuthenticated,
     userAuthenticatedId: state.newsReducer.userAuthenticatedId,

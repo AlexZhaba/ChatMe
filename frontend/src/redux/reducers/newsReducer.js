@@ -9,11 +9,10 @@ let initialState = {
   isAuthenticated: '',
   userAuthenticatedId: '',
   update: false,
-  posts: []
+  posts: null
 }
 
 let newsReducer = (state = initialState, action) => {
-  debugger;
   switch (action.type) {
     case SET_NEWS_USER_AUTHENTICATED_ID: {
       return {...state, userAuthenticatedId: action.userAuthenticatedId}

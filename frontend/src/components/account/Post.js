@@ -5,7 +5,6 @@ import {NavLink} from 'react-router-dom';
 const MY_IP = require('./../../../config').MY_IP;
 
 const Post = (props) => {
-    console.log('POST = ', props);
     const [showComment, setShowComment] = useState(false);
     const [comments, setComments] = useState([]);
     const refComment = React.createRef();
@@ -23,7 +22,6 @@ const Post = (props) => {
       }).then(data => {
         let newComments = comments;
         newComments.push(data.data.newComment);
-        debugger;
         setComments(newComments);
         // alert(data.data.message);
         // setComments(data.data.comments);
@@ -40,7 +38,6 @@ const Post = (props) => {
           data: data,
           withCredentials: true
         }).then(data => {
-          debugger;
           setComments(data.data.comments);
         })
       }
@@ -48,12 +45,10 @@ const Post = (props) => {
     }
     // let formatComments = comments.map(comment => <div>{comment.commenttext}</div>);
     // var formatComments = comments.map(comment => <div>{comment.commentator}  {comment.commenttext}</div>);
-    console.log(comments);
     useEffect(() => {
       setShowComment(false);
       // setComments([]);
-    }, [props.users_profile_id]);
-    debugger;
+    }, [props.users_profile_id, props.key, props.text, props.liked]);
     return (
         <div className='post-block'>
             <div className='post-text'>
