@@ -58,10 +58,8 @@ module.exports = function (app) {
 		res.header('Access-Control-Allow-Credentials', true);
 		res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
 		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-		console.log('req.params = ',req.params.id);
 		let username = req.params.id.slice(0, req.params.id.indexOf('@'));
-		console.log(username, ' ',req.params.id.indexOf('@'))
-		console.log(username);
+
 		if (fs.existsSync(path.join(__dirname, '/public/avatars', username))) {
 			res.sendfile(path.join(__dirname, '/public/avatars', username));
 		} else {
@@ -169,18 +167,15 @@ module.exports = function (app) {
 					ans.isAuthenticated = true;
 					ans.userAuthenticatedId = req.user.email;
 					if (req.user.email.replace(/\s+/g,'') == req.params.id) {
-						console.log('req.user = ', req.user);
 						ans.myAccount = true;
 						ans.isAuthenticated = true;
 						ans.errorCode = 0;
 					}
 				}
-				console.log('Пользователь, который авторизован = ', req.user);
 				client.query(`SELECT first_name, last_name, email, status, datebirthday,
 											country, about, postsCount, likesCount, subscribersCount, subscribtionsCount
 											FROM users WHERE email=$1`, [req.params.id], function(err, result) {
 					done();
-					console.log('currentAccountsData = ', result.rows[0]);
 					if (result.rows[0] == null) {
 						ans.errorCode = 2;
 						console.log('Пользователя с данным id не существует!');
@@ -219,13 +214,13 @@ module.exports = function (app) {
 		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 		console.log('GET POSTS');
 
-		console.log('req.body = ', req.body);
-		console.log('req.user = ', req.user);
+		// console.log('req.body = ', req.body);
+		// console.log('req.user = ', req.user);
 		let username = req.body.username.replace(/\s+/g,'');
 		let str = `SELECT * FROM USER_POSTS WHERE REPLACE(username, ' ','')='${username}' ORDER BY POST_ID DESC`;
-		console.log(str);
+		// console.log(str);
 		pool.connect(function (err, client, done) {
-					console.log('client = ',err)
+					// console.log('client = ',err)
 					client.query(str, (err, result) => {
 						if (err) throw err;
 						// done();
@@ -247,7 +242,6 @@ module.exports = function (app) {
 								ans.push(post);
 								if (i == postsCount - 1) {
 									done();
-									console.log('ВОТ ЭТИ ПОСТЫ Я ОТПРАВИЛ ', ans);
 									res.json({posts: ans});
 								}
 							});
@@ -295,7 +289,7 @@ module.exports = function (app) {
 
 		let username = req.user.email.replace(/\s+/g,'');
 		let str = `SELECT * FROM USERS_SUBSCRIBERS WHERE REPLACE(username,' ','') ='${username}'`;
-		console.log(str);
+		// console.log(str);
 		pool.connect(function (err, client, done) {
 				client.query(str, (err, result) => {
 					// done();
@@ -631,15 +625,22 @@ module.exports = function (app) {
 			})
 		});
 	})
-	app.get('/api/getNews', (req, res) => {
+	app.post('/api/getNews', (req, res) => {
 		res.header('Access-Control-Allow-Origin', `http://${MY_IP}:3000`);
 		res.header('Access-Control-Allow-Credentials', true);
 		res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
 		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 		let authenticatedUser = req.user.email;
+		let limitN = req.body.limitN;
+		let lastDatePost = req.body.lastDatePost;
+		let start = req.body.start;
 		pool.connect((err, client, done) => {
 			if (err) throw err;
-			client.query(` SELECT * FROM USER_POSTS WHERE USERNAME IN (SELECT USERNAME FROM USERS_SUBSCRIBERS WHERE SUBSCRIBER='${authenticatedUser}') ORDER BY DATEINT DESC`, (err, result) => {
+			let expression = start ? '<=' : '>';
+			console.log('expression = ' + expression);
+			client.query(` SELECT * FROM USER_POSTS WHERE USERNAME IN (SELECT USERNAME FROM USERS_SUBSCRIBERS WHERE
+			SUBSCRIBER='${authenticatedUser}') AND DATEINT ${expression} ${lastDatePost}
+			ORDER BY DATEINT DESC LIMIT ${limitN} `, (err, result) => {
 				if (err) throw err;
 				// done();
 				// console.log('Я ОТПРАВИЛ НОВОСТИ')
@@ -654,6 +655,7 @@ module.exports = function (app) {
 						ans.push(post);
 						if (i == postsCount - 1) {
 							done();
+							console.log(ans)
 							res.json({posts: ans});
 						}
 					});
@@ -662,7 +664,7 @@ module.exports = function (app) {
 					done();
 					res.json({posts: []});
 				}
-			});
+			});//end
 		});
 	});
 	app.get('/api/logout', function(req, res){

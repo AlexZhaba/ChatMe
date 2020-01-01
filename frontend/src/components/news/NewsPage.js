@@ -1,64 +1,42 @@
 import React from 'react';
 import Post from './../account/Post';
 import {useState} from 'react';
+import './newsPageStyles.css';
 let NewsPage = (props) => {
-  const [defaultPostsCount, setdefaultPostsCount ] = useState(null);
-  const [posts, setPosts] = useState(null);
 
-  const [newPostsCount, setNewPostsCount] = useState(null);
-  const [newPosts, setNewPosts] = useState(null);
-  let showNewPosts = () => {
-    setPosts(props.posts);
-    setdefaultPostsCount(props.posts.length);
-  };
-  debugger;
-  if ((defaultPostsCount == null) && (props.posts != null) &&(defaultPostsCount != props.posts.length)) {
-    debugger;
-    setdefaultPostsCount(props.posts.length);
-    setPosts(props.posts);
-    setNewPosts(props.posts);
-    debugger;
-  }
-  if (posts != null && newPosts != null) {
-    debugger;
-    if ((props.posts.length != defaultPostsCount) && (defaultPostsCount != null) && (newPosts.length != props.posts.length) && (props.posts.length != newPostsCount)) {
-      debugger;
-      setNewPosts(props.posts);
-      setNewPostsCount(props.posts.length);
-      // alert(props.posts.length, 'ROFL ', defaultPostsCount)
-    }
-    var NewPostsBlock;
-    if (props.posts && defaultPostsCount != null) {
-      if (props.posts.length - defaultPostsCount > 0) {
-        // alert(props.posts.length - defaultPostsCount);
-        var NewPostsBlock = <div>
-                              НОВЫЕ ПОСТЫ ({props.posts.length - defaultPostsCount})
-                              <div onClick={() => showNewPosts()}>
-                                ПОКАЗАТЬ
-                              </div>
-                            </div>
-      }
-    }
-    let p = props.posts.slice();
-    console.log(props.posts.length - defaultPostsCount);
-    for (let i = 1; i <= (props.posts.length - defaultPostsCount); i++) {
-      p.shift();
-    }
     // alert(props.posts.length + ' ++ ' + defaultPostsCount);
-    var PostsElements =
-        p.map( (p, i) => <Post
-                              text={p.text}
-                              datePublic = {p.publicdata}
-                              likesCount = {p.likescount}
-                              commentsCount = {p.commentscount}
-                              thunk_onLike = {props.thunk_onLike}
-                              post_id = {p.post_id}
-                              users_profile_id = {p.username}
-                              liked = {p.liked}
-                              key={i}
-                             />  )
+    let showNewPosts = () => {
+      props.combinePosts();
+    };
+    let NewPostsBlock;
+    if (props.newPosts.length != 0 ) {
+      NewPostsBlock = <div className='newPostShowBlock'>
+        New Posts ({props.newPosts.length})
+        <div className='button-show-posts' onClick={showNewPosts}>
+          Show
+        </div>
+      </div>
+    } else {
+      NewPostsBlock = <div className='newPostShowBlock'>
 
-  } else {var PostsElements = 'NO POSTS'}
+
+      </div>
+    }
+    if (props.posts.length != 0) {
+        var PostsElements =
+            props.posts.map( (p, i) => <Post
+                                  text={p.text}
+                                  datePublic = {p.publicdata}
+                                  likesCount = {p.likescount}
+                                  commentsCount = {p.commentscount}
+                                  thunk_onLike = {props.thunk_onLike}
+                                  post_id = {p.post_id}
+                                  users_profile_id = {p.username}
+                                  liked = {p.liked}
+                                  key={i}
+                                 />  )
+    }
+
   return(
       <div>
           <div>
@@ -68,6 +46,12 @@ let NewsPage = (props) => {
 
               {PostsElements}
 
+          </div>
+          <div onClick={props.updateLimit} className='newPostShowBlock'>
+
+            <div className='button-show-posts' onClick={showNewPosts}>
+            Загрузить ещё постов
+            </div>
           </div>
       </div>
   )

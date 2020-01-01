@@ -2,10 +2,13 @@ import React, {useEffect} from 'react';
 import {connect} from 'react-redux';
 import {
   thunk_getAuthenticatedStatus,
+  thunk_getNewsAfterDate,
   thunk_logout,
   thunk_onLike,
   setUpdateAC,
-  thunk_getNews
+  combinePostsAC,
+  thunk_getNews,
+  updateLimitAC,
 } from './../../redux/reducers/newsReducer'
 import Header from './../header/Header';
 import Sidebar from './../sidebar/sidebar'
@@ -17,7 +20,7 @@ let NewsPageContainer = (props) => {
     props.thunk_getAuthenticatedStatus();
   },[]);
   useEffect(() => {
-    props.thunk_getNews();
+    props.thunk_getNews(true);
   },[]);
   // if (props.update) {
   //   // alert('UPDATE');
@@ -26,7 +29,8 @@ let NewsPageContainer = (props) => {
   // }
   useEffect(() => {
     const interval = setInterval(() => {
-      props.thunk_getNews();
+      props.thunk_getNews(true);
+      props.thunk_getNews(false);
     }, 1000);
     return () => clearInterval(interval);
   }, []);
@@ -43,6 +47,9 @@ let NewsPageContainer = (props) => {
     <NewsPage
       thunk_onLike = {props.thunk_onLike}
       posts = {props.posts}
+      newPosts = {props.newPosts}
+      combinePosts = {props.combinePostsAC}
+      updateLimit = {props.updateLimitAC}
     />
     </div>
   );
@@ -53,9 +60,10 @@ let mapStateToProps = (state) => {
     isAuthenticated: state.newsReducer.isAuthenticated,
     userAuthenticatedId: state.newsReducer.userAuthenticatedId,
     update: state.newsReducer.update,
-    posts: state.newsReducer.posts
+    posts: state.newsReducer.posts,
+    newPosts: state.newsReducer.newPosts
   }
 }
 
-export default connect(mapStateToProps, {setUpdateAC, thunk_getNews,
-  thunk_getAuthenticatedStatus, thunk_logout, thunk_onLike})(NewsPageContainer);
+export default connect(mapStateToProps, {setUpdateAC, thunk_getNews, thunk_getNewsAfterDate,updateLimitAC,
+  thunk_getAuthenticatedStatus, thunk_logout, thunk_onLike, combinePostsAC})(NewsPageContainer);
