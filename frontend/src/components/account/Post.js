@@ -23,6 +23,7 @@ const Post = (props) => {
         let newComments = comments;
         newComments.push(data.data.newComment);
         setComments(newComments);
+        props.setUpdateAC(true);
         // alert(data.data.message);
         // setComments(data.data.comments);
       });
@@ -39,9 +40,12 @@ const Post = (props) => {
           withCredentials: true
         }).then(data => {
           setComments(data.data.comments);
+          props.setUpdateAC(true);
+
         })
       }
       setShowComment(!showComment);
+
     }
     // let formatComments = comments.map(comment => <div>{comment.commenttext}</div>);
     // var formatComments = comments.map(comment => <div>{comment.commentator}  {comment.commenttext}</div>);
@@ -53,6 +57,14 @@ const Post = (props) => {
         <div className='post-block'>
             <div className='post-text'>
             {props.text}
+            <div>
+              {props.imageCount ?
+                <img className='post-img' src={`http://${MY_IP}:5003/api/getImagePost/${props.users_profile_id}/${props.post_id}@${Date.now()}`}/>
+                :
+                <div>
+                </div>
+              }
+          </div>
             </div>
             <div className='bottom-post-block'>
                 <div className='child-bottom-post-block'>
@@ -82,6 +94,8 @@ const Post = (props) => {
 
 
                     </div>
+
+
                 </div>
                 <div className='author-block'>
                   <div >

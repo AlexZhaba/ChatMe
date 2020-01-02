@@ -7,6 +7,7 @@ let NewsPage = (props) => {
     // alert(props.posts.length + ' ++ ' + defaultPostsCount);
     let showNewPosts = () => {
       props.combinePosts();
+      props.setUpdateAC(true);
     };
     let NewPostsBlock;
     if (props.newPosts.length != 0 ) {
@@ -34,6 +35,8 @@ let NewsPage = (props) => {
                                   users_profile_id = {p.username}
                                   liked = {p.liked}
                                   key={i}
+                                  imageCount = {p.imagecount}
+                                  setUpdateAC = {props.setUpdateAC}
                                  />  )
     }
 

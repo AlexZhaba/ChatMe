@@ -39,8 +39,21 @@ let storage = multer.diskStorage({
 			console.log('file = ',file)
 			cb(null, req.user.email.replace(/\s+/g,''));
 		}
-})
+});
+
+let storageImagePost = multer.diskStorage({
+	destination: (req, file, cb) => {
+		cb(null, path.join(__dirname,'public/image_post'));
+	},
+	filename: (req, file, cb) => {
+		console.log('FILE ', req.post_id);
+
+		cb(null, req.user.email.replace(/\s+/g,'') + '_' + req.params.id);
+	}
+});
+
 let upload = multer({ storage: storage }).single('file');
+let uploadImagePost = multer({ storage: storageImagePost }).single('file');
 
 module.exports = function (app) {
 	app.get('/api/isAuthenticated', (req, res) => {
@@ -162,7 +175,7 @@ module.exports = function (app) {
 		// console.log('ДЕЛАЮ ЛОГАУТ ',req.user);
 
 		pool.connect(function (err, client, done) {
-				console.log('Я вошёл в обработчик get запроса на end point /ACCOUNT/:', req.params.id);
+				// console.log('Я вошёл в обработчик get запроса на end point /ACCOUNT/:', req.params.id);
 				if (req.user) {
 					ans.isAuthenticated = true;
 					ans.userAuthenticatedId = req.user.email;
@@ -172,6 +185,7 @@ module.exports = function (app) {
 						ans.errorCode = 0;
 					}
 				}
+				if (err) throw err;
 				client.query(`SELECT first_name, last_name, email, status, datebirthday,
 											country, about, postsCount, likesCount, subscribersCount, subscribtionsCount
 											FROM users WHERE email=$1`, [req.params.id], function(err, result) {
@@ -212,7 +226,7 @@ module.exports = function (app) {
 		res.header('Access-Control-Allow-Credentials', true);
 		res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
 		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-		console.log('GET POSTS');
+		// console.log('GET POSTS');
 
 		// console.log('req.body = ', req.body);
 		// console.log('req.user = ', req.user);
@@ -264,7 +278,7 @@ module.exports = function (app) {
 				let subsciber = req.user.email.replace(/\s+/g,'');
 				let username = req.body.username.replace(/\s+/g,'');
 				let str = `SELECT * FROM USERS_SUBSCRIBERS WHERE REPLACE(username, ' ','')='${username}' AND REPLACE(subscriber, ' ','')='${subsciber}'`;
-				console.log(str);
+				// console.log(str);
 				client.query(str, (err, result) => {
 					done();
 					if (err) {
@@ -275,7 +289,7 @@ module.exports = function (app) {
 						if (result.rows[0] != null) {
 							following = true;
 						};
-						console.log(following);
+						// console.log(following);
 						res.json({following: following });
 					}
 				});
@@ -485,6 +499,43 @@ module.exports = function (app) {
 
 
 	})
+	app.get('/api/getImagePost/:username/:post_id', (req, res) => {
+		res.header('Access-Control-Allow-Origin', `http://${MY_IP}:3000`);
+		res.header('Access-Control-Allow-Credentials', true);
+		res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+		let username = req.params.username;
+		let post_id = req.params.post_id.slice(0, req.params.post_id.indexOf('@'));
+		// let username = req.params.id.slice(0, req.params.id.indexOf('@'));
+		res.sendfile(path.join(__dirname, '/public/image_post', username + '_' + post_id));
+		// if (fs.existsSync(path.join(__dirname, '/public/avatars', username))) {
+		// 	res.sendfile(path.join(__dirname, '/public/avatars', username));
+		// } else {
+		// 	if (username) res.sendfile(path.join(__dirname, '/public/avatars', 'default.jpg'));
+		// }
+	});
+	app.post('/api/uploadImagePost/:id', (req, res) => {
+		res.header('Access-Control-Allow-Origin', `http://${MY_IP}:3000`);
+		res.header('Access-Control-Allow-Credentials', true);
+		res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+		console.log('---------------------------------------------------------------', req.params);
+		pool.connect((err, client, done) => {
+			client.query(`UPDATE USER_POSTS SET imagecount=1 where username='${req.user.email}' AND post_id=${req.params.id}`, (err, result) => {
+				if (err) throw err;
+				done();
+			})
+		});
+		uploadImagePost(req, res, function (err) {
+					console.log(err);
+					 if (err instanceof multer.MulterError) {
+						 return res.json({message: err})
+					 } else if (err) {
+							return res.json({message: err})
+					 }
+			return res.json({message: 'NICE'})
+		});
+	})
 	app.post('/api/newPostValue', async function (req, res)  {
 		res.header('Access-Control-Allow-Origin', `http://${MY_IP}:3000`);
 		res.header('Access-Control-Allow-Credentials', true);
@@ -531,7 +582,7 @@ module.exports = function (app) {
 								id: postsCount + 1
 							}];
 						console.log('newPost = ', newPost)
-						res.json({data: 'Posts was created', posts : newPost});
+						res.json({data: 'Posts was created', posts : newPost, post_id: newPost[0].id});
 					})
 				})
 			});

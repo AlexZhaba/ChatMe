@@ -14,6 +14,8 @@ let MyPosts = (props) => {
                                 post_id = {p.post_id}
                                 users_profile_id = {p.username}
                                 liked = {p.liked}
+                                imageCount = {p.imagecount}
+                                setUpdateAC = {props.setUpdateAC}
                                />  )
 
     } else {var PostsElements = 'NO POSTS'}

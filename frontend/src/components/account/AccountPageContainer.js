@@ -27,9 +27,9 @@ import {
 import AccountPage0 from './AccountPage0'
 let AccountContainer = (props) => {
   debugger;
-  // useEffect( () => {
-  //   props.setInitialStateAC();
-  // }, [props.match.params.id])
+  useEffect( () => {
+    props.setInitialStateAC();
+  }, [props.match.params.id])
   useEffect( () => {
     console.log('USE EFFECT == ' + props.user.email,' ');
     if ((props.user.email)&&(props.isAuthenticated)) {
@@ -54,12 +54,12 @@ let AccountContainer = (props) => {
     props.thunk_GetAccountInfo(props.match.params.id);
     props.setUpdateAC(false);
   }
-    useEffect(() => {
-      const interval = setInterval(() => {
-        props.thunk_GetAccountInfo(props.match.params.id);
-      }, 1000);
-      return () => clearInterval(interval);
-    }, [props.match.params.id]);
+    // useEffect(() => {
+    //   const interval = setInterval(() => {
+    //     props.thunk_GetAccountInfo(props.match.params.id);
+    //   }, 1000);
+    //   return () => clearInterval(interval);
+    // }, [props.match.params.id]);
     console.log('really_props = ', props);
     if ((props.isAuthenticated)||(props.userAuthenticatedId == '')) {
           return (
@@ -80,6 +80,8 @@ let AccountContainer = (props) => {
                 //thunk
                 thunk_addNewPost = {props.thunk_addNewPost}
                 thunk_onLike = {props.thunk_onLike}
+                setUpdateAC = {props.setUpdateAC}
+
               />
             </div>
           )

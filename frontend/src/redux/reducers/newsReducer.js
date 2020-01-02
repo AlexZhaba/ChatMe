@@ -126,7 +126,6 @@ export const thunk_onLike = (username, post_id, likesCount) => {
     }).then(data => {
       // alert(data.data.message);
       dispatch(setUpdateAC(true));
-
     });
   }
 }

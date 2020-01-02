@@ -26,8 +26,8 @@ let AccountPage = (props) => {
                 isAuthenticated = {props.isAuthenticated}
                 logout={props.logout}
               />
-            {/* {((props.user.email) && (props.posts != null)) ? */}
-            {true ?
+             {/* {((props.user.email) && (props.posts != null)) ? */}
+             { true ? 
               <div className='account-wrapper'>
                 <div className='top-content'>
                 <div className='main-profile-block'>
@@ -135,13 +135,14 @@ let AccountPage = (props) => {
                   <NewPost
                     newPostValue={props.newPostValue}
                     updateNewPostValue = {props.updateNewPostValue}
-
+                    setUpdateAC = {props.setUpdateAC}
                     thunk_addNewPost = {props.thunk_addNewPost}
                     />
                   :
                   <div></div>
                   }
                   <MyPosts
+                    setUpdateAC = {props.setUpdateAC}
                     thunk_onLike = {props.thunk_onLike}
                     posts = {props.posts}
                     users_profile_id = {props.user.email}

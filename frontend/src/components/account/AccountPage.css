@@ -391,3 +391,7 @@ a {
   height: 30px;
   border-radius: 50%;
 }
+.post-img {
+  max-width: 850px;
+  max-height: 500px;
+}

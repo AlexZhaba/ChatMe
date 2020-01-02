@@ -29,11 +29,16 @@ let NewsPageContainer = (props) => {
   // }
   useEffect(() => {
     const interval = setInterval(() => {
-      props.thunk_getNews(true);
+      //props.thunk_getNews(true);
       props.thunk_getNews(false);
-    }, 1000);
+    }, 5000);
     return () => clearInterval(interval);
   }, []);
+  if (props.update) {
+    alert('ROFL');
+    props.thunk_getNews(true);
+    props.setUpdateAC(false);
+  }
   return (
     <div>
       <Sidebar
@@ -50,6 +55,7 @@ let NewsPageContainer = (props) => {
       newPosts = {props.newPosts}
       combinePosts = {props.combinePostsAC}
       updateLimit = {props.updateLimitAC}
+      setUpdateAC = {props.setUpdateAC}
     />
     </div>
   );

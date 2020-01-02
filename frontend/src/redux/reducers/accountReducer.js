@@ -167,9 +167,9 @@ export const thunk_getFollowing = (username) => {
     });
   }
 }
-export const thunk_addNewPost = () => {
+export const thunk_addNewPost = (selectedFile) => {
   // debugger;
-
+  console.log('selectedFile = ', selectedFile)
   return (dispatch, getState) => {
     debugger;
     console.log('NEWPOSTVALUEIFADDNEWPOST = ', getState() );
@@ -185,6 +185,19 @@ export const thunk_addNewPost = () => {
       dispatch(setUpdateAC(true));
       // dispatch(addUserPostsAC(data.data.posts));
       dispatch(updateNewPostValueAC(''));
+      if (selectedFile != null) {
+          const dataImage = new FormData();
+          dataImage.append('file', selectedFile);
+          console.log(dataImage);
+          axios(`http://${MY_IP}:5003/api/uploadImagePost/${data.data.post_id}`, {
+            method: "post",
+            data: dataImage,
+            withCredentials: true
+          }).then(data => {
+            dispatch(setUpdateAC(true));
+
+          })
+      }
     })
   }
 }
