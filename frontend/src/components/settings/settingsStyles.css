@@ -66,7 +66,7 @@
 
 .section-name {
   width: 100%;
-  padding: 10px;
+  /* padding: 10px; */
   font-size: 22px;
   font-family: 'Quicksand';
   font-weight: bold;
@@ -74,7 +74,7 @@
 
 .section-content {
   height: 100%;
-  padding: 10px;
+  /* padding: 10px; */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -94,7 +94,9 @@
 
 .input-content {
   width: 100%;
-  padding: 20px;
+  /* padding: 20px; */
+  padding-top: 20px;
+  padding-bottom: 20px;
   height: 30px;
   border-bottom: 1px solid #DADADA;
 }
@@ -103,6 +105,7 @@ input {
   border: none;
   outline: none;
   font-size: 16px;
+  width: 100%;
   font-family: 'Quicksand';
 }
 .button-accept {
@@ -136,4 +139,16 @@ input {
 .avatar-wrapper img {
   width:280px;
   height: 430px;
+}
+@media(max-width:1770px) {
+  .avatar-wrapper {
+    position: inherit;
+
+  }
+
+}
+@media(max-width: 890px) {
+  .wrapper-main {
+    width: 95%;
+  }
 }

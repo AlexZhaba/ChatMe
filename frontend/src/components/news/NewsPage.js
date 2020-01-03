@@ -2,6 +2,8 @@ import React from 'react';
 import Post from './../account/Post';
 import {useState} from 'react';
 import './newsPageStyles.css';
+import Sidebar from './../sidebar/sidebar'
+
 let NewsPage = (props) => {
 
     // alert(props.posts.length + ' ++ ' + defaultPostsCount);
@@ -42,6 +44,11 @@ let NewsPage = (props) => {
 
   return(
       <div>
+        <div className='sidebar-block-block'>
+            <Sidebar
+              userAuthenticatedId = {props.userAuthenticatedId}
+            />
+        </div>
           <div>
             {NewPostsBlock}
           </div>

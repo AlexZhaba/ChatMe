@@ -24,15 +24,17 @@ let SubscriberPageContainer = (props) => {
     debugger;
     return (
       <div>
-        <Sidebar
-          userAuthenticatedId = {props.userAuthenticatedId}
 
-        />
           <Header
             userAuthenticatedId = {props.userAuthenticatedId}
             isAuthenticated = {props.isAuthenticated}
             logout={props.thunk_logout}
           />
+          <div className='sidebar-block-block'>
+            <Sidebar
+              userAuthenticatedId = {props.userAuthenticatedId}
+            />
+        </div>
         {((props.isAuthenticated)||(props.userAuthenticatedId == '')) ?
           <SubscribersPage
               subscribers = {props.subscribers}

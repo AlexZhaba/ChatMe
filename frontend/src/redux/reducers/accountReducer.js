@@ -182,9 +182,9 @@ export const thunk_addNewPost = (selectedFile) => {
       withCredentials: true
     }).then((data) => {
       debugger;
-      dispatch(setUpdateAC(true));
       // dispatch(addUserPostsAC(data.data.posts));
       dispatch(updateNewPostValueAC(''));
+      if (selectedFile == null) dispatch(setUpdateAC(true));
       if (selectedFile != null) {
           const dataImage = new FormData();
           dataImage.append('file', selectedFile);

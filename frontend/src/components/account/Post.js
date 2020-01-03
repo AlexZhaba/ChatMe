@@ -59,7 +59,7 @@ const Post = (props) => {
             {props.text}
             <div>
               {props.imageCount ?
-                <img className='post-img' src={`http://${MY_IP}:5003/api/getImagePost/${props.users_profile_id}/${props.post_id}@${Date.now()}`}/>
+                <img className='post-img' src={`http://${MY_IP}:5003/api/getImagePost/${props.users_profile_id}/${props.post_id}@${123123}`}/>
                 :
                 <div>
                 </div>
@@ -103,10 +103,19 @@ const Post = (props) => {
                   </div>
                   <div className='author-name'>
                     <NavLink to={`/account/${props.users_profile_id}`}>
-                        <img src={`http://${MY_IP}:5003/api/avatar/${props.users_profile_id}@${Date.now()}`}/>
+                        <div className='author-name'>
+                          <div>
+                            <img src={`http://${MY_IP}:5003/api/avatar/${props.users_profile_id}@${123123}`}/>
+                          </div>
+                          <div className='author-name-name'>
+                            {props.users_profile_id}
+                          </div>
+
+                        </div>
+
                     </NavLink>
 
-                    {props.users_profile_id}
+
                   </div>
                 </div>
             </div>

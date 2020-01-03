@@ -26,20 +26,35 @@ import {
 } from '../../redux/reducers/accountReducer';
 import AccountPage0 from './AccountPage0'
 let AccountContainer = (props) => {
+  const [loading, setLoading] = useState(false);
+  if (!loading) {
+    // alert('Hello')
+    props.setInitialStateAC();
+    setLoading(true);
+    debugger;
+    console.log(loading);
+  }
   debugger;
   useEffect( () => {
-    props.setInitialStateAC();
+    if (!loading) {
+        setLoading(false);
+        props.setInitialStateAC();
+        setLoading(true);
+    }
   }, [props.match.params.id])
   useEffect( () => {
     console.log('USE EFFECT == ' + props.user.email,' ');
-    if ((props.user.email)&&(props.isAuthenticated)) {
+    if ((props.user.email)&&(props.isAuthenticated) && (loading)) {
       // debugger;
-      props.thunk_getFollowing(props.user.email);
+      props.thunk_getFollowing(props.match.params.id);
     }
   },[props.match.params.id, props.user]);
   useEffect( () => {
-    if ((props.user.email)&&(props.isAuthenticated)) {
-      props.thunk_getUserPosts(props.user.email);
+    if ((props.user.email)&&(props.isAuthenticated) && (loading)) {
+      console.log('ASJKDLAJSKLDJKALSDJKL ASJKLD JKLASDJLKASJLDKASKLJD ', props);
+      // alert('YOu')
+      debugger;
+      props.thunk_getUserPosts(props.match.params.id);
       // props.thunk_GetAccountInfo(props.match.params.id)
     }
   }, [props.user]);
@@ -61,7 +76,7 @@ let AccountContainer = (props) => {
     //   return () => clearInterval(interval);
     // }, [props.match.params.id]);
     console.log('really_props = ', props);
-    if ((props.isAuthenticated)||(props.userAuthenticatedId == '')) {
+    if (((props.isAuthenticated)||(props.userAuthenticatedId == '')) && (loading)) {
           return (
             <div>
               <AccountPage0

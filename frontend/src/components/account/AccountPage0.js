@@ -18,18 +18,18 @@ let AccountPage = (props) => {
           <div> NOT FOUND </div>
             :
           <div>
-            <Sidebar
-                userAuthenticatedId = {props.userAuthenticatedId}
-              />
+
             <Header
                 userAuthenticatedId = {props.userAuthenticatedId}
                 isAuthenticated = {props.isAuthenticated}
                 logout={props.logout}
               />
-             {/* {((props.user.email) && (props.posts != null)) ? */}
-             { true ? 
+              { true ?
               <div className='account-wrapper'>
                 <div className='top-content'>
+                  <Sidebar
+                      userAuthenticatedId = {props.userAuthenticatedId}
+                    />
                 <div className='main-profile-block'>
                   <div className='left-profile-block'>
                     <div className='profile-image-block'>

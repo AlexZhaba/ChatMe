@@ -18,14 +18,17 @@ let SearchPageContainer = (props) => {
   },[]);
   return (
     <div>
-        <Sidebar
-          userAuthenticatedId = {props.userAuthenticatedId}
-          />
+
         <Header
           logout = {props.thunk_logout}
           userAuthenticatedId = {props.userAuthenticatedId}
           isAuthenticated = {props.isAuthenticated}
         />
+        <div className='sidebar-block-block'>
+          <Sidebar
+            userAuthenticatedId = {props.userAuthenticatedId}
+          />
+      </div>
         {((props.isAuthenticated)||(props.userAuthenticatedId == '')) ?
           <SearchPage
             searchText = {props.searchText}

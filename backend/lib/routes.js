@@ -6,6 +6,7 @@ var passport = require("passport");
 var fs = require('fs');
 var request = require('request');
 var multer = require('multer');
+// var compress_images = require('compress-images')
 const { Pool, Client } = require('pg')
 const bcrypt= require('bcrypt')
 const uuidv4 = require('uuid/v4');
@@ -175,7 +176,7 @@ module.exports = function (app) {
 		// console.log('ДЕЛАЮ ЛОГАУТ ',req.user);
 
 		pool.connect(function (err, client, done) {
-				// console.log('Я вошёл в обработчик get запроса на end point /ACCOUNT/:', req.params.id);
+				console.log('Я вошёл в обработчик get запроса на end point /ACCOUNT/:', req.params.id);
 				if (req.user) {
 					ans.isAuthenticated = true;
 					ans.userAuthenticatedId = req.user.email;
@@ -231,6 +232,7 @@ module.exports = function (app) {
 		// console.log('req.body = ', req.body);
 		// console.log('req.user = ', req.user);
 		let username = req.body.username.replace(/\s+/g,'');
+		console.log('USERNAME = ', username)
 		let str = `SELECT * FROM USER_POSTS WHERE REPLACE(username, ' ','')='${username}' ORDER BY POST_ID DESC`;
 		// console.log(str);
 		pool.connect(function (err, client, done) {
@@ -256,6 +258,7 @@ module.exports = function (app) {
 								ans.push(post);
 								if (i == postsCount - 1) {
 									done();
+									console.log('ЭТО ПОСТЫ ', username)
 									res.json({posts: ans});
 								}
 							});
@@ -507,6 +510,7 @@ module.exports = function (app) {
 		let username = req.params.username;
 		let post_id = req.params.post_id.slice(0, req.params.post_id.indexOf('@'));
 		// let username = req.params.id.slice(0, req.params.id.indexOf('@'));
+		console.log('ПРИВЕТ ПРИВЕТ ПРИВЕТ')
 		res.sendfile(path.join(__dirname, '/public/image_post', username + '_' + post_id));
 		// if (fs.existsSync(path.join(__dirname, '/public/avatars', username))) {
 		// 	res.sendfile(path.join(__dirname, '/public/avatars', username));

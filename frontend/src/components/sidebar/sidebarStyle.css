@@ -5,9 +5,8 @@
     border: 1px solid #DADADA;
     border-radius: 4px;
     padding: 20px;
+    left: 100px;
     position: absolute;
-    top: 110px;
-    left: 5%;
     display: flex;
     font-size: 15px;
     width: 170px;
@@ -46,8 +45,40 @@
   background: #f5f5f5;
   border: 1px solid #DADADA;
 }
-@media(max-width: 600px) {
+@media(max-width: 1520px) {
   .sidebar-menu-block {
-    background: red;
+    position: inherit;
+    width: 80%;
+    flex-direction: row;
+    height: 30px;
+    margin: 0;
+  }
+  .top-content {
+    flex-direction: column;
+  }
+}
+@media(max-width: 670px) {
+  .sidebar-menu-block div {
+    padding: 0;
+  }
+  .sidebar-menu-block div:hover {
+    border: none;
+    padding: 0;
+
+  }
+  .sidebar-menu-block {
+    width: 99%;
+    padding: 0;
+    margin: 0;
+    height: 30px;
+  }
+}
+@media(max-width: 470px) {
+  .main-profile-block {
+    width: 100%;
+    padding: 0;
+  }
+  .sidebar-menu-block div {
+    font-size: 10px;
   }
 }

@@ -55,3 +55,8 @@
   margin-left: 40px;
   font-size: 20px;
 }
+@media(max-width: 830px) {
+  .UniversalUsers-block {
+    width: 95%;
+  }
+}

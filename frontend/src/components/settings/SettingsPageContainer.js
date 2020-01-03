@@ -35,9 +35,11 @@ let SettingsPageContainer = (props) => {
         isAuthenticated = {props.isAuthenticated}
         logout={props.thunk_logout}
       />
+    <div className='sidebar-block-block'>
       <Sidebar
         userAuthenticatedId = {props.userAuthenticatedId}
       />
+    </div>
     <SettingsPage
       userAuthenticatedId = {props.userAuthenticatedId}
       isAuthenticated = {props.isAuthenticated}

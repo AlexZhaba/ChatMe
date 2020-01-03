@@ -21,3 +21,22 @@
   color: white;
   transition: 0.1s all ease-in-out;
 }
+.sidebar-block-block {
+  width: 100%;
+  display: flex;
+  position: absolute;
+  margin-top: 200px;
+  /* height: 100px; */
+  /* position: relative; */
+  justify-content: center;
+  align-items: center;
+}
+.dop {
+  top: 100px;
+}
+@media(max-width: 1520px) {
+  .sidebar-block-block {
+    position: inherit;
+    margin-top: 20px;
+  }
+}

@@ -30,20 +30,20 @@ let NewsPageContainer = (props) => {
   useEffect(() => {
     const interval = setInterval(() => {
       //props.thunk_getNews(true);
+      // alert('hELlo/')
       props.thunk_getNews(false);
     }, 5000);
     return () => clearInterval(interval);
   }, []);
   if (props.update) {
-    alert('ROFL');
     props.thunk_getNews(true);
     props.setUpdateAC(false);
   }
   return (
     <div>
-      <Sidebar
+      {/* <Sidebar
         userAuthenticatedId = {props.userAuthenticatedId}
-      />
+      /> */}
       <Header
         isAuthenticated = {props.isAuthenticated}
         userAuthenticatedId = {props.userAuthenticatedId}
@@ -56,6 +56,8 @@ let NewsPageContainer = (props) => {
       combinePosts = {props.combinePostsAC}
       updateLimit = {props.updateLimitAC}
       setUpdateAC = {props.setUpdateAC}
+      userAuthenticatedId = {props.userAuthenticatedId}
+
     />
     </div>
   );

@@ -16,7 +16,7 @@ let SettingsPage = (props) => {
     <div>
     {((props.isAuthenticated)||(props.userAuthenticatedId == '')) ?
     <div className='settings-wrapper'>
-          <div className='avatar-wrapper'>
+          {/* <div className='avatar-wrapper'>
             <div className='avatar-block'>
               <img src={avatar}/>
             </div>
@@ -26,11 +26,22 @@ let SettingsPage = (props) => {
             <div>
               <button type='button' onClick={() => props.thunk_UploadImage(selectedFile)}>Change</button>
             </div>
-          </div>
+          </div> */}
           <div className='settings-article'>
               USER SETTINGS
           </div>
           <div className='main-block-settings'>
+            <div className='avatar-wrapper'>
+              <div className='avatar-block'>
+                <img src={avatar}/>
+              </div>
+              <div>
+                <input type='file' onChange={(event) => selectFile(event.target.files[0])}/>
+              </div>
+              <div>
+                <button type='button' onClick={() => props.thunk_UploadImage(selectedFile)}>Change</button>
+              </div>
+            </div>
             <div className='wrapper-main'>
                 <div className='name-wrapper'>
                   User
