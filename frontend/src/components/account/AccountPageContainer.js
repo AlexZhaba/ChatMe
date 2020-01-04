@@ -52,7 +52,6 @@ let AccountContainer = (props) => {
   useEffect( () => {
     if ((props.user.email)&&(props.isAuthenticated) && (loading)) {
       console.log('ASJKDLAJSKLDJKALSDJKL ASJKLD JKLASDJLKASJLDKASKLJD ', props);
-      // alert('YOu')
       debugger;
       props.thunk_getUserPosts(props.match.params.id);
       // props.thunk_GetAccountInfo(props.match.params.id)
@@ -76,7 +75,7 @@ let AccountContainer = (props) => {
     //   return () => clearInterval(interval);
     // }, [props.match.params.id]);
     console.log('really_props = ', props);
-    if (((props.isAuthenticated)||(props.userAuthenticatedId == '')) && (loading)) {
+    if (((props.isAuthenticated)||(props.userAuthenticatedId == ''))) {
           return (
             <div>
               <AccountPage0

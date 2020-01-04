@@ -16,6 +16,7 @@ let MyPosts = (props) => {
                                 liked = {p.liked}
                                 imageCount = {p.imagecount}
                                 setUpdateAC = {props.setUpdateAC}
+                                updateTime = {true}
                                />  )
 
     } else {var PostsElements = 'NO POSTS'}

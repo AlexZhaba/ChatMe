@@ -36,7 +36,7 @@ let SettingsPage = (props) => {
                 <img src={avatar}/>
               </div>
               <div>
-                <input type='file' onChange={(event) => selectFile(event.target.files[0])}/>
+                <input type='file' accept="image/jpeg, image/png" onChange={(event) => selectFile(event.target.files[0])}/>
               </div>
               <div>
                 <button type='button' onClick={() => props.thunk_UploadImage(selectedFile)}>Change</button>

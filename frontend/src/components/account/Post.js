@@ -55,6 +55,9 @@ const Post = (props) => {
     }, [props.users_profile_id, props.key, props.text, props.liked]);
     return (
         <div className='post-block'>
+          <div className='delete-post-block'>
+            <img src="https://img.icons8.com/ios-glyphs/30/000000/delete-sign.png"/>
+          </div>
             <div className='post-text'>
             {props.text}
             <div>
@@ -105,7 +108,7 @@ const Post = (props) => {
                     <NavLink to={`/account/${props.users_profile_id}`}>
                         <div className='author-name'>
                           <div>
-                            <img src={`http://${MY_IP}:5003/api/avatar/${props.users_profile_id}@${123123}`}/>
+                            <img src={`http://${MY_IP}:5003/api/avatar/${props.users_profile_id}@${props.updateTime ? Date.now() : '123123'}`}/>
                           </div>
                           <div className='author-name-name'>
                             {props.users_profile_id}

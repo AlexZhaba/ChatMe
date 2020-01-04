@@ -53,8 +53,8 @@ let NewPost = (props) => {
                       }}>
                         ADD POST
                     </div>
-                    <div>
-                      <input type='file' multiple onChange={(event) => UpdateInput(event)}/>
+                    <div className='newpost-input-block'>
+                      <input type='file' accept="image/jpeg, image/png" multiple onChange={(event) => UpdateInput(event)}/>
                     </div>
                 </div>
             </div>

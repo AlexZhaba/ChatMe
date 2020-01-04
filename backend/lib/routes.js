@@ -6,7 +6,7 @@ var passport = require("passport");
 var fs = require('fs');
 var request = require('request');
 var multer = require('multer');
-// var compress_images = require('compress-images')
+var compress_images = require('compress-images');
 const { Pool, Client } = require('pg')
 const bcrypt= require('bcrypt')
 const uuidv4 = require('uuid/v4');
@@ -37,8 +37,9 @@ let storage = multer.diskStorage({
 			cb(null, path.join(__dirname,'public/avatars'));
 		},
 		filename: (req, file, cb) => {
-			console.log('file = ',file)
-			cb(null, req.user.email.replace(/\s+/g,''));
+			console.log('file = ',file);
+			let p = file.originalname.slice(file.originalname.lastIndexOf('.'), file.originalname.length + 1);
+			cb(null, req.user.email.replace(/\s+/g,'') + p);
 		}
 });
 
@@ -48,8 +49,8 @@ let storageImagePost = multer.diskStorage({
 	},
 	filename: (req, file, cb) => {
 		console.log('FILE ', req.post_id);
-
-		cb(null, req.user.email.replace(/\s+/g,'') + '_' + req.params.id);
+		let p = file.originalname.slice(file.originalname.lastIndexOf('.'), file.originalname.length + 1);
+		cb(null, req.user.email.replace(/\s+/g,'') + '_' + req.params.id + p);
 	}
 });
 
@@ -73,11 +74,16 @@ module.exports = function (app) {
 		res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
 		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 		let username = req.params.id.slice(0, req.params.id.indexOf('@'));
+		// let usernameNameImage = `${username}`{
 
-		if (fs.existsSync(path.join(__dirname, '/public/avatars', username))) {
-			res.sendfile(path.join(__dirname, '/public/avatars', username));
+		// }
+		if (fs.existsSync(path.join(__dirname, '/public/build/avatars', username + '.jpg'))) {
+			res.sendfile(path.join(__dirname, '/public/build/avatars', username + '.jpg'));
 		} else {
-			if (username) res.sendfile(path.join(__dirname, '/public/avatars', 'default.jpg'));
+			if (fs.existsSync(path.join(__dirname, '/public/build/avatars', username + '.png'))) {
+				res.sendfile(path.join(__dirname, '/public/build/avatars', username + '.png'));
+			}
+			else if (username) res.sendfile(path.join(__dirname, '/public/avatars', 'default.jpg'));
 		}
 	})
 	app.get('/api/getAuthenticatedStatus', (req, res) => {
@@ -112,8 +118,9 @@ module.exports = function (app) {
 		          res.json({errorCode: 1, data: 'Email not unique'});
 						}
 						else{
-							let str = `INSERT INTO users (first_name, last_name, email,password, postsCount, likesCount, subscribersCount, subscribtionsCount, avatar)
-							VALUES ('${req.body.firstName}', '${req.body.lastName}', '${req.body.username}', '${pwd}', 0, 0, 0, 0, 0)`;
+							let str = `INSERT INTO users (first_name, last_name, email,password, postsCount, likesCount, subscribersCount, subscribtionsCount, avatar,
+							status, country, datebirthday)
+							VALUES ('${req.body.firstName}', '${req.body.lastName}', '${req.body.username}', '${pwd}', 0, 0, 0, 0, 0, '', '', '')`;
 							//console.log(str);
 							//let str = ('INSERT INTO users (id, firstname, lastname, email, password) VALUES ($1, $2, $3, $4, $5)', [uuidv4(), req.body.firstName, req.body.lastName, req.body.username, pwd]);
 							console.log('str = ',str);
@@ -346,17 +353,68 @@ module.exports = function (app) {
 		res.header('Access-Control-Allow-Credentials', true);
 		res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
 		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-		console.log('req.user = ',req.user)
-		upload(req, res, function (err) {
-					console.log(err)
-           if (err instanceof multer.MulterError) {
-						 return res.json({message: err})
-           } else if (err) {
-      				return res.json({message: err})
-           }
-      return res.json({message: 'NICE'})
-    })
-		// res.json({message:'NICE'})
+		console.log('req.user = ',req.user);
+		let com_img = (INPUT_PATH, OUTPUT_PATH) => {
+			console.log('OP = ' + OUTPUT_PATH)
+			compress_images(INPUT_PATH, OUTPUT_PATH, {compress_force: false, statistic: true, autoupdate: true}, false,
+																											{jpg: {engine: 'mozjpeg', command: ['-quality', '60']}},
+																											{png: {engine: 'pngquant', command: ['--quality=20-50']}},
+																											{svg: {engine: 'svgo', command: '--multipass'}},
+																											{gif: {engine: 'gifsicle', command: ['--colors', '64', '--use-col=web']}}, function(error, completed, statistic){
+											console.log('-------------');
+											console.log(error);
+											console.log('completed ' + completed);
+											console.log(statistic);
+											console.log('-------------');
+
+									return res.json({message: 'NICE'})
+				});
+		}
+		let fullUpload = (INPUT_PATH, OUTPUT_PATH) => {
+			upload(req, res, function (err) {
+				console.log('ЗАГРУЗИЛИ ДЕФОЛТ');
+				if (err instanceof multer.MulterError) {
+					return res.json({message: err})
+				} else if (err) {
+					 return res.json({message: err})
+				}
+				let expansion;
+				if (fs.existsSync(INPUT_PATH + `.jpg`)) {
+					expansion = '.jpg'
+				} else expansion = '.png';
+				console.log('expansion = ', expansion)
+				console.log('dELETE PATH = ' + OUTPUT_PATH + `${req.user.email.replace(/\s+/g,'')}.jpg`)
+				if (fs.existsSync(OUTPUT_PATH + `${req.user.email.replace(/\s+/g,'')}.jpg`)) {
+					console.log('УДАЛЯЕМ В АУТПУТЕ JPG')
+					fs.unlink(OUTPUT_PATH + `${req.user.email.replace(/\s+/g,'')}.jpg`, (err) => {
+						com_img(INPUT_PATH + expansion, OUTPUT_PATH);
+					})
+				} else
+				if (fs.existsSync(OUTPUT_PATH + `${req.user.email.replace(/\s+/g,'')}.png`)) {
+					console.log('УДАЛЯЕМ В АУТПУТЕ PNG')
+					fs.unlink(OUTPUT_PATH + `${req.user.email.replace(/\s+/g,'')}.png`, (err) => {
+						com_img(INPUT_PATH + expansion, OUTPUT_PATH);
+					})
+				} else com_img(INPUT_PATH + expansion, OUTPUT_PATH );
+			})
+		}
+		let INPUT_PATH = path.join(__dirname, `public/avatars/${req.user.email.replace(/\s+/g,'')}`);
+		// let INPUT_PATH = path.join(__dirname,`public/avatars/justdoit.jpg`);
+		let OUTPUT_PATH = path.join(__dirname, 'public/build/avatars/');
+		// console.log('req   ==' ,req)
+		if (fs.existsSync(INPUT_PATH + '.jpg')) {
+			console.log('УДАЛЯЕМ JPG')
+			fs.unlink(INPUT_PATH + '.jpg', (err) => {
+				if (err) throw err;
+				fullUpload(INPUT_PATH, OUTPUT_PATH)
+			})
+		} else if (fs.existsSync(INPUT_PATH + '.png')) {
+			fs.unlink(INPUT_PATH + '.png', (err) => {
+				if (err) throw err;
+				fullUpload(INPUT_PATH, OUTPUT_PATH)
+			})
+		} else fullUpload(INPUT_PATH, OUTPUT_PATH);
+	// res.json({message:'NICE'})
 	})
 	app.get('/api/getSubscribtions', async function (req, res) {
 		res.header('Access-Control-Allow-Origin', `http://${MY_IP}:3000`);
@@ -511,13 +569,18 @@ module.exports = function (app) {
 		let post_id = req.params.post_id.slice(0, req.params.post_id.indexOf('@'));
 		// let username = req.params.id.slice(0, req.params.id.indexOf('@'));
 		console.log('ПРИВЕТ ПРИВЕТ ПРИВЕТ')
-		res.sendfile(path.join(__dirname, '/public/image_post', username + '_' + post_id));
+		let fileName = path.join(__dirname, '/public/build/image_post', username + '_' + post_id);
+		if (fs.existsSync(fileName + '.jpg')) {
+			res.sendfile(fileName + '.jpg');
+		} else res.sendfile(fileName + '.png');
+		// res.sendfile();
 		// if (fs.existsSync(path.join(__dirname, '/public/avatars', username))) {
 		// 	res.sendfile(path.join(__dirname, '/public/avatars', username));
 		// } else {
 		// 	if (username) res.sendfile(path.join(__dirname, '/public/avatars', 'default.jpg'));
 		// }
 	});
+
 	app.post('/api/uploadImagePost/:id', (req, res) => {
 		res.header('Access-Control-Allow-Origin', `http://${MY_IP}:3000`);
 		res.header('Access-Control-Allow-Credentials', true);
@@ -530,15 +593,53 @@ module.exports = function (app) {
 				done();
 			})
 		});
-		uploadImagePost(req, res, function (err) {
-					console.log(err);
-					 if (err instanceof multer.MulterError) {
-						 return res.json({message: err})
-					 } else if (err) {
-							return res.json({message: err})
-					 }
-			return res.json({message: 'NICE'})
-		});
+		let com_img = (INPUT_PATH, OUTPUT_PATH) => {
+			console.log('OP = ' + OUTPUT_PATH)
+			compress_images(INPUT_PATH, OUTPUT_PATH, {compress_force: false, statistic: true, autoupdate: true}, false,
+																											{jpg: {engine: 'mozjpeg', command: ['-quality', '60']}},
+																											{png: {engine: 'pngquant', command: ['--quality=20-50']}},
+																											{svg: {engine: 'svgo', command: '--multipass'}},
+																											{gif: {engine: 'gifsicle', command: ['--colors', '64', '--use-col=web']}}, function(error, completed, statistic){
+											console.log('-------------');
+											console.log(error);
+											console.log('completed ' + completed);
+											console.log(statistic);
+											console.log('-------------');
+
+									return res.json({message: 'NICE'})
+				});
+		}
+		let fullUpload = (INPUT_PATH, OUTPUT_PATH) => {
+			uploadImagePost(req, res, function (err) {
+				console.log('ЗАГРУЗИЛИ ДЕФОЛТ');
+				if (err instanceof multer.MulterError) {
+					return res.json({message: err})
+				} else if (err) {
+					 return res.json({message: err})
+				}
+				let expansion;
+				if (fs.existsSync(INPUT_PATH + `.jpg`)) {
+					expansion = '.jpg'
+				} else expansion = '.png';
+				com_img(INPUT_PATH + expansion, OUTPUT_PATH );
+			})
+		}
+		let fileName = req.user.email.replace(/\s+/g,'') + '_' + req.params.id;
+		let INPUT_PATH = path.join(__dirname, `public/image_post/${fileName}`);
+		// let INPUT_PATH = path.join(__dirname,`public/avatars/justdoit.jpg`);
+		let OUTPUT_PATH = path.join(__dirname, 'public/build/image_post/');
+		// console.log('req   ==' ,req)
+		fullUpload(INPUT_PATH, OUTPUT_PATH);
+		// let nameFile = req.user.email + '_' + req.params.id;
+		// uploadImagePost(req, res, function (err) {
+		// 			console.log(err);
+		// 			 if (err instanceof multer.MulterError) {
+		// 				 return res.json({message: err})
+		// 			 } else if (err) {
+		// 					return res.json({message: err})
+		// 			 }
+		// 	return res.json({message: 'NICE'})
+		// });
 	})
 	app.post('/api/newPostValue', async function (req, res)  {
 		res.header('Access-Control-Allow-Origin', `http://${MY_IP}:3000`);

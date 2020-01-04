@@ -48,11 +48,10 @@ class Header extends React.Component {
      }else {
        return (
          <div className='main-header-block'>
-           <div>
-             LOGO
-           </div>
-           <div>
-             MAIN CORE
+           <div className='ChatME-block'>
+             <div>
+               <b>ChatME</b>
+             </div>
            </div>
            <div>
              <NavLink to='/signup'>Вход</NavLink>

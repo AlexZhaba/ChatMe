@@ -27,6 +27,7 @@ let AccountPage = (props) => {
               { true ?
               <div className='account-wrapper'>
                 <div className='top-content'>
+                  
                   <Sidebar
                       userAuthenticatedId = {props.userAuthenticatedId}
                     />
