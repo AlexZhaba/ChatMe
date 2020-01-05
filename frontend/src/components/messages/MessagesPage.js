@@ -7,7 +7,7 @@ let MessagesPage = (props) => {
   if (props.messages != null) {
       messagesBlock = props.messages.map(e => <div className='message'>
                                                   <div>
-                                                    <img src={`http://${MY_IP}:5003/api/avatar/${e.user_from}@${Date.now()}`}/>
+                                                    <img src={`http://${MY_IP}:5003/api/avatar/${e.user_from}@${123123}`}/>
                                                   </div>
                                                   <div className='message-text'>
                                                     {e.text}
@@ -32,8 +32,8 @@ let MessagesPage = (props) => {
   let blockRef = React.createRef();
   return (
     <div className='messages-wrapper'>
-      <div ref={blockRef} className='messages-block'>
-        <div className='messages'>
+      <div  className='messages-block'>
+        <div ref={blockRef} className='messages'>
           {messagesBlock}
         </div>
         <div className='message-input'>

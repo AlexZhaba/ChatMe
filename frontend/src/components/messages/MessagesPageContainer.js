@@ -22,11 +22,13 @@ let MessagesPageContainer = (props) => {
   },[]);
   useEffect(() => {
     const interval = setInterval(() => {
-      props.thunk_getNewMessages(props.match.params.id, props.messages[props.messages.length - 1].dateint);
 
+        console.log('getNewMessages = ', props.messages,' ',props.match.params.id)
+        if (props.messages.length != 0) props.thunk_getNewMessages(props.match.params.id, props.messages[props.messages.length - 1].dateint)
+        else  props.thunk_getNewMessages(props.match.params.id, 0);
     }, 1000);
     return () => clearInterval(interval);
-  }, [props.messages]);
+  }, [props.messages, props.match.params.id]);
   return (
     <div>
       <Header

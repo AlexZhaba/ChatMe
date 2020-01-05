@@ -77,6 +77,7 @@ module.exports = function (app) {
 		// let usernameNameImage = `${username}`{
 
 		// }
+		console.log('AVATAR')
 		if (fs.existsSync(path.join(__dirname, '/public/build/avatars', username + '.jpg'))) {
 			res.sendfile(path.join(__dirname, '/public/build/avatars', username + '.jpg'));
 		} else {
@@ -111,6 +112,7 @@ module.exports = function (app) {
 				return 0;
 			}
 			pool.connect(function (err, client, done) {
+				if (err) throw err;
 					client.query('SELECT *  FROM users WHERE "email"=$1', [req.body.username], function(err, result) {
 						console.log('Это все пользователи с почтой, указанной пользователем ',result.rows);
 						if(result.rows[0] != null){
@@ -877,8 +879,8 @@ module.exports = function (app) {
 			client.query(`SELECT * FROM MESSAGES WHERE (user_to='${authenticatedUser}' AND user_from='${member_user}')OR
 			(user_to='${member_user}' AND user_from='${authenticatedUser}')`, (err, result) => {
 				if (err) throw err;
-				done();
-				// console.log('СОБЩЕНИЯ - ', result.rows)
+				// done();
+				console.log('СОБЩЕНИЯ - ', result.rows)
 				res.json({messages: result.rows});
 			})
 		});
@@ -912,14 +914,24 @@ module.exports = function (app) {
 		let text = req.body.text;
 		let user_to = req.body.user_to;
 		let user_from = req.user.email.replace(/\s+/g,'');
+		let messagesCount = req.body.messagesCount;
 		pool.connect((err, client, done) => {
 			let data = new Date();
 			let DATA_MESSAGE = data.getHours()+ ':' + data.getMinutes()  + ', '  + data.getUTCDate() + '.' + parseInt(data.getUTCMonth() + 1).toString() + '.' + data.getFullYear();
 			if (err) throw err;
 			client.query(`INSERT INTO MESSAGES VALUES('${user_to}', '${user_from}', '${text}', ${Date.now()}, '${DATA_MESSAGE}')`, (err, result) => {
 				if (err) throw err;
-				done();
 				res.json({data: 'SEND ACCESS'})
+				if (messagesCount == 0) {
+					client.query(`INSERT INTO DIALOGS VALUES('${user_to}', '${user_from}')`, (err, result) => {
+						if (err) throw err;
+						client.query(`INSERT INTO DIALOGS VALUES('${user_from}', '${user_to}')`, (err, result) => {
+							if (err) throw err;
+							done();
+							console.log('СОЗДАЛСЯ ДИАЛОГ!')
+						});
+					});
+				} else done();
 			})
 		})
 		// res.json({data: 'hello'})
@@ -958,12 +970,12 @@ passport.use('local', new  LocalStrategy({passReqToCallback : true}, (req, usern
 	loginAttempt();
 	async function loginAttempt() {
 
-
 		console.log('ЭТО ШО Я В ПАСПОРТЕ?');
 		try{
 			console.log('username = |', username);
 			username = username.replace(/\s+/g,'');
 			pool.connect(function (err, client, donePool) {
+					if (err) throw err;
 					client.query('SELECT  first_name, last_name,  email, password FROM users WHERE email=$1', [username], function(err, result) {
 						donePool();
 						// console.log('ТО Я КАРОЧЕ В ПАСПОРТЕ ДАТУ ПОЛУЧИЛ ', result.rows[0]);

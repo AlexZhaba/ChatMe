@@ -13,7 +13,6 @@
   background: white;
   display: flex;
   flex-direction: column;
-  overflow: auto;
 }
 .message-input {
   flex: 1;
@@ -26,6 +25,8 @@
   /* align-items: center; */
   font-family: 'Montserrat';
   flex-direction: column;
+  overflow: auto;
+
   /* align-items: flex-end; */
 
 }
@@ -33,9 +34,8 @@
   padding: 5px;
   border-radius: 5px;
   border: 1px solid #DADADA;
+  width: 70%;
   font-family: 'Montserrat';
-
-  width: 400px;
 }
 .send-message {
   width: 100px;
@@ -80,4 +80,17 @@
   color: #737373;
   bottom: 10px;
   font-size: 12px;
+}
+@media(max-width: 690px) {
+  .messages-block {
+    width: 90%;
+  }
+}
+@media(max-width: 440px) {
+  .message-input {
+    display: flex;
+    /* justify-content: center; */
+    align-items: center;
+    flex-direction: column;
+  }
 }

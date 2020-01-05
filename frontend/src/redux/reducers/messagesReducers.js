@@ -123,10 +123,11 @@ export const thunk_getNewMessages = (id, lastDate) => {
 }
 
 export const thunk_sendMessage = (text, user_to) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     let data = {
       text,
-      user_to
+      user_to,
+      messagesCount: getState().messagesReducer.messages.length
     }
     dispatch(updateMessageInputAC(''));
     axios(`http://${MY_IP}:5003/api/sendMessage`, {

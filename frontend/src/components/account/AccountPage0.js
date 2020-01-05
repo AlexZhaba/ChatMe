@@ -8,6 +8,7 @@ import MyPosts from './MyPosts';
 import NewPost from './NewPost';
 import {NavLink} from 'react-router-dom';
 import Sidebar from '../sidebar/sidebar';
+import {Redirect} from 'react-router-dom';
 const MY_IP = require('./../../../config').MY_IP;
 
 let AccountPage = (props) => {
@@ -73,9 +74,11 @@ let AccountPage = (props) => {
                           </div>
                           {((props.userAuthenticatedId) && (props.userAuthenticatedId != props.user.email)) ?
                                 <div>
-                                  <div onClick={() => props.thunk_setFollowing(!props.following)} className='button-message'>
+                                  <NavLink to={`/dialogs/${props.user.email}`}>
+                                  <div className='button-message'>
                                     MESSAGE
                                   </div>
+                                </NavLink>
                                 {props.following ?
                                 <div onClick={() => props.thunk_setFollowing(!props.following)}className='button-subscribe'>
                                   UNSUBSCRIBE

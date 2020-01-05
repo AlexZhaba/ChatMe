@@ -55,7 +55,7 @@
   display: inline-block;
   margin-right: 10px;
 }
-@media (max-width: 790px) {
+@media (max-width: 910px) {
   .sidebar-menu-block > a > div > div {
     display: none;
   }
