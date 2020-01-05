@@ -13,6 +13,7 @@ import Header from './../header/Header';
 import Sidebar from './../sidebar/sidebar';
 import MessagesPage from './MessagesPage';
 import './MessagesPageStyles.css'
+import {Redirect} from 'react-router-dom'
 let MessagesPageContainer = (props) => {
   useEffect(() => {
     props.thunk_getAuthenticatedStatus();
@@ -29,12 +30,15 @@ let MessagesPageContainer = (props) => {
     }, 1000);
     return () => clearInterval(interval);
   }, [props.messages, props.match.params.id]);
+  if (!((props.isAuthenticated)||(props.userAuthenticatedId == ''))) {
+    return <Redirect to='/signup'></Redirect>
+  } else
   return (
     <div>
       <Header
         isAuthenticated = {props.isAuthenticated}
         userAuthenticatedId = {props.userAuthenticatedId}
-        thunk_logout = {props.thunk_logout}
+        logout = {props.thunk_logout}
       />
     <div className='sidebar-block-block'>
       <Sidebar

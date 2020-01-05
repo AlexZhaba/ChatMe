@@ -19,11 +19,11 @@ let SignUpPage0 = (props) => {
                {props.actionNews}
               </div>
               <div className = 'block-form'>
-                 <input type='text' placeholder ='email' className='pole' value={props.email} onChange={(event) => props.updateSignUpEmail(event.target.value)} />
+                 <input type='text' placeholder ='nick' maxlength={20} className='pole' value={props.email} onChange={(event) => props.updateSignUpEmail(event.target.value)} />
               </div>
 
               <div className = 'block-form'>
-                 <input type='text' placeholder ='Пароль' className='pole' value={props.password} onChange={(event) => props.updateSignUpPassword(event.target.value)} />
+                 <input type='text' placeholder ='Пароль' maxlength={20} className='pole' value={props.password} onChange={(event) => props.updateSignUpPassword(event.target.value)} />
               </div>
               <div className='block-button-registration'>
                 <button className ='registration-button' onClick = {props.addForm}>Войти</button>

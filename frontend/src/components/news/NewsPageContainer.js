@@ -13,7 +13,7 @@ import {
 import Header from './../header/Header';
 import Sidebar from './../sidebar/sidebar'
 import NewsPage from './NewsPage'
-
+import {Redirect} from 'react-router-dom'
 
 let NewsPageContainer = (props) => {
   useEffect(() => {
@@ -39,6 +39,9 @@ let NewsPageContainer = (props) => {
     props.thunk_getNews(true);
     props.setUpdateAC(false);
   }
+  if (!((props.isAuthenticated)||(props.userAuthenticatedId == ''))) {
+    return <Redirect to='/signup'></Redirect>
+  }
   return (
     <div>
       {/* <Sidebar
@@ -47,7 +50,7 @@ let NewsPageContainer = (props) => {
       <Header
         isAuthenticated = {props.isAuthenticated}
         userAuthenticatedId = {props.userAuthenticatedId}
-        thunk_logout = {props.thunk_logout}
+        logout = {props.thunk_logout}
       />
     <NewsPage
       thunk_onLike = {props.thunk_onLike}

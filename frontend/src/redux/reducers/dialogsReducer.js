@@ -7,7 +7,7 @@ const SET_MES_DIALOGS = 'SET_MES_DIALOGS';
 const MY_IP = require('./../../../config').MY_IP;
 
 let initialState = {
-  isAuthenticated: false,
+  isAuthenticated: null,
   userAuthenticatedId: '',
   dialogs: null
 };

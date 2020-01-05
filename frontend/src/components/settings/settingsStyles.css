@@ -14,7 +14,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  font-family: 'Quicksand';
+  font-family: 'Quicksand', 'Montserrat';
 }
 
 .main-block-settings {
@@ -55,7 +55,7 @@
   left: 20px;
   font-size: 22px;
   font-weight: bold;
-  font-family: 'Quicksand';
+  font-family: 'Quicksand', 'Montserrat';
 
 }
 
@@ -68,7 +68,7 @@
   width: 100%;
   /* padding: 10px; */
   font-size: 22px;
-  font-family: 'Quicksand';
+  font-family: 'Quicksand', 'Montserrat';
   font-weight: bold;
 }
 
@@ -89,7 +89,7 @@
   padding-bottom: 20px;
   text-align: center;
   border-bottom: 1px solid #DADADA;
-  font-family: 'Quicksand';
+  font-family: 'Quicksand', 'Montserrat';
 }
 
 .input-content {
@@ -106,11 +106,11 @@ input {
   outline: none;
   font-size: 16px;
   width: 100%;
-  font-family: 'Quicksand';
+  font-family: 'Quicksand', 'Montserrat';
 }
 .button-accept {
   font-size: 20px;
-  font-family: 'Quicksand';
+  font-family: 'Quicksand', 'Montserrat';
   padding: 10px;
   background-color: white;
   border: 1px solid #DADADA;

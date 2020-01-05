@@ -87,19 +87,19 @@ class RegistrationPage extends React.Component {
             </div>
 
             <div className = 'block-form'>
-             <input type='text' placeholder ='Имя' className='pole' value={this.state.name} onChange={(event) => this.handleChange(1, event)} />
+             <input maxlength={20} type='text' placeholder ='Имя' className='pole' value={this.state.name} onChange={(event) => this.handleChange(1, event)} />
             </div>
 
             <div className = 'block-form'>
-               <input type='text' placeholder ='Фамилия' className='pole' value={this.state.surname} onChange={(event) => this.handleChange(2, event)} />
+               <input maxlength={20} type='text' placeholder ='Фамилия' className='pole' value={this.state.surname} onChange={(event) => this.handleChange(2, event)} />
             </div>
 
             <div className = 'block-form'>
-               <input type='text' placeholder ='email' className='pole' value={this.state.email} onChange={(event) => this.handleChange(3, event)} />
+               <input maxlength={20} type='text' placeholder ='nick' className='pole' value={this.state.email} onChange={(event) => this.handleChange(3, event)} />
             </div>
 
             <div className = 'block-form'>
-              <input type='password' placeholder ='Пароль' className='pole' value={this.state.password} onChange={(event) => this.handleChange(4, event)} />
+              <input maxlength={20} type='password' placeholder ='Пароль' className='pole' value={this.state.password} onChange={(event) => this.handleChange(4, event)} />
             </div>
             <div className='block-button-registration'>
               <button className ='registration-button' onClick = {this.addForm}>Зарегистрироваться</button>
@@ -110,7 +110,7 @@ class RegistrationPage extends React.Component {
       );
     } else {
       let accountURL = `/signup`;
-      
+
       console.log('props = ', this.props);
       return (
         <Redirect to={this.state.redirectURL}/>

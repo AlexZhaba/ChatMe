@@ -21,6 +21,9 @@
   /* font-family: 'Amatic SC', cursive;  ++ */
   font-family: 'Permanent Marker', cursive;
 }
+.k {
+  height: 100%;
+}
 .profile-button-header {
   display: flex;
   justify-content: center;
@@ -51,6 +54,11 @@
   -khtml-user-select: none;
   -webkit-user-select: none;
   user-select: none;
+  color: white;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .profile-button-header:hover {
   background-color: hsl(0, 0%, 40%);
@@ -61,6 +69,13 @@
 .profile-button-header a {
   text-decoration: none;
   color:  #4D4E48;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.Profile-header a {
+  height: 100%;
+  color: white;
 }
 .profile-button-header img {
   width: 30px;

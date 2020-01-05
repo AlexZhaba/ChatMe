@@ -9,6 +9,8 @@ import {
 } from './../../redux/reducers/dialogsReducer';
 import './DialogsPageStyles.css'
 import DialogsPage from './DialogsPage'
+import {Redirect} from 'react-router-dom'
+
 let DialogsPageContainer = (props) => {
   useEffect(() => {
     props.thunk_getAuthenticatedStatus();
@@ -22,13 +24,16 @@ let DialogsPageContainer = (props) => {
     }, 1000);
     return () => clearInterval(interval);
   }, []);
+  if (!((props.isAuthenticated)||(props.userAuthenticatedId == ''))) {
+    return <Redirect to='/signup'></Redirect>
+  } else
   return (
     <div className='dialogs-wrapper'>
 
       <Header
         isAuthenticated = {props.isAuthenticated}
         userAuthenticatedId = {props.userAuthenticatedId}
-        thunk_logout = {props.thunk_logout}
+        logout = {props.thunk_logout}
       />
     <div className='sidebar-block-block'>
       <Sidebar

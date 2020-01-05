@@ -55,9 +55,9 @@ const Post = (props) => {
     }, [props.users_profile_id, props.key, props.text, props.liked]);
     return (
         <div className='post-block'>
-          <div className='delete-post-block'>
+          {/* <div className='delete-post-block'>
             <img src="https://img.icons8.com/ios-glyphs/30/000000/delete-sign.png"/>
-          </div>
+          </div> */}
             <div className='post-text'>
             {props.text}
             <div>

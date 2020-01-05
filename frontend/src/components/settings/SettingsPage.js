@@ -59,9 +59,7 @@ let SettingsPage = (props) => {
                             <div className='name-content'>
                                 Password
                             </div>
-                            <div className='name-content'>
-                                Username
-                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -78,9 +76,7 @@ let SettingsPage = (props) => {
                             <div className='input-content'>
                                 <input type='text' placeholder='password' value={props.password} onChange={(event) => props.setPassword(event.target.value)}/>
                             </div>
-                            <div className='input-content'>
-                                <input type='text' placeholder='Username' value={props.username} onChange={(event) => props.setUsername(event.target.value)}/>
-                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -101,9 +97,6 @@ let SettingsPage = (props) => {
                               <div className='name-content'>
                                   Country
                               </div>
-                              <div className='name-content'>
-                                  About
-                              </div>
 
                           </div>
                       </div>
@@ -113,16 +106,13 @@ let SettingsPage = (props) => {
 
                           <div className='section-content'>
                               <div className='input-content'>
-                                  <input type='text' placeholder='Status' value={props.status} onChange={(event) => props.setStatus(event.target.value)}/>
+                                  <input maxlength={50} type='text' placeholder='Status' value={props.status} onChange={(event) => props.setStatus(event.target.value)}/>
                               </div>
                               <div className='input-content'>
-                                  <input type='text' placeholder='Birthday' value={props.birthday} onChange={(event) => props.setBirthday(event.target.value)}/>
+                                  <input maxlength={20} type='text' placeholder='Birthday' value={props.birthday} onChange={(event) => props.setBirthday(event.target.value)}/>
                               </div>
                               <div className='input-content'>
-                                  <input type='text' placeholder='Country' value={props.country} onChange={(event) => props.setCountry(event.target.value)}/>
-                              </div>
-                              <div className='input-content'>
-                                  <input type='text' placeholder='About' value={props.about} onChange={(event) => props.setAbout(event.target.value)}/>
+                                  <input maxlength={20}type='text' placeholder='Country' value={props.country} onChange={(event) => props.setCountry(event.target.value)}/>
                               </div>
 
                           </div>

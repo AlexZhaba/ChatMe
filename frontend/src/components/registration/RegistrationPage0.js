@@ -18,26 +18,26 @@ let RegistrationPage0 = (props) => {
           </div>
 
           <div className = 'block-form'>
-           <input type='text' placeholder ='Имя' className='pole' value={props.name} onChange={(event) => props.updateInputName(event.target.value)} />
+           <input maxlength={20} zhabtype='text' placeholder ='Имя' className='pole' value={props.name} onChange={(event) => props.updateInputName(event.target.value)} />
           </div>
 
           <div className = 'block-form'>
-             <input type='text' placeholder ='Фамилия' className='pole' value={props.surname} onChange={(event) => props.updateInputSurname(event.target.value)} />
+             <input maxlength={20} type='text' placeholder ='Фамилия' className='pole' value={props.surname} onChange={(event) => props.updateInputSurname(event.target.value)} />
           </div>
 
           <div className = 'block-form'>
-             <input type='text' placeholder ='email' className='pole' value={props.email} onChange={(event) => props.updateInputEmail(event.target.value)} />
+             <input maxlength={20} type='text' placeholder ='nick' className='pole' value={props.email} onChange={(event) => props.updateInputEmail(event.target.value)} />
           </div>
 
           <div className = 'block-form'>
-            <input type='password' placeholder ='Пароль' className='pole' value={props.password} onChange={(event) => props.updateInputPassword(event.target.value)} />
+            <input maxlength={20} type='password' placeholder ='Пароль' className='pole' value={props.password} onChange={(event) => props.updateInputPassword(event.target.value)} />
           </div>
           <div className='block-button-registration'>
             <button className ='registration-button' onClick = {props.addForm}>Зарегистрироваться</button>
           </div>
       </div>
     </div>
-    </div>
+  </div>
     );
   } else {
     let signUpURL = `/signup`;

@@ -10,7 +10,7 @@ const UPDATE_LIMIT = 'UPDATE_LIMIT';
 const MY_IP = require('./../../../config').MY_IP;
 
 let initialState = {
-  isAuthenticated: '',
+  isAuthenticated: null,
   userAuthenticatedId: '',
   update: false,
   limitN : 10,

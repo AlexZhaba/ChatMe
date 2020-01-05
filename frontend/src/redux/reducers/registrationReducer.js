@@ -88,6 +88,14 @@ export const dischargeAccountPageAC = () => ({type: DISCHARGE_ACCOUNT_PAGE});
 export const thunk_addForm = () => {
   return (dispatch, getState) => {
     console.log('ЩАС БУДЕТ ДЖЕЛАТЬСЯ ЗАПРОС!');
+    if ((getState().registrationReducer.name == '') ||
+        (getState().registrationReducer.surname == '') ||
+        (getState().registrationReducer.email == '') ||
+        (getState().registrationReducer.password == '')) {
+          dispatch(updateActionNewsAC('Input must be not empty'));
+        } else if (getState().registrationReducer.email.indexOf(' ') != -1) {
+          dispatch(updateActionNewsAC('nick without space'));
+        } else
     axios.post(`http://${MY_IP}:5003/api/registration`, {
       firstName: getState().registrationReducer.name,
       lastName: getState().registrationReducer.surname,

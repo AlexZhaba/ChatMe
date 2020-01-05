@@ -11,7 +11,9 @@ const MY_IP = require('./../../../config').MY_IP;
 let initialState = {
   messages: null,
   messageInput: '',
-  scroll: true
+  scroll: true,
+  isAuthenticated: null,
+  userAuthenticatedId: ''
 };
 
 const messagesReducer = (state = initialState, action) => {
