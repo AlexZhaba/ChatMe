@@ -16,6 +16,12 @@ let DialogsPageContainer = (props) => {
   useEffect(() => {
     props.thunk_getDialogs();
   }, []);
+  useEffect(() => {
+    const interval = setInterval(() => {
+        props.thunk_getDialogs();
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
   return (
     <div className='dialogs-wrapper'>
 

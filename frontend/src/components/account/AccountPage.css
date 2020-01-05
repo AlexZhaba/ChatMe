@@ -515,3 +515,37 @@ a {
   transition: 0.15s all ease-in-out;
   background-color: rgb(16, 88, 156);
 }
+@media (max-width: 690px) {
+  .button-message {
+    right: 0;
+    top: 50px;
+    width: 100px;
+    font-size: 12px;
+    /* padding: 0px;
+    height: 25px; */
+  }
+  .button-subscribe {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    width: 100px;
+    font-size: 12px;
+  }
+}
+@media (max-width: 450px) {
+  .button-message {
+    right: 20px;
+    top: 175px;
+    width: 100px;
+    font-size: 12px;
+    /* padding: 0px;
+    height: 25px; */
+  }
+  .button-subscribe {
+    position: absolute;
+    right: 170px;
+    top: 175px;
+    width: 100px;
+    font-size: 12px;
+  }
+}

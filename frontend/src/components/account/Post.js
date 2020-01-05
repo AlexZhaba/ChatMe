@@ -21,8 +21,8 @@ const Post = (props) => {
         withCredentials: true
       }).then(data => {
         let newComments = comments;
-        newComments.push(data.data.newComment);
-        setComments(newComments);
+        // newComments.push(data.data.newComment);
+        setComments(data.data.comments);
         props.setUpdateAC(true);
         // alert(data.data.message);
         // setComments(data.data.comments);

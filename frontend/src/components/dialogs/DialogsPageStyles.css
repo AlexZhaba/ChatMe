@@ -19,6 +19,7 @@
   font-size: 20px;
   display: flex;
   /* justify-content: center; */
+  font-weight: bold;
   align-items: center;
   font-family: 'Montserrat';
 }
@@ -37,6 +38,26 @@
   width: 70px;
   height: 70px;
   margin-right: 20px;
+}
+.lastMes {
+  font-size: 14px;
+  display: flex;
+  color: #4a4a4a;
+  font-weight: 400;
+  margin-top: 5px;
+}
+.lastMes-username {
+  color: #255ba1;
+}
+.lastMes img {
+  width: 30px;
+  height: 30px;
+}
+.lastMes-text {
+  overflow: hidden;
+  color: black;
+  margin-top: 5px;
+  margin-left: -10px;
 }
 @media(max-width: 1100px) {
   .dialog-block {

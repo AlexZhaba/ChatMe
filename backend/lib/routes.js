@@ -77,7 +77,7 @@ module.exports = function (app) {
 		// let usernameNameImage = `${username}`{
 
 		// }
-		console.log('AVATAR')
+		// console.log('AVATAR')
 		if (fs.existsSync(path.join(__dirname, '/public/build/avatars', username + '.jpg'))) {
 			res.sendfile(path.join(__dirname, '/public/build/avatars', username + '.jpg'));
 		} else {
@@ -754,14 +754,19 @@ module.exports = function (app) {
 				// done();
 				client.query(`UPDATE USER_POSTS SET commentscount=commentscount+1 WHERE username='${profile_id}' AND post_id=${post_id}`, (err, result) => {
 					if (err) throw err;
-					done();
-					res.json({
-						newComment: {
-							commentator: commentator,
-							commenttext: commentText,
-							username: profile_id
-							}
-						});
+
+					client.query(`SELECT * FROM POSTS_COMMENTS WHERE username='${profile_id}' AND post_id=${post_id}`, (err, result) => {
+						if (err) throw err;
+						done();
+						res.json({comments: result.rows})
+					})
+					// res.json({
+					// 	newComment: {
+					// 		commentator: commentator,
+					// 		commenttext: commentText,
+					// 		username: profile_id
+					// 		}
+					// 	});
 				});
 			});
 		});
@@ -857,7 +862,7 @@ module.exports = function (app) {
 		let authenticatedUser = req.user.email.replace(/\s+/g,'');
 		pool.connect((err, client, done) => {
 			if (err) throw err;
-			client.query(`SELECT username_secondary FROM DIALOGS WHERE username_main='${authenticatedUser}'`, (err, result) => {
+			client.query(`SELECT * FROM DIALOGS WHERE username_main='${authenticatedUser}'`, (err, result) => {
 				if (err) throw err;
 				done();
 				console.log('ДИАЛОГИ С ', result.rows)
@@ -879,7 +884,7 @@ module.exports = function (app) {
 			client.query(`SELECT * FROM MESSAGES WHERE (user_to='${authenticatedUser}' AND user_from='${member_user}')OR
 			(user_to='${member_user}' AND user_from='${authenticatedUser}')`, (err, result) => {
 				if (err) throw err;
-				// done();
+				done();
 				console.log('СОБЩЕНИЯ - ', result.rows)
 				res.json({messages: result.rows});
 			})
@@ -919,19 +924,33 @@ module.exports = function (app) {
 			let data = new Date();
 			let DATA_MESSAGE = data.getHours()+ ':' + data.getMinutes()  + ', '  + data.getUTCDate() + '.' + parseInt(data.getUTCMonth() + 1).toString() + '.' + data.getFullYear();
 			if (err) throw err;
-			client.query(`INSERT INTO MESSAGES VALUES('${user_to}', '${user_from}', '${text}', ${Date.now()}, '${DATA_MESSAGE}')`, (err, result) => {
+			let dateInt = Date.now();
+			client.query(`INSERT INTO MESSAGES VALUES('${user_to}', '${user_from}', '${text}', ${dateInt}, '${DATA_MESSAGE}')`, (err, result) => {
 				if (err) throw err;
 				res.json({data: 'SEND ACCESS'})
 				if (messagesCount == 0) {
 					client.query(`INSERT INTO DIALOGS VALUES('${user_to}', '${user_from}')`, (err, result) => {
 						if (err) throw err;
+						if (user_to != user_from)
 						client.query(`INSERT INTO DIALOGS VALUES('${user_from}', '${user_to}')`, (err, result) => {
 							if (err) throw err;
-							done();
+
 							console.log('СОЗДАЛСЯ ДИАЛОГ!')
+							client.query(`UPDATE DIALOGS SET lastMes_date=${dateInt}, lastMes_text='${text}', lastMes_username='${user_from}' WHERE
+							((username_main='${user_to}' AND username_secondary='${user_from}')OR
+							(username_main='${user_from}' AND username_secondary='${user_to}'))`, (err, result) => {
+								done();
+							})
 						});
 					});
-				} else done();
+				} else {
+					client.query(`UPDATE DIALOGS SET lastMes_date=${dateInt}, lastMes_text='${text}', lastMes_username='${user_from}' WHERE
+					((username_main='${user_to}' AND username_secondary='${user_from}')OR
+					(username_main='${user_from}' AND username_secondary='${user_to}'))`, (err, result) => {
+						if (err) throw err;
+						done();
+					})
+				}
 			})
 		})
 		// res.json({data: 'hello'})
