@@ -1,0 +1,67 @@
+import React, {useEffect} from 'react';
+import {connect} from 'react-redux';
+import {
+  thunk_getAuthenticatedStatus,
+  thunk_logout,
+  updateMessageInputAC,
+  setScrollAC,
+  thunk_getMessages,
+  thunk_getNewMessages,
+  thunk_sendMessage
+} from './../../redux/reducers/messagesReducers';
+import Header from './../header/Header';
+import Sidebar from './../sidebar/sidebar';
+import MessagesPage from './MessagesPage';
+import './MessagesPageStyles.css'
+let MessagesPageContainer = (props) => {
+  useEffect(() => {
+    props.thunk_getAuthenticatedStatus();
+  }, [])
+  useEffect(() => {
+    props.thunk_getMessages(props.match.params.id);
+  },[]);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      props.thunk_getNewMessages(props.match.params.id, props.messages[props.messages.length - 1].dateint);
+
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [props.messages]);
+  return (
+    <div>
+      <Header
+        isAuthenticated = {props.isAuthenticated}
+        userAuthenticatedId = {props.userAuthenticatedId}
+        thunk_logout = {props.thunk_logout}
+      />
+    <div className='sidebar-block-block'>
+      <Sidebar
+        userAuthenticatedId = {props.userAuthenticatedId}
+      />
+    </div>
+      <MessagesPage
+          messages = {props.messages}
+          messageInput = {props.messageInput}
+          updateMessageInput = {props.updateMessageInputAC}
+          thunk_sendMessage = {props.thunk_sendMessage}
+          params_id = {props.match.params.id}
+          setScroll = {props.setScrollAC}
+          scroll = {props.scroll}
+      />
+    </div>
+  )
+}
+
+let mapStateToProps = (state) => {
+  console.log(state)
+  return {
+    isAuthenticated: state.messagesReducer.isAuthenticated,
+    userAuthenticatedId: state.messagesReducer.userAuthenticatedId,
+    messageInput: state.messagesReducer.messageInput,
+    messages: state.messagesReducer.messages,
+    scroll: state.messagesReducer.scroll
+  }
+}
+
+export default connect(mapStateToProps, {thunk_getAuthenticatedStatus, thunk_logout, thunk_getMessages, thunk_sendMessage, setScrollAC,
+                                            updateMessageInputAC, thunk_getNewMessages})(MessagesPageContainer);

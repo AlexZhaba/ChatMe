@@ -1,0 +1,39 @@
+.dialogs-block {
+  /* background: red; */
+  width: 100%;
+  min-height: 800px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.dialog-block {
+  margin-top: 10px;
+  border: 1px solid #DADADA;
+  background: white;
+  padding: 10px;
+  width: 700px;
+  height: 80px;
+  font-size: 20px;
+  display: flex;
+  /* justify-content: center; */
+  align-items: center;
+  font-family: 'Montserrat';
+}
+.display-block a {
+  width: 100%;
+  height: 100%;
+  text-decoration: none;
+  color: black;
+  display: flex;
+  justify-content: center;
+  background: red;
+}
+.dialog-block img {
+  margin-left: 10px;
+  border-radius: 50%;
+  width: 70px;
+  height: 70px;
+  margin-right: 20px;
+}

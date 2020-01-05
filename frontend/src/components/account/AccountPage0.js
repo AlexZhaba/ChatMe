@@ -27,7 +27,7 @@ let AccountPage = (props) => {
               { true ?
               <div className='account-wrapper'>
                 <div className='top-content'>
-                  
+
                   <Sidebar
                       userAuthenticatedId = {props.userAuthenticatedId}
                     />
@@ -73,6 +73,9 @@ let AccountPage = (props) => {
                           </div>
                           {((props.userAuthenticatedId) && (props.userAuthenticatedId != props.user.email)) ?
                                 <div>
+                                  <div onClick={() => props.thunk_setFollowing(!props.following)} className='button-message'>
+                                    MESSAGE
+                                  </div>
                                 {props.following ?
                                 <div onClick={() => props.thunk_setFollowing(!props.following)}className='button-subscribe'>
                                   UNSUBSCRIBE

@@ -7,7 +7,9 @@ import subscribersPageReducer from './reducers/subscribersPageReducer';
 import subscribtionReducer from './reducers/subscribtionReducer';
 import searchReducer from './reducers/searchReducer';
 import settingsReducer from './reducers/settingsReducer';
-import newsReducer from './reducers/newsReducer'
+import newsReducer from './reducers/newsReducer';
+import dialogsReducer from './reducers/dialogsReducer';
+import messagesReducer from './reducers/messagesReducers'
 let reducers = combineReducers({
   accountReducer,
   settingsReducer,
@@ -17,7 +19,9 @@ let reducers = combineReducers({
   subscribtionReducer,
   searchReducer,
   settingsReducer,
-  newsReducer
+  newsReducer,
+  dialogsReducer,
+  messagesReducer
 })
 
 let store = createStore(reducers, applyMiddleware(thunkMiddleware));

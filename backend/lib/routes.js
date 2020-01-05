@@ -847,6 +847,83 @@ module.exports = function (app) {
 		});
 	});
 
+	app.get('/api/getDialogs', (req, res) => {
+		res.header('Access-Control-Allow-Origin', `http://${MY_IP}:3000`);
+		res.header('Access-Control-Allow-Credentials', true);
+		res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+		let authenticatedUser = req.user.email.replace(/\s+/g,'');
+		pool.connect((err, client, done) => {
+			if (err) throw err;
+			client.query(`SELECT username_secondary FROM DIALOGS WHERE username_main='${authenticatedUser}'`, (err, result) => {
+				if (err) throw err;
+				done();
+				console.log('ДИАЛОГИ С ', result.rows)
+				res.json({dialogs: result.rows})
+			})
+		})
+	});
+
+	app.post('/api/getMessages', (req, res) => {
+		res.header('Access-Control-Allow-Origin', `http://${MY_IP}:3000`);
+		res.header('Access-Control-Allow-Credentials', true);
+		res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+		let authenticatedUser = req.user.email.replace(/\s+/g,'');
+		let member_user = req.body.id;
+		console.log(authenticatedUser,' ', member_user)
+		pool.connect((err, client, done) => {
+			if (err) throw err;
+			client.query(`SELECT * FROM MESSAGES WHERE (user_to='${authenticatedUser}' AND user_from='${member_user}')OR
+			(user_to='${member_user}' AND user_from='${authenticatedUser}')`, (err, result) => {
+				if (err) throw err;
+				done();
+				// console.log('СОБЩЕНИЯ - ', result.rows)
+				res.json({messages: result.rows});
+			})
+		});
+	})
+	app.post('/api/getNewMessages', (req,res) => {
+		res.header('Access-Control-Allow-Origin', `http://${MY_IP}:3000`);
+		res.header('Access-Control-Allow-Credentials', true);
+		res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+		let user_to = req.body.id;
+		let user_from = req.user.email.replace(/\s+/g,'');
+		let lastDate = req.body.lastDate;
+
+		pool.connect((err, client, done) => {
+			if (err) throw err;
+			client.query(`SELECT * FROM MESSAGES WHERE ((user_to='${user_to}' AND user_from='${user_from}')OR
+			(user_to='${user_from}' AND user_from='${user_to}')) AND dateint > ${lastDate} `, (err, result) => {
+				if (err) throw err;
+				done();
+				console.log(user_to,' ', user_from, '  ',result.rows)
+				res.json({newMessages: result.rows})
+			});
+		})
+	});
+	app.post('/api/sendMessage', (req, res) => {
+		res.header('Access-Control-Allow-Origin', `http://${MY_IP}:3000`);
+		res.header('Access-Control-Allow-Credentials', true);
+		res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+		console.log(req.body);
+		let text = req.body.text;
+		let user_to = req.body.user_to;
+		let user_from = req.user.email.replace(/\s+/g,'');
+		pool.connect((err, client, done) => {
+			let data = new Date();
+			let DATA_MESSAGE = data.getHours()+ ':' + data.getMinutes()  + ', '  + data.getUTCDate() + '.' + parseInt(data.getUTCMonth() + 1).toString() + '.' + data.getFullYear();
+			if (err) throw err;
+			client.query(`INSERT INTO MESSAGES VALUES('${user_to}', '${user_from}', '${text}', ${Date.now()}, '${DATA_MESSAGE}')`, (err, result) => {
+				if (err) throw err;
+				done();
+				res.json({data: 'SEND ACCESS'})
+			})
+		})
+		// res.json({data: 'hello'})
+	})
 	app.post('/api/signup',	passport.authenticate('local', {failureRedirect: '/failureLogin'}), function (req, res) {
 	res.header('Access-Control-Allow-Origin', `http://${MY_IP}:3000`);
     res.header('Access-Control-Allow-Credentials', true);

@@ -14,6 +14,9 @@ let Sidebar = (props) => {
           <img className='img-profile' src='https://image.flaticon.com/icons/png/512/14/14711.png'/>
         <div>News</div>
         </div></NavLink>
+      <NavLink to='/dialogs'><div>
+          <img className='img-profile' src='https://image.flaticon.com/icons/png/512/37/37572.png'/>
+        <div>Messages</div></div></NavLink>
         <NavLink to='/search'><div>
             <img className='img-profile' src='https://image.flaticon.com/icons/png/512/64/64673.png'/>
           <div>Search</div>

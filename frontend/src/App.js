@@ -11,7 +11,9 @@ import SubscriberPageContainer from './components/subcribers/SubcribersPageConta
 import SubscribtionPageContainer from './components/subscribtion/subscribtionPageContainer';
 import SearchPageContainer from './components/search/SearchPageContainer'
 import SettingsPageContainer from './components/settings/SettingsPageContainer';
-import NewsPageContainer from './components/news/NewsPageContainer'
+import NewsPageContainer from './components/news/NewsPageContainer';
+import DialogsPageContainer from './components/dialogs/DialogsPageContainer';
+import MessagesPageContainer from './components/messages/MessagesPageContainer'
 import { withRouter } from "react-router";
 class App extends Component {
   render() {
@@ -49,6 +51,14 @@ class App extends Component {
           path='/news'
           render = {(props) => <NewsPageContainer {...props}/>}
         />
+        <Route
+          path='/dialogs/:id'
+        render = {(props) => <MessagesPageContainer {...props}/>}
+        />
+      <Route
+        exact path='/dialogs'
+        render = {(props) => <DialogsPageContainer {...props}/>}
+      />
       </div>
     );
   }
